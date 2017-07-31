@@ -1,0 +1,6 @@
+#+TITLE: Kevin Green's emacs configuration
+
+Reorganizing config while updating to emacs25.2.
+
+The plan is to have this set up so that it can be cloned directly to
+=~/.emacs.d= on a new system.

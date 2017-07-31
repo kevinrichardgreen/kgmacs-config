@@ -1,0 +1,172 @@
+#+TITLE: Configuration file for Kevin Green's emacs
+
+* Fundamentals/defaults
+
+Font.
+
+#+BEGIN_SRC emacs-lisp
+(setq default-frame-alist '((font . "Monospace-10")))
+#+END_SRC
+
+Quiet startup.
+
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t)
+  (setq initial-scratch-message nil)
+#+END_SRC
+
+Handle the top bars.
+
+#+BEGIN_SRC emacs-lisp
+  (tool-bar-mode -1)
+  (menu-bar-mode 1)
+#+END_SRC
+
+Line & column numbers
+
+#+BEGIN_SRC emacs-lisp
+  (line-number-mode 1)
+  (column-number-mode 1)
+#+END_SRC
+
+Disable automatic 'electric' indent (it conflicts with other things!)
+
+#+BEGIN_SRC emacs-lisp
+  (electric-indent-mode 0)
+#+END_SRC
+
+Smoother scrolling, scroll bar handling
+
+#+BEGIN_SRC emacs-lisp
+  (set-scroll-bar-mode nil) ; position of scroll bar
+  (setq                     ; smoother scrolling
+    scroll-margin 1                   ;; how far from edge before scroll
+    scroll-conservatively 100    ;; scroll nicely
+    scroll-preserve-screen-position 1) ;; maintain position when pgup/dwn
+#+END_SRC
+
+Easy viewing of expressions within parentheses.
+
+#+BEGIN_SRC emacs-lisp
+  (show-paren-mode t)
+  (setq show-paren-delay 0.0)
+  (setq show-paren-style 'expression)
+#+END_SRC
+
+An awesome tool for traversing the undo/redo tree.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :config
+    (global-undo-tree-mode))
+#+END_SRC
+
+Remember position in a file: keeps ~/ clean,  activated on all buffers
+
+#+BEGIN_SRC emacs-lisp
+  (use-package saveplace
+    :init (save-place-mode))
+#+END_SRC
+
+* Frames only
+  
+=frames-only-mode= to be used with my newly acquired Xmonad setup.
+Basically, this mode changes emacs default behaviour so that instead
+of opening windows, it opens frames.  The benefit to this is that
+the frames can be navigated by the window manager's shortcuts.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package frames-only-mode
+    :config
+    (frames-only-mode 1))
+#+END_SRC
+
+* IDO mode
+
+  This is probably the best thing for emacs
+  usability. =ido-vertical-mode= is tremendous. Seriously, just use
+  this everywhere. 
+
+  *Note* yes I do know about helm and ivy, but ido seems much more
+  lightweight.
+
+  Also, only use C-n, C-p in an ido vertical buffer to cycle through.
+#+BEGIN_SRC emacs-lisp
+  (use-package ido-vertical-mode
+    :config
+    (setq ido-enable-flex-matching t)
+    (setq ido-everywhere t)
+    (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+    (ido-mode 1)
+    (ido-vertical-mode 1))
+#+END_SRC
+
+* Color themes
+
+I use =moe-theme=, which is actually much more than just a color
+theme.  It's more of an overall style theme.  
+
+#+BEGIN_SRC emacs-lisp
+  (use-package moe-theme
+    :init
+    (setq calendar-latitude +52)    
+    (setq calendar-longitude -106)  
+    (setq moe-theme-resize-org-title '(1.3 1.1 1.1 1.1 1.0 1.0 1.0 1.0 1.0))
+    :config
+    (moe-theme-set-color 'w/b) ; white and black seems best for terminal emacs
+    (moe-dark)
+  )
+#+END_SRC
+
+Auto dimming of other buffers.  Easier to focus!
+
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-dim-other-buffers
+    :config
+    (add-hook 'after-init-hook (lambda ()
+                                 (when (fboundp 'auto-dim-other-buffers-mode)
+                                   (auto-dim-other-buffers-mode t)))))
+#+END_SRC
+
+* Org mode
+
+=org-mode= is arguably the workhorse of emacs.  Making sure it behaves
+as you wish is critical to having a good emacs experience.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :bind
+    (("C-c C-l" . org-store-link)
+     ("C-c C-a" . org-agenda))
+    :config
+    (setq org-use-speed-commands t)
+    (setq org-fontify-whole-heading-lines t)
+    (setq org-html-validation-link nil)
+    (setq org-startup-with-inline-images t)
+    (setq org-startup-with-latex-preview t)
+    (setq org-image-actual-width 400)
+    (setq org-startup-indented t)
+    (setq org-completion-use-ido t)
+    (setq org-src-fontify-natively t))
+
+  (use-package org-bullets
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    (setq org-hide-leading-stars t))
+#+END_SRC
+
+* Version control
+
+** Magit
+
+Probably the best interface to git. It makes me want to code more just
+so I can commit more.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :bind
+    ("C-x g" . magit-status)
+    ("C-x M-g" . magit-dispatch-popup))
+#+END_SRC
+
+* Languages
