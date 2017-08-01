@@ -366,6 +366,64 @@ as you wish is critical to having a good emacs experience.
     )
 #+END_SRC
 
+* She sells sea shells
+
+Well, she is a /TRAMP/...
+
+Only use =bash= for shells.  Useful for remote shell through TRAMP
+
+#+BEGIN_SRC emacs-lisp
+  (setq explicit-shell-file-name "/bin/bash")
+#+END_SRC
+
+Multi-term for my shell addiction.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package multi-term
+    :config
+    (setq multi-term-program (eval explicit-shell-file-name)))
+#+END_SRC
+
+A prettified eshell.
+
+#+BEGIN_SRC emacs-lisp
+  (setq eshell-cmpl-cycle-completions nil)
+
+  (defmacro with-face (str &rest properties)
+    `(propertize ,str 'face (list ,@properties)))
+
+  (defun fancy-eshell-prompt ()
+    "Fancy looking eshell."
+    (let ((header-bg "#BBB")
+          (header-fg "#000")
+          (time-fg   "#C33")
+          (user-fg   "#0A2")
+          (host-fg   "#0A2")
+          (prompt-fg "#0A2"))
+      (concat
+                                          ; Colored user and hostname
+       (with-face user-login-name :foreground user-fg)
+       "@"
+       (with-face system-name :foreground host-fg)
+                                          ; Current directory
+       (with-face (concat (eshell/pwd) " ") :background header-bg :foreground header-fg)
+                                          ; Current time
+       (with-face (format-time-string "(%Y-%m-%d %H:%M:%S) " (current-time)) :background header-bg :foreground time-fg)
+                                          ; Version control info of current directory
+       (with-face
+        (or (ignore-errors (format "(%s)" (vc-responsible-backend default-directory))) "")
+        :background header-bg :foreground user-bg)
+                                          ; NEW LINE FOR PROMPT
+       (with-face "\n" :background header-bg)
+                                          ; root prompt should always be red!
+       (if (= (user-uid) 0)
+           (with-face " #" :foreground "red")
+         (with-face " $" :foreground prompt-fg))
+       " ")))
+  (setq eshell-prompt-function 'fancy-eshell-prompt)
+  (setq eshell-highlight-prompt nil)
+#+END_SRC
+
 * Version control
 
 ** Magit
@@ -493,9 +551,6 @@ Ok, so this is a big one too.  AUCTeX+RefTex for LaTeX editing.
       (setq reftex-toc-include-file-boundaries t)
       (setq reftex-auto-recenter-toc t)
       (setq reftex-idle-time 0.5)))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
 #+END_SRC
 
 ** Python
