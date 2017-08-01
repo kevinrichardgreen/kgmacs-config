@@ -303,7 +303,8 @@ as you wish is critical to having a good emacs experience.
   (use-package org
     :bind
     (("C-c C-l" . org-store-link)
-     ("C-c C-a" . org-agenda))
+     ("C-c C-a" . org-agenda)
+     ("C-c c" . org-capture))
     :config
     (setq org-use-speed-commands t)
     (setq org-fontify-whole-heading-lines t)
@@ -314,12 +315,13 @@ as you wish is critical to having a good emacs experience.
     (setq org-startup-indented t)
     (setq org-completion-use-ido t)
     (setq org-src-fontify-natively t)
+
     ;; Fancy bullets
     (use-package org-bullets
       :config
       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
       (setq org-hide-leading-stars t))
-    ;; References inside or-mode documents
+    ;; References inside org-mode documents
     (use-package org-ref
       :config
       (with-eval-after-load 'org
@@ -338,6 +340,29 @@ as you wish is critical to having a good emacs experience.
       (setq bu-bibtex-fields-ignore-list '("keywords" "abstract" "file" "issn" "annote"))
       (setq bibtex-align-at-equal-sign t)
       (add-hook 'bibtex-mode-hook (lambda () (set-fill-column 2000))))
+    ;; Some export modes here
+    (use-package ox-twbs)
+    (use-package ox-beamer) ; beamer slides? - kind of buggy
+    (use-package ox-reveal
+      :config
+      (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+      (setq org-reveal-mathjax t))
+    ;; GTD things
+    (setq org-agenda-files '("~/Dropbox/Documents/gtd/inbox.org"
+                             "~/Dropbox/Documents/gtd/gtd.org"
+                             "~/Dropbox/Documents/gtd/tickler.org"))
+    (setq org-refile-targets '(("~/Dropbox/Documents/gtd/gtd.org" :maxlevel . 3)
+                               ("~/Dropbox/Documents/gtd/someday.org" :level . 1)
+                               ("~/Dropbox/Documents/gtd/tickler.org" :maxlevel . 2)))
+    (setq org-capture-templates
+          '(
+            ("t" "Todo [inbox]" entry
+             (file+headline "~/Dropbox/Documents/gtd/inbox.org" "Tasks")
+             "* TODO %i%?")
+            ("T" "Tickler" entry
+             (file+headline "~/Dropbox/Documents/gtd/tickler.org" "Tickler")
+             "* %i%^t %? \n %U")))
+    (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "IN PROGRESS(p)" "|" "DONE(d)" "CANCELLED(c)")))
     )
 #+END_SRC
 
