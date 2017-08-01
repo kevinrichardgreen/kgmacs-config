@@ -246,6 +246,14 @@ Open main Documents directory in dired.
                   (lambda () (interactive) (find-file "~/Dropbox/Documents/")))
 #+END_SRC
 
+Omit hidden files from view in dired
+#+BEGIN_SRC emacs-lisp
+  (use-package dired-x
+    :config
+    (setq dired-omit-files "^\\...+$")
+    (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1))))
+#+END_SRC
+
 * IDO mode
 
 This is probably the best thing for emacs
@@ -562,6 +570,17 @@ Ok, so this is a big one too.  AUCTeX+RefTex for LaTeX editing.
     :config
     (elpy-enable))
 ;    (elpy-use-ipython))
+#+END_SRC
+
+** Noweb
+
+Configuration for doing noweb stuff.  Uses polymode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package poly-noweb
+    :config
+    (add-to-list 'auto-mode-alist '("\\.nw" . poly-noweb-mode))
+    (add-hook 'poly-noweb-mode-hook 'flyspell-mode)) ; enable flyspell
 #+END_SRC
 
 * Pdf viewing
