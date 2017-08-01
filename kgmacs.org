@@ -2,7 +2,7 @@
 
 * Fundamentals/defaults
 
-Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el/sensible-defaults.el][Harry R. Schwartz]].
+Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el][Harry R. Schwartz]].
 
 #+BEGIN_SRC emacs-lisp
   (load-file (expand-file-name "sensible-defaults.el" user-emacs-directory))
