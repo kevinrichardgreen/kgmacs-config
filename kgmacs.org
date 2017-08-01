@@ -439,6 +439,24 @@ that what they're called in Matlab?) right from a .m file.
     (setq matlab-completion-technique 'increment))
 #+END_SRC
 
+** Maple
+
+~maplev-mode~ for basic syntax highlighting in maple text files. /Note the
+file extensions used./
+
+I downloaded this somewhere from the interwebz a long time ago... I
+don't see a melpa package for it.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path (concat user-emacs-directory "maple"))
+  (autoload 'maplev-mode "maplev" "Maple editing mode" 'interactive)
+  (setq auto-mode-alist
+        (cons (cons (concat "\\." (regexp-opt '("mpl" "maple") t)
+                            "$")
+                    'maplev-mode)
+              auto-mode-alist))
+#+END_SRC
+
 ** LaTeX
 
 Ok, so this is a big one too.  AUCTeX+RefTex for LaTeX editing.
