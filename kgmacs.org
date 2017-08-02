@@ -295,16 +295,6 @@ theme.  It's more of an overall style theme.
   )
 #+END_SRC
 
-Auto dimming of other buffers.  Easier to focus!
-
-#+BEGIN_SRC emacs-lisp
-  (use-package auto-dim-other-buffers
-    :config
-    (add-hook 'after-init-hook (lambda ()
-                                 (when (fboundp 'auto-dim-other-buffers-mode)
-                                   (auto-dim-other-buffers-mode t)))))
-#+END_SRC
-
 * Org mode
 
 =org-mode= is arguably the workhorse of emacs.  Making sure it behaves
