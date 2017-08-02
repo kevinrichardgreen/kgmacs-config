@@ -324,9 +324,7 @@ as you wish is critical to having a good emacs experience.
     (setq org-startup-with-latex-preview t)
     (setq org-image-actual-width 400)
     (setq org-startup-indented t)
-    (setq org-completion-use-ido t)
     (setq org-src-fontify-natively t)
-
     ;; Fancy bullets
     (use-package org-bullets
       :config
@@ -366,6 +364,7 @@ as you wish is critical to having a good emacs experience.
     (setq org-refile-targets '(("~/Dropbox/Documents/gtd/gtd.org" :maxlevel . 3)
                                ("~/Dropbox/Documents/gtd/someday.org" :level . 1)
                                ("~/Dropbox/Documents/gtd/tickler.org" :maxlevel . 2)))
+    ;; Capture templates
     (setq org-capture-templates
           '(
             ("t" "Todo [inbox]" entry
@@ -375,6 +374,14 @@ as you wish is critical to having a good emacs experience.
              (file+headline "~/Dropbox/Documents/gtd/tickler.org" "Tickler")
              "* %i%^t %? \n %U")))
     (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "IN PROGRESS(p)" "|" "DONE(d)" "CANCELLED(c)")))
+    (setq org-refile-use-outline-path 'file)
+    (setq org-outline-path-complete-in-steps nil)
+    (setq org-refile-allow-creating-parent-nodes 'confirm)
+    (setq org-agenda-start-on-weekday nil)
+    (setq org-agenda-todo-ignore-scheduled "all")
+    (setq org-agenda-skip-scheduled-if-done t)
+    (setq org-deadline-warning-days 5)
+    (setq org-log-done 'time)
     )
 #+END_SRC
 
@@ -561,7 +568,7 @@ Ok, so this is a big one too.  AUCTeX+RefTex for LaTeX editing.
       :config
       (add-hook 'LaTeX-mode-hook 'turn-on-reftex) ; with AUCTeX LaTeX mode
       (setq reftex-plug-into-AUCTeX t)
-      (setq reftex-toc-split-windows-horizontally t)
+;      (setq reftex-toc-split-windows-horizontally t)
       (setq reftex-toc-include-labels t)
       (setq reftex-toc-include-file-boundaries t)
       (setq reftex-auto-recenter-toc t)
