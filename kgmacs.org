@@ -349,31 +349,43 @@ as you wish is critical to having a good emacs experience.
       :config
       (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
       (setq org-reveal-mathjax t))
+    ;; sync with Google Calendar
+    (setq package-check-signature nil)
+    (use-package org-gcal
+      :ensure t
+      :config
+      (load "~/Dropbox/Documents/gtd/gcal-details")
+      (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+      (add-hook 'org-save-all-org-buffers (lambda () (org-gcal-sync) )))
+      ;; (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
     ;; GTD things
-    (setq org-agenda-files '("~/Dropbox/Documents/gtd/inbox.org"
-                             "~/Dropbox/Documents/gtd/gtd.org"
-                             "~/Dropbox/Documents/gtd/tickler.org"))
-    (setq org-refile-targets '(("~/Dropbox/Documents/gtd/gtd.org" :maxlevel . 3)
-                               ("~/Dropbox/Documents/gtd/someday.org" :level . 1)
-                               ("~/Dropbox/Documents/gtd/tickler.org" :maxlevel . 2)))
+    (setq org-agenda-files '("~/Dropbox/Documents/gtd/gcal.org"
+                             "~/Dropbox/Documents/gtd/inbox.org"
+                             "~/Dropbox/Documents/gtd/work.org"
+                             "~/Dropbox/Documents/gtd/personal.org"))
+    (setq org-refile-targets '(("~/Dropbox/Documents/gtd/work.org" :maxlevel . 3)
+                               ("~/Dropbox/Documents/gtd/personal.org" :maxlevel . 3)
+                               ("~/Dropbox/Documents/gtd/someday.org" :level . 1)))
     ;; Capture templates
     (setq org-capture-templates
           '(
+            ("a" "Appointment" entry (file  "~/Dropbox/Documents/gtd/gcal.org" )
+             "* %?\n\n%^T\n\n")
             ("t" "Todo [inbox]" entry
-             (file+headline "~/Dropbox/Documents/gtd/inbox.org" "Tasks")
-             "* TODO %i%?")
-            ("T" "Tickler" entry
-             (file+headline "~/Dropbox/Documents/gtd/tickler.org" "Tickler")
-             "* %i%^t %? \n %U")))
-    (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "IN PROGRESS(p)" "|" "DONE(d)" "CANCELLED(c)")))
+             (file "~/Dropbox/Documents/gtd/inbox.org")
+             "* TODO %i%?")))
+    (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "IN-PROGRESS(p)" "|" "DONE(d)" "CANCELLED(c)")))
+
     (setq org-refile-use-outline-path 'file)
-    (setq org-outline-path-complete-in-steps nil)
+    (setq org-outline-path-complete-in-steps t)
     (setq org-refile-allow-creating-parent-nodes 'confirm)
     (setq org-agenda-start-on-weekday nil)
     (setq org-agenda-todo-ignore-scheduled "all")
     (setq org-agenda-skip-scheduled-if-done t)
     (setq org-deadline-warning-days 5)
     (setq org-log-done 'time)
+    (setq org-use-property-inheritance '("CATEGORY"))
+    (setq org-agenda-window-setup 'only-window)
     )
 #+END_SRC
 
