@@ -2,6 +2,9 @@
 
 ;;; Code:
 
+;; Do NOT use any x-resources
+(setq inhibit-x-resources t)
+
 ;; Set repositories
 (require 'package)
 (setq-default

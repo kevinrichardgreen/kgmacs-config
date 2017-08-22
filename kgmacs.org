@@ -31,7 +31,7 @@ Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el][Ha
 Font.  (set in a way that will work with emacsclient frames)
 
 #+BEGIN_SRC emacs-lisp
-(setq default-frame-alist '((font . "Monospace-10")))
+(setq default-frame-alist '((font . "Monospace-8")))
 #+END_SRC
 
 Handle the top bars.
@@ -290,9 +290,9 @@ theme.  It's more of an overall style theme.
     (setq calendar-longitude -106)
     (setq moe-theme-resize-org-title '(1.3 1.1 1.1 1.1 1.0 1.0 1.0 1.0 1.0))
     :config
-    (moe-theme-set-color 'w/b) ; white and black seems best for terminal emacs
+    (moe-theme-set-color 'orange)
     (moe-dark)
-  )
+    )
 #+END_SRC
 
 * Org mode
@@ -314,7 +314,9 @@ as you wish is critical to having a good emacs experience.
     (setq org-startup-with-latex-preview t)
     (setq org-image-actual-width 400)
     (setq org-startup-indented t)
+    (setq org-hide-emphasis-markers t)
     (setq org-src-fontify-natively t)
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 6.0))
     ;; Fancy bullets
     (use-package org-bullets
       :config
@@ -421,7 +423,7 @@ A prettified eshell.
                                           ; Version control info of current directory
        (with-face
         (or (ignore-errors (format "(%s)" (vc-responsible-backend default-directory))) "")
-        :background header-bg :foreground user-bg)
+        :background header-bg :foreground user-fg)
                                           ; NEW LINE FOR PROMPT
        (with-face "\n" :background header-bg)
                                           ; root prompt should always be red!
