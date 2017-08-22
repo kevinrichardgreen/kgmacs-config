@@ -327,14 +327,14 @@ as you wish is critical to having a good emacs experience.
       :config
       (with-eval-after-load 'org
         (setq org-ref-notes-directory "~/Dropbox/Documents/notes/reading"
-              org-ref-bibliography-notes "~/Dropbox/Documents/notes/reading/index.org"
-              org-ref-default-bibliography '("~/Dropbox/Documents/notes/reading/index.bib")
+              org-ref-bibliography-notes "~/Dropbox/Documents/index.org"
+              org-ref-default-bibliography '("~/Dropbox/Documents/index.bib")
               org-ref-pdf-directory '("~/Dropbox/Documents/pdf_books/" "~/Dropbox/Documents/pdf_papers"))
-        (setq helm-bibtex-bibliography "~/Dropbox/Documents/notes/reading/index.bib"
+        (setq helm-bibtex-bibliography "~/Dropbox/Documents/index.bib"
               helm-bibtex-library-path '("~/Dropbox/Documents/pdf_books/" "~/Dropbox/Documents/pdf_papers")
-              helm-bibtex-notes-path "~/Dropbox/Documents/notes/reading/index.org"
-              bibtex-completion-bibliography "~/Dropbox/Documents/notes/reading/index.bib"
-              bibtex-completion-notes-path "~/Dropbox/Documents/notes/reading/index.org")))
+              helm-bibtex-notes-path "~/Dropbox/Documents/notes/reading"
+              bibtex-completion-bibliography "~/Dropbox/Documents/index.bib"
+              bibtex-completion-notes-path "~/Dropbox/Documents/index.org")))
     (use-package ivy-bibtex)
     ;; Managing bibtex entries
     (use-package bibtex-utils
