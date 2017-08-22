@@ -235,26 +235,26 @@ manually, using emacs interior commands if they split to windows.
 
 * Dired mode
 
-Striped buffers - easier to distinguish lines when navigating.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package stripe-buffer
-    :config
-    (add-hook 'dired-mode-hook 'stripe-listify-buffer)
-    (add-hook 'buffer-menu-mode-hook 'stripe-listify-buffer))
-#+END_SRC
-
-Open main Documents directory in dired.
+Open certain directories in dired.
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c o")
                   (lambda () (interactive) (find-file "~/Dropbox/Documents/")))
+  (global-set-key (kbd "C-c r")
+                  (lambda () (interactive) (find-file "~/repositories/")))
 #+END_SRC
 
 Omit hidden files from view in dired
+
 #+BEGIN_SRC emacs-lisp
 ;;  (setq dired-omit-files "^\\...+$")
 ;;  (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
+#+END_SRC
+
+~Wdired~ mode.  Allow changing permissions.
+
+#+BEGIN_SRC emacs-lisp
+  (setq wdired-allow-to-change-permissions t)
 #+END_SRC
 
 * IDO mode
