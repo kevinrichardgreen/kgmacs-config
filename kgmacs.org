@@ -340,8 +340,7 @@ as you wish is critical to having a good emacs experience.
         (setq helm-bibtex-bibliography "~/Dropbox/Documents/index.bib"
               helm-bibtex-library-path '("~/Dropbox/Documents/pdf_books/" "~/Dropbox/Documents/pdf_papers")
               helm-bibtex-notes-path "~/Dropbox/Documents/notes/reading"
-              bibtex-completion-bibliography "~/Dropbox/Documents/index.bib"
-              bibtex-completion-notes-path "~/Dropbox/Documents/index.org")))
+              bibtex-completion-bibliography "~/Dropbox/Documents/index.bib")))
     (use-package ivy-bibtex)
     ;; Managing bibtex entries
     (use-package bibtex-utils
@@ -370,8 +369,8 @@ as you wish is critical to having a good emacs experience.
                              "~/Dropbox/Documents/gtd/inbox.org"
                              "~/Dropbox/Documents/gtd/work.org"
                              "~/Dropbox/Documents/gtd/personal.org"))
-    (setq org-refile-targets '(("~/Dropbox/Documents/gtd/work.org" :maxlevel . 3)
-                               ("~/Dropbox/Documents/gtd/personal.org" :maxlevel . 3)
+    (setq org-refile-targets '(("~/Dropbox/Documents/gtd/work.org" :maxlevel . 1)
+                               ("~/Dropbox/Documents/gtd/personal.org" :maxlevel . 1)
                                ("~/Dropbox/Documents/gtd/someday.org" :level . 1)))
     ;; Capture templates
     (setq org-capture-templates
@@ -383,7 +382,7 @@ as you wish is critical to having a good emacs experience.
              "* TODO %i%?")))
     (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "IN-PROGRESS(p)" "|" "DONE(d)" "CANCELLED(c)")))
 
-    (setq org-refile-use-outline-path 'file)
+    (setq org-refile-use-outline-path nil)
     (setq org-outline-path-complete-in-steps t)
     (setq org-refile-allow-creating-parent-nodes 'confirm)
     (setq org-agenda-start-on-weekday nil)
@@ -393,6 +392,9 @@ as you wish is critical to having a good emacs experience.
     (setq org-log-done 'time)
     (setq org-use-property-inheritance '("CATEGORY"))
     (setq org-agenda-window-setup 'only-window)
+    ;; (add-to-list
+    ;;  'ivy-completing-read-handlers-alist
+    ;;  '(org-capture-refile . completing-read-default))
     )
 #+END_SRC
 
