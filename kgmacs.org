@@ -269,15 +269,22 @@ enough reason to switch.
 Also, only use C-n, C-p in an ido vertical buffer to cycle through.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package ido-vertical-mode
-    :config
-    (setq ido-enable-flex-matching t)
-    (setq ido-everywhere t)
-    (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-    (ido-mode 1)
-    (ido-vertical-mode 1))
+  ;; (use-package ido-vertical-mode
+  ;;   :config
+  ;;   (setq ido-enable-flex-matching t)
+  ;;   (setq ido-everywhere t)
+  ;;   (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+  ;;   (ido-mode 1)
+  ;;   (ido-vertical-mode 1))
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy :demand
+    :config
+    (setq ivy-use-virtual-buffers t
+          ivy-count-format "%d/%d ")
+    (ivy-mode 1))
+#+END_SRC
 * Color themes
 
 I use =moe-theme=, which is actually much more than just a color
