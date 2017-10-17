@@ -257,34 +257,20 @@ Omit hidden files from view in dired
   (setq wdired-allow-to-change-permissions t)
 #+END_SRC
 
-* IDO mode
+* Ivy/Swiper/Counsel
 
-This is probably the best thing for emacs
-usability. =ido-vertical-mode= is tremendous. Seriously, just use
-this everywhere.
-
-*Note* yes I do know about helm and ivy, but I haven't seen a good
-enough reason to switch.
-
-Also, only use C-n, C-p in an ido vertical buffer to cycle through.
-
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package ido-vertical-mode
-  ;;   :config
-  ;;   (setq ido-enable-flex-matching t)
-  ;;   (setq ido-everywhere t)
-  ;;   (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-  ;;   (ido-mode 1)
-  ;;   (ido-vertical-mode 1))
-#+END_SRC
+Just as intuitive as IDO, seems lighter weight than helm.
 
 #+BEGIN_SRC emacs-lisp
   (use-package ivy :demand
     :config
+    (global-set-key "\C-s" 'swiper)
     (setq ivy-use-virtual-buffers t
-          ivy-count-format "%d/%d ")
+          ivy-count-format "%d/%d "
+          enable-recursive-minibuffers t)
     (ivy-mode 1))
 #+END_SRC
+
 * Color themes
 
 I use =moe-theme=, which is actually much more than just a color
