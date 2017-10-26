@@ -233,7 +233,7 @@ manually, using emacs interior commands if they split to windows.
   ;;   (frames-only-mode 1))
 #+END_SRC
 
-* Dired mode
+* Files and directories
 
 Open certain directories in dired.
 
@@ -255,6 +255,29 @@ Omit hidden files from view in dired
 
 #+BEGIN_SRC emacs-lisp
   (setq wdired-allow-to-change-permissions t)
+#+END_SRC
+
+Open files and goto lines like we see from g++ etc. i.e. file:line.
+(Also useful for noweb source if formatted like this)
+
+Courtesy of [[https://stackoverflow.com/a/3141456/1899759][StackOverflow]].
+
+#+BEGIN_SRC emacs-lisp
+  (defadvice find-file (around find-file-line-number
+                               (filename &optional wildcards)
+                               activate)
+    "Turn files like file.cpp:14 into file.cpp and going to the 14-th line."
+    (save-match-data
+      (let* ((matched (string-match "^\\(.*\\):\\([0-9]+\\):?$" filename))
+             (line-number (and matched
+                               (match-string 2 filename)
+                               (string-to-number (match-string 2 filename))))
+             (filename (if matched (match-string 1 filename) filename)))
+        ad-do-it
+        (when line-number
+          ;; goto-line is for interactive use
+          (goto-char (point-min))
+          (forward-line (1- line-number))))))
 #+END_SRC
 
 * Ivy/Swiper/Counsel
