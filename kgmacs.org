@@ -172,6 +172,14 @@ Backup settings. Courtesy of [[http://stackoverflow.com/a/20824625][Stack Overfl
   (add-hook 'before-save-hook  'force-backup-of-buffer)
 #+END_SRC
 
+System cut and paste mapped to <f-> keys.
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key [f5] 'clipboard-kill-region)    ; cut
+  (global-set-key [f6] 'clipboard-kill-ring-save) ; copy
+  (global-set-key [f7] 'clipboard-yank)    ; paste
+#+END_SRC
+
 ** Web
 
 Ask for eww open
