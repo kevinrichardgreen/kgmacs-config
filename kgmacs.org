@@ -487,7 +487,7 @@ so I can commit more.
     ("C-x M-g" . magit-dispatch-popup))
 #+END_SRC
 
-* Languages
+* Languages/Programming
 
 GDB many open windows for debugging.  This is useful for seeing many things
 about your debug session, but does screw the window layout for a bit.
@@ -498,6 +498,13 @@ about your debug session, but does screw the window layout for a bit.
 
 #+BEGIN_SRC emacs-lisp
   (setq gdb-many-windows t)
+#+END_SRC
+
+Ensure ~minimap-mode~ is available. Don't necessarily turn it on all the
+time though.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package minimap)
 #+END_SRC
 
 ** Haskell
@@ -571,49 +578,50 @@ don't see a melpa package for it.
 Ok, so this is a big one too.  AUCTeX+RefTex for LaTeX editing.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package tex
-    :defer t
-    :ensure auctex
-    :config
-    (setq LaTeX-eqnarray-label "eq")
-    (setq LaTeX-equation-label "eq")
-    (setq LaTeX-figure-label "fig")
-    (setq LaTeX-table-label "tab")
-    (setq LaTeX-myChapter-label "chap")
-    (setq TeX-newline-function 'reindent-then-newline-and-indent)
-    (setq LaTeX-section-hook
-          '(LaTeX-section-heading
-            LaTeX-section-title
-            LaTeX-section-toc
-            LaTeX-section-section
-            LaTeX-section-label))
-    (setq TeX-parse-self t)
-    (setq TeX-auto-save t)
-    (setq TeX-source-correlate-mode t)
-    (setq LaTeX-electric-left-right-brace t)
-    (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-    (add-hook 'LaTeX-mode-hook 'flyspell-buffer)
-    ;; And configure reftex here as well
-    (use-package reftex
+    (use-package tex
+      :defer t
+      :ensure auctex
       :config
-      (add-hook 'LaTeX-mode-hook 'turn-on-reftex) ; with AUCTeX LaTeX mode
-      (setq reftex-plug-into-AUCTeX t)
-;      (setq reftex-toc-split-windows-horizontally t)
-      (setq reftex-toc-include-labels t)
-      (setq reftex-toc-include-file-boundaries t)
-      (setq reftex-auto-recenter-toc t)
-      (setq reftex-idle-time 0.5))
-    ;; latexmk support within auctex
-    (use-package auctex-latexmk
-      :config
-      (auctex-latexmk-setup))
-    ;; Use pdf-tools to open PDF files
-    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-          TeX-source-correlate-start-server t)
-    ;; Update PDF buffers after successful LaTeX runs
-    (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
-              #'TeX-revert-document-buffer)
-    )
+      (setq LaTeX-eqnarray-label "eq")
+      (setq LaTeX-equation-label "eq")
+      (setq LaTeX-figure-label "fig")
+      (setq LaTeX-table-label "tab")
+      (setq LaTeX-myChapter-label "chap")
+      (setq TeX-newline-function 'reindent-then-newline-and-indent)
+      (setq LaTeX-section-hook
+            '(LaTeX-section-heading
+              LaTeX-section-title
+              LaTeX-section-toc
+              LaTeX-section-section
+              LaTeX-section-label))
+      (setq TeX-parse-self t)
+      (setq TeX-auto-save t)
+      (setq TeX-source-correlate-mode t)
+      (setq LaTeX-electric-left-right-brace t)
+      (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+      (add-hook 'LaTeX-mode-hook 'flyspell-buffer)
+      ;; And configure reftex here as well
+      (use-package reftex
+        :config
+        (add-hook 'LaTeX-mode-hook 'turn-on-reftex) ; with AUCTeX LaTeX mode
+        (setq reftex-plug-into-AUCTeX t)
+  ;      (setq reftex-toc-split-windows-horizontally t)
+        (setq reftex-toc-include-labels t)
+        (setq reftex-toc-include-file-boundaries t)
+        (setq reftex-auto-recenter-toc t)
+        (setq reftex-idle-time 0.5))
+      ;; latexmk support within auctex
+      (use-package auctex-latexmk
+        :config
+        (auctex-latexmk-setup))
+      ;; Use pdf-tools to open PDF files
+      (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+            TeX-source-correlate-start-server t)
+      ;; Update PDF buffers after successful LaTeX runs
+      (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
+                #'TeX-revert-document-buffer)
+      (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "LatexMk")))
+      )
 #+END_SRC
 
 ** Python
