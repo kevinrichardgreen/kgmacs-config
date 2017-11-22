@@ -172,6 +172,14 @@ Backup settings. Courtesy of [[http://stackoverflow.com/a/20824625][Stack Overfl
   (add-hook 'before-save-hook  'force-backup-of-buffer)
 #+END_SRC
 
+Use ~ibuffer~ as default over ~list-buffers~.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ibuffer
+    :config
+    (global-set-key (kbd "C-x C-b") 'ibuffer))
+#+END_SRC
+
 System cut and paste mapped to <f-> keys.
 
 #+BEGIN_SRC emacs-lisp
