@@ -5,6 +5,14 @@
 ;; Do NOT use any x-resources
 (setq inhibit-x-resources t)
 
+;; Bug fix introduced in emacs 25.3
+;;  http://lists.gnu.org/archive/html/info-gnu/2017-09/msg00006.html
+(if (version< emacs-version "25.3")
+    (eval-after-load "enriched"
+      '(defun enriched-decode-display-prop (start end &optional param)
+	 (list start end)))
+  )
+
 ;; Set repositories
 (require 'package)
 (setq-default
