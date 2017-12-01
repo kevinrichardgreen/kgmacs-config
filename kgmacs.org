@@ -2,6 +2,12 @@
 
 * Fundamentals/defaults
 
+Frame titles - incorporate buffer names.
+
+#+BEGIN_SRC emacs-lisp
+  (setq frame-title-format '("emacs: %b [%m]"))
+#+END_SRC
+
 Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el][Harry R. Schwartz]].
 
 #+BEGIN_SRC emacs-lisp
