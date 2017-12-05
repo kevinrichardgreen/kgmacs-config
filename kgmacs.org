@@ -178,12 +178,40 @@ Backup settings. Courtesy of [[http://stackoverflow.com/a/20824625][Stack Overfl
   (add-hook 'before-save-hook  'force-backup-of-buffer)
 #+END_SRC
 
-Use ~ibuffer~ as default over ~list-buffers~.
+Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https://cestlaz.github.io/posts/using-emacs-34-ibuffer-emmet/#.WiYJuOmnHRY][Using emacs 34]].
 
 #+BEGIN_SRC emacs-lisp
   (use-package ibuffer
     :config
-    (global-set-key (kbd "C-x C-b") 'ibuffer))
+    (global-set-key (kbd "C-x C-b") 'ibuffer)
+    (setq ibuffer-saved-filter-groups
+          (quote (("default"
+                   ("dired" (mode . dired-mode))
+                   ("org" (name . "^.*org$"))
+
+                   ("web" (or (mode . web-mode) (mode . js2-mode)))
+                   ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+                   ("mu4e" (name . "\*mu4e\*"))
+                   ("programming" (or
+                                   (mode . python-mode)
+                                   (mode . c++-mode)))
+                   ("emacs" (or
+                             (name . "^\\*scratch\\*$")
+                             (name . "^\\*Messages\\*$")))
+                   ))))
+    (add-hook 'ibuffer-mode-hook
+              (lambda ()
+                (ibuffer-auto-mode 1)
+                (ibuffer-switch-to-saved-filter-groups "default")))
+
+    ;; don't show these
+                                          ;(add-to-list 'ibuffer-never-show-predicates "zowie")
+    ;; Don't show filter groups if there are no buffers in that group
+    (setq ibuffer-show-empty-filter-groups nil)
+
+    ;; Don't ask for confirmation to delete marked buffers
+    (setq ibuffer-expert t)
+    )
 #+END_SRC
 
 System cut and paste mapped to <f-> keys.
@@ -284,6 +312,12 @@ Omit hidden files from view in dired
   (setq wdired-allow-to-change-permissions t)
 #+END_SRC
 
+#+BEGIN_SRC elisp
+  ;; (use-package dired+
+  ;;   :ensure t
+  ;;   :config (require 'dired+))
+#+END_SRC
+
 Open files and goto lines like we see from g++ etc. i.e. file:line.
 (Also useful for noweb source if formatted like this)
 
@@ -293,7 +327,7 @@ Courtesy of [[https://stackoverflow.com/a/3141456/1899759][StackOverflow]].
   (defadvice find-file (around find-file-line-number
                                (filename &optional wildcards)
                                activate)
-    "Turn files like file.cpp:14 into file.cpp and going to the 14-th line."
+    "Turn files like file.cpp:14 into 'open file.cpp and go to the 14-th line.'"
     (save-match-data
       (let* ((matched (string-match "^\\(.*\\):\\([0-9]+\\):?$" filename))
              (line-number (and matched
