@@ -31,9 +31,7 @@
  use-package-always-ensure t)
 
 ;; Use latest Org
-(use-package org
-	     :pin org
-	     :ensure org-plus-contrib)
+(use-package org)
 
 ;; Tangle configuration
 (org-babel-load-file (expand-file-name "kgmacs.org" user-emacs-directory))
