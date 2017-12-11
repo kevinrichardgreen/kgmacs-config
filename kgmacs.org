@@ -91,6 +91,7 @@ Line numbering - relative line numbers in programming and text modes only.
   (use-package linum-relative
     :config
     (setq relative-line-numbers-motion-function 'forward-visible-line)
+    (setq linum-relative-current-symbol "")
     (add-hook 'text-mode-hook 'linum-relative-mode)
     (add-hook 'prog-mode-hook 'linum-relative-mode))
 #+END_SRC
@@ -194,7 +195,9 @@ Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https:/
                    ("mu4e" (name . "\*mu4e\*"))
                    ("programming" (or
                                    (mode . python-mode)
-                                   (mode . c++-mode)))
+                                   (mode . c++-mode)
+                                   (mode . c-mode)
+                                   (mode . fortran-mode)))
                    ("emacs" (or
                              (name . "^\\*scratch\\*$")
                              (name . "^\\*Messages\\*$")))
@@ -294,28 +297,28 @@ Open certain directories in dired.
                   (lambda () (interactive) (find-file "~/repositories/")))
 #+END_SRC
 
-Omit hidden files from view in dired
-
-#+BEGIN_SRC emacs-lisp
-  (use-package dired-hide-dotfiles
-    :config
-    (defun dired-hide-dotfiles-hook ()
-      "My `dired' mode hook."
-      (dired-hide-dotfiles-mode)
-      (define-key dired-mode-map "." #'dired-hide-dotfiles-mode))
-    (add-hook 'dired-mode-hook #'dired-hide-dotfiles-hook))
-#+END_SRC
-
 ~Wdired~ mode.  Allow changing permissions.
 
 #+BEGIN_SRC emacs-lisp
   (setq wdired-allow-to-change-permissions t)
 #+END_SRC
 
-#+BEGIN_SRC elisp
+~dired+~ for some more powerful behaviour
+
+#+BEGIN_SRC emacs-lisp
   (use-package dired+
     :config
-    (require 'dired+))
+    (require 'dired+)
+    (setq global-dired-hide-details-mode nil) ;; show details by default
+    (setq dired-listing-switches "-lh")           ;; don't list all by default
+    )
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dired-sidebar
+    :commands (dired-sidebar-toggle-sidebar)
+    :config
+    (setq dired-sidebar-use-all-the-icons nil))
 #+END_SRC
 
 Open files and goto lines like we see from g++ etc. i.e. file:line.
@@ -719,12 +722,16 @@ that comes with emacs.
     :config
     (pdf-tools-install)
     (setq-default pdf-view-display-size 'fit-page)
-    (use-package org-pdfview
-      ))
+    (setq pdf-view-resize-factor 1.1)              ;; finer control
+    ;; Shorter keystrokes for annotations
+    (define-key pdf-view-mode-map (kbd "h") 'pdf-annot-add-highlight-markup-annotation)
+    (define-key pdf-view-mode-map (kbd "t") 'pdf-annot-add-text-annotation)
+    (define-key pdf-view-mode-map (kbd "D") 'pdf-annot-delete)
+    (use-package org-pdfview))
 #+END_SRC
 
-=interleave-mode= is the perfect way to take notes on pdf documents.
+=interleave-mode= is the perfect way to take notes on pdf documents. My opinion on this has changed... I prefer annotations now.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package interleave)
+;;  (use-package interleave)
 #+END_SRC
