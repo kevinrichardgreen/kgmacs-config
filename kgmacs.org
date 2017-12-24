@@ -370,7 +370,7 @@ theme.  It's more of an overall style theme.
     (setq calendar-longitude -106)
     (setq moe-theme-resize-org-title '(1.3 1.1 1.1 1.1 1.0 1.0 1.0 1.0 1.0))
     :config
-    (moe-theme-set-color 'orange)
+    (moe-theme-set-color 'yellow)
     (moe-dark)
     )
 #+END_SRC
@@ -421,7 +421,8 @@ as you wish is critical to having a good emacs experience.
       (setq bu-bibtex-fields-ignore-list '("keywords" "abstract" "file" "issn" "annote"))
       (setq bibtex-align-at-equal-sign t)
       (add-hook 'bibtex-mode-hook (lambda () (set-fill-column 2000))))
-    ;; Some export modes here
+    ;; Some export modes/options
+    (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
     (use-package htmlize)  ; for source code block syntax highlighting
     (use-package ox-twbs)  ; Twitter-bootstrap formatted html
     (use-package ox-reveal
