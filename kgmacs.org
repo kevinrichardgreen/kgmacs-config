@@ -445,11 +445,18 @@ as you wish is critical to having a good emacs experience.
     (setq org-refile-targets '(("~/Dropbox/Documents/gtd/work.org" :maxlevel . 1)
                                ("~/Dropbox/Documents/gtd/personal.org" :maxlevel . 1)
                                ("~/Dropbox/Documents/gtd/someday.org" :level . 1)))
+
+    (use-package org-mu4e
+      :after mu4e
+      :config
+      (setq org-mu4e-link-query-in-headers-mode nil))
     ;; Capture templates
     (setq org-capture-templates
           '(
             ("a" "Appointment" entry (file  "~/Dropbox/Documents/gtd/gcal.org" )
              "* %?\n\n%^T\n\n")
+            ("f" "File-todo [inbox]" entry (file  "~/Dropbox/Documents/gtd/inbox.org" )
+             "* TODO %?\n\n%a\n")
             ("t" "Todo [inbox]" entry
              (file "~/Dropbox/Documents/gtd/inbox.org")
              "* TODO %i%?")))
@@ -735,4 +742,180 @@ that comes with emacs.
 
 #+BEGIN_SRC emacs-lisp
 ;;  (use-package interleave)
+#+END_SRC
+* Email
+
+** mu4e
+
+Using ~mu4e~. *Setup is for UofS and Gmail accounts.*
+- ~offlineimap~ is used for obtaining email (Install from [[https://github.com/OfflineIMAP/offlineimap][GitHub]])
+- ~mu~ for indexing mail (from [[https://github.com/djcb/mu][GitHub]])
+- ~msmtp~ for sending mail (Ubuntu repo is good enough)
+
+Useful refs:
+- [[http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/]] :: decent
+     for overall setup, with some quirks due to using a mix of the
+     'old' way of handling multiple accounts combined with the new
+     contexts.
+- [[https://notanumber.io/2016-10-03/better-email-with-mu4e/]] :: best
+     description of using the newer style of contexts for multiple
+     accounts and msmtp for sending.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+  (use-package mu4e
+    :commands (mu4e make-mu4e-bookmark)
+    :init
+    (defvar mu4e-bookmarks ;; define before mu4e gets a chance to!
+      `(,(make-mu4e-bookmark
+          :name  "All Unread messages"
+          :query "flag:unread AND NOT flag:trashed"
+          :key ?u)
+        ,(make-mu4e-bookmark
+          :name  "UofS Unread messages"
+          :query "flag:unread AND NOT flag:trashed AND maildir:/UofS/INBOX"
+          :key ?U)
+        ,(make-mu4e-bookmark
+          :name  "Gmail Unread messages"
+          :query "flag:unread AND NOT flag:trashed AND maildir:/Gmail/INBOX"
+          :key ?G)
+        ,(make-mu4e-bookmark
+          :name "Today's messages"
+          :query "date:today..now"
+          :key ?t)
+        ,(make-mu4e-bookmark
+          :name "Last 7 days"
+          :query "date:7d..now"
+          :key ?w)
+        ,(make-mu4e-bookmark
+          :name "Messages with images"
+          :query "mime:image/*"
+          :key ?p)))
+    :config
+    (setq mail-user-agent 'mu4e-user-agent) ; use mu4e as default
+    (setq mu4e-maildir "~/Maildir")
+    ;; Sets up contexts for Gmail and UofS accounts
+    (setq mu4e-contexts
+          `( ,(make-mu4e-context
+               :name "UofS"	  ; University of Saskatchewan account
+               :enter-func (lambda () "Switch to UofS context")
+               :match-func (lambda (msg) (when msg
+                                           (string-prefix-p
+                                            "/UofS"
+                                            (mu4e-message-field msg :maildir))))
+               :vars '((user-mail-address . "kevin.green@usask.ca")
+                       (user-full-name . "Kevin R Green")
+                       (mu4e-sent-folder . "/UofS/Sent Items")
+                       (mu4e-drafts-folder . "/UofS/Drafts")
+                       (mu4e-trash-folder . "/UofS/Deleted Items")
+                       (mu4e-refile-folder . "/UofS/Archive")
+                       ))
+             ,(make-mu4e-context
+               :name "Gmail"
+               :enter-func (lambda () "Switch to Gmail context")
+               :match-func (lambda (msg) (when msg ; anything with /Gmail in the path
+                                           (string-prefix-p
+                                            "/Gmail"
+                                            (mu4e-message-field msg :maildir))))
+               :leave-func (lambda () (mu4e-clear-caches))
+               :vars '((user-mail-address . "kevin.richard.green@gmail.com")
+                       (user-full-name . "Kevin R Green")
+                       (mu4e-sent-folder . "/Gmail/[Gmail].All Mail")
+                       (mu4e-drafts-folder . "/Gmail/[Gmail].Drafts")
+                       (mu4e-trash-folder . "/Gmail/[Gmail].Trash")
+                       (mu4e-refile-folder . "/Gmail/[Gmail].All Mail")))
+             ))
+
+    ;; the maildirs you use frequently; access them with 'j' ('jump')
+    (setq   mu4e-maildir-shortcuts
+            '(("/UofS/INBOX"         . ?U)
+              ("/Gmail/INBOX"        . ?G)))
+
+    (setq mu4e-get-mail-command "offlineimap -o")
+
+    ;; Send mail with externally configured msmtp program.
+    (setq message-send-mail-function 'message-send-mail-with-sendmail
+          sendmail-program "/usr/bin/msmtp")
+
+    ;; This enabled the thread like viewing of email similar to gmail's UI.
+    (setq mu4e-headers-include-related t)
+
+    (setq mu4e-attachment-dir  "~/Downloads/mu4e")
+    (setq mu4e-update-interval 300)
+    ;; inline images
+    (setq mu4e-view-show-images t)
+    ;; Use imagemagick, if available.
+    (when (fboundp 'imagemagick-register-types)
+      (imagemagick-register-types))
+
+    ;; Sometimes html email is just not readable in a text based client,
+    ;; this lets me open the email in my browser.
+    (add-to-list 'mu4e-view-actions '("View in browser" . mu4e-action-view-in-browser) t)
+
+    ;; spell checking
+    (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
+
+    ;; Use ivy for mu4e completions
+    (setq mu4e-completing-read-function 'ivy-completing-read)
+
+    ;; This hook correctly modifies the \Inbox and \Starred flags on email when they are marked.
+    ;; Without it refiling (archiving) and flagging (starring) email won't properly result in
+    ;; the corresponding gmail action.
+    (add-hook 'mu4e-mark-execute-pre-hook
+              (lambda (mark msg)
+                (cond ((member mark '(refile trash)) (mu4e-action-retag-message msg "-\\Inbox"))
+                      ((equal mark 'flag) (mu4e-action-retag-message msg "\\Starred"))
+                      ((equal mark 'unflag) (mu4e-action-retag-message msg "-\\Starred")))))
+
+    ;; Use the correct account context when sending mail based on the from header.
+    (setq message-sendmail-envelope-from 'header)
+
+    (defun choose-msmtp-account ()
+      (if (message-mail-p)
+          (save-excursion
+            (let*
+                ((from (save-restriction
+                         (message-narrow-to-headers)
+                         (message-fetch-field "from")))
+                 (account
+                  (cond
+                   ((string-match "kevin.richard.green@gmail.com" from) "Gmail")
+                   ((string-match "kevin.green@usask.ca" from) "UofS"))))
+              (setq message-sendmail-extra-arguments (list '"-a" account))))))
+    (add-hook 'message-send-mail-hook 'choose-msmtp-account)
+
+    (setq mu4e-headers-visible-lines 20)
+
+    ;; Add date to reply quotes
+    (use-package mu-cite
+      :config
+      (setq mu4e-compose-cite-function 'mu-cite-original)
+      (setq mu-cite-top-format '("On " date ",\n" from "  wrote:\n\n"))
+      (setq mu-cite-prefix-format '("> ")))
+    )
+#+END_SRC
+
+And mu4e alerts as well.
+
+*NOTE:* This breaks things when multiple emacs instances are running...
+the mu4e updates lock things from other instances.
+
+#+Begin_SRC emacs-lisp
+  ;; (use-package mu4e-alert
+  ;;   :after mu4e
+  ;;   :init
+  ;;   (setq mu4e-alert-interesting-mail-query
+  ;;     (concat
+  ;;      "flag:unread maildir:/UofS/INBOX "
+  ;;      "OR "
+  ;;      "flag:unread maildir:/Gmail/INBOX"
+  ;;      ))
+  ;;   (mu4e-alert-enable-mode-line-display)
+  ;;   (defun refresh-mu4e-alert-mode-line ()
+  ;;     (interactive)
+  ;;     (mu4e~proc-kill)
+  ;;     (mu4e-alert-enable-mode-line-display)
+  ;;     )
+  ;;   (run-with-timer 0 60 'refresh-mu4e-alert-mode-line)
+  ;;   )
 #+END_SRC
