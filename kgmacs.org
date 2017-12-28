@@ -352,10 +352,38 @@ Just as intuitive as IDO, seems lighter weight than helm.
   (use-package ivy :demand
     :config
     (global-set-key "\C-s" 'swiper)
+    (global-set-key "\M-x" 'counsel-M-x)
     (setq ivy-use-virtual-buffers t
           ivy-count-format "%d/%d "
           enable-recursive-minibuffers t)
-    (ivy-mode 1))
+    (ivy-mode 1)
+    ;; configure regexp engine.
+    (setq ivy-re-builders-alist
+          ;; allow input not in order
+          '((t   . ivy--regex-ignore-order)))
+  )
+#+END_SRC
+
+Flyspell ivy correction completion.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flyspell-correct-ivy
+    :config
+    (define-key flyspell-mode-map (kbd "C-;") 'flyspell-correct-previous-word-generic)
+  )
+#+END_SRC
+
+Better buffer formatting in ~ivy-switch-buffer~
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-rich
+    :after ivy
+    :config
+    (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer)
+    (setq ivy-virtual-abbreviate 'full
+          ivy-rich-switch-buffer-align-virtual-buffer t
+          ivy-rich-path-style 'abbrev)
+  )
 #+END_SRC
 
 * Color themes
@@ -571,6 +599,20 @@ time though.
   (use-package minimap)
 #+END_SRC
 
+** C/C++
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'c-mode-hook 'counsel-gtags-mode)
+  (add-hook 'c++-mode-hook 'counsel-gtags-mode)
+
+  ()
+  (use-package counsel-gtags
+    :config
+    (define-key counsel-gtags-mode-map (kbd "M-t") 'counsel-gtags-find-definition)
+    (define-key counsel-gtags-mode-map (kbd "M-r") 'counsel-gtags-find-reference)
+    (define-key counsel-gtags-mode-map (kbd "M-s") 'counsel-gtags-find-symbol)
+    (define-key counsel-gtags-mode-map (kbd "M-,") 'counsel-gtags-go-backward))
+#+END_SRC
 ** Haskell
 
 Useful for managing my xmonad setup.
