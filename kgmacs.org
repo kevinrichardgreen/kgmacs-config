@@ -411,7 +411,7 @@ as you wish is critical to having a good emacs experience.
 #+BEGIN_SRC emacs-lisp
   (use-package org
   :config
-    (global-set-key (kbd "C-c C-l") 'org-store-link)
+    (global-set-key (kbd "C-c l") 'org-store-link)
     (global-set-key (kbd "C-c a") 'org-agenda)
     (global-set-key (kbd "C-c c") 'org-capture)
 
@@ -462,8 +462,14 @@ as you wish is critical to having a good emacs experience.
     (use-package org-gcal
       :config
       (load "~/Dropbox/Documents/gtd/gcal-details")
-      (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
-      (add-hook 'org-save-all-org-buffers (lambda () (org-gcal-sync) )))
+      ;; Special key for gcal sync and refresh
+      (require 'org-agenda)
+      (defun org-agenda-gcal-sync-and-redo-all (&optional all)
+        (interactive "P")
+        (org-gcal-sync)
+        (org-agenda-redo-all))
+      (define-key org-agenda-mode-map "G" 'org-agenda-gcal-sync-and-redo-all)
+      )
       ;; (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
     ;; GTD things
     (setq org-agenda-files '("~/Dropbox/Documents/gtd/gcal.org"
