@@ -889,7 +889,7 @@ Useful refs:
     (setq mu4e-headers-include-related t)
 
     (setq mu4e-attachment-dir  "~/Downloads/mu4e")
-    (setq mu4e-update-interval 300)
+    (setq mu4e-update-interval nil)
     ;; inline images
     (setq mu4e-view-show-images t)
     ;; Use imagemagick, if available.
@@ -938,7 +938,7 @@ Useful refs:
     (use-package mu-cite
       :config
       (setq mu4e-compose-cite-function 'mu-cite-original)
-      (setq mu-cite-top-format '("On " date ",\n" from "  wrote:\n\n"))
+      (setq mu-cite-top-format '("On " date ",\n" from " wrote:\n\n"))
       (setq mu-cite-prefix-format '("> ")))
     )
 #+END_SRC
