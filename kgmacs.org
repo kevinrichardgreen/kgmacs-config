@@ -453,6 +453,7 @@ as you wish is critical to having a good emacs experience.
     (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
     (use-package htmlize)  ; for source code block syntax highlighting
     (use-package ox-twbs)  ; Twitter-bootstrap formatted html
+    (use-package ox-trac)  ; export to trac-wiki to paste into tickets
     (use-package ox-reveal
       :config
       (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
