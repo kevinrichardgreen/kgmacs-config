@@ -654,12 +654,9 @@ A nice feature of this is that you can evaluate execution groups (is
 that what they're called in Matlab?) right from a .m file.
 
 #+BEGIN_SRC emacs-lisp
-  ;; (add-to-list 'load-path "~/.emacs.d/matlab-emacs")
-  ;; (load-library "matlab-load")
-  (use-package matlab-mode
+  (use-package matlab
     :config
     (matlab-cedet-setup)
-;;    (autoload 'matlab-mode "matlab" "Matlab Editing Mode" t)
     (add-to-list
      'auto-mode-alist
      '("\\.m$" . matlab-mode))
