@@ -189,15 +189,18 @@ Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https:/
           (quote (("default"
                    ("dired" (mode . dired-mode))
                    ("org" (name . "^.*org$"))
-
-                   ("web" (or (mode . web-mode) (mode . js2-mode)))
-                   ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
-                   ("mu4e" (name . "\*mu4e\*"))
                    ("programming" (or
                                    (mode . python-mode)
                                    (mode . c++-mode)
                                    (mode . c-mode)
                                    (mode . fortran-mode)))
+                   ("TeX" (or
+                             (name . "^.*tex$")
+                             (name . "^.*bib$")))
+                   ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+                   ("mu4e" (name . "\*mu4e\*"))
+                   ("Magit" (name . "\*magit\*"))
+                   ("web" (or (mode . web-mode) (mode . js2-mode)))
                    ("emacs" (or
                              (name . "^\\*scratch\\*$")
                              (name . "^\\*Messages\\*$")))
@@ -657,6 +660,7 @@ don't see a melpa package for it.
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path (concat user-emacs-directory "maple"))
+  (require 'maplev)
   (autoload 'maplev-mode "maplev" "Maple editing mode" 'interactive)
   (setq auto-mode-alist
         (cons (cons (concat "\\." (regexp-opt '("mpl" "maple") t)
