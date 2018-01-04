@@ -268,24 +268,6 @@ Global bindings for fast compile, auto-scroll of compilation window.
   (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 #+END_SRC
 
-* Frames only
-
-=frames-only-mode= to be used with my newly acquired Xmonad setup.
-Basically, this mode changes emacs default behaviour so that instead
-of opening windows, it opens frames.  The benefit to this is that
-the frames can be navigated by the window manager's shortcuts.
-
-THIS DOES NOT WORK NEARLY AS WELL AS I HAD HOPED.
-
-A better solution seems to be to just manage a couple of frames
-manually, using emacs interior commands if they split to windows.
-
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package frames-only-mode
-  ;;   :config
-  ;;   (frames-only-mode 1))
-#+END_SRC
-
 * Files and directories
 
 Open certain directories in dired.
