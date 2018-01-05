@@ -556,6 +556,16 @@ A prettified eshell.
   (setq eshell-highlight-prompt nil)
 #+END_SRC
 
+For some reason, my TERM env is set to dumb when ~shell~ is run in emacs...
+I want color!
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-shell-mode-hook ()
+    (process-send-string (get-buffer-process (current-buffer))
+                         "export TERM=ansi\n"))
+  (add-hook 'shell-mode-hook 'my-shell-mode-hook)
+#+END_SRC
+
 * Version control
 
 ** Magit
