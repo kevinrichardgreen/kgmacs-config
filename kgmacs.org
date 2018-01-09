@@ -762,6 +762,26 @@ Configuration for doing noweb stuff.  Uses polymode
     (add-hook 'poly-noweb-mode-hook 'flyspell-mode)) ; enable flyspell
 #+END_SRC
 
+Creating a new noweb chunk. (Does this global binding interfere with
+anything? I could perhaps make this for only in ~poly-noweb-mode~)
+
+#+BEGIN_SRC emacs-lisp
+  (defun create-new-chunk (chunk-display-name)
+    "Create a new noweb chunk with display name from prompt"
+    (interactive "sChunk display name (space and . converted to -): ")
+    (let ((chunk-latex-name
+           (replace-regexp-in-string (regexp-quote " \\|.") "-"
+                                     chunk-display-name)))
+      (insert "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
+              (concat "\\begin{chnk}{" chunk-latex-name "}\n")
+              (concat "<<" chunk-display-name ">>=\n\n")
+              "@ %def\n"
+              "\\end{chnk}\n"
+              "%-------------------------------------------------------------------------------\n")
+      (previous-line 4)))  ; go back to code entry point before exit
+  (global-set-key (kbd "C-c h") 'create-new-chunk)
+#+END_SRC
+
 * Pdf viewing
 
 =pdf-tools= is a far superior pdf viewer than the default DocView mode
