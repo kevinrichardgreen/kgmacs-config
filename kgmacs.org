@@ -857,6 +857,8 @@ Useful refs:
     (setq mail-user-agent 'mu4e-user-agent) ; use mu4e as default
     (setq mu4e-maildir "~/Maildir")
     ;; Sets up contexts for Gmail and UofS accounts
+    (setq  mu4e-user-mail-address-list '("kevin.green@usask.ca"
+                                         "kevin.richard.green@gmail.com"))
     (setq mu4e-contexts
           `( ,(make-mu4e-context
                :name "UofS"	  ; University of Saskatchewan account
@@ -893,7 +895,7 @@ Useful refs:
             '(("/UofS/INBOX"         . ?U)
               ("/Gmail/INBOX"        . ?G)))
 
-    (setq mu4e-get-mail-command "offlineimap -o")
+    ;; (setq mu4e-get-mail-command "offlineimap -o")
 
     ;; Send mail with externally configured msmtp program.
     (setq message-send-mail-function 'message-send-mail-with-sendmail
