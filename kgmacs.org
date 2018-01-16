@@ -769,9 +769,10 @@ anything? I could perhaps make this for only in ~poly-noweb-mode~)
   (defun create-new-chunk (chunk-display-name)
     "Create a new noweb chunk with display name from prompt"
     (interactive "sChunk display name (space and . converted to -): ")
-    (let ((chunk-latex-name
-           (replace-regexp-in-string (regexp-quote " \\|.") "-"
-                                     chunk-display-name)))
+    (let* ((chunk-latex-name
+            (replace-regexp-in-string " " "-" (replace-regexp-in-string
+                                               (regexp-quote ".") "-"
+                                               chunk-display-name))))
       (insert "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
               (concat "\\begin{chnk}{" chunk-latex-name "}\n")
               (concat "<<" chunk-display-name ">>=\n\n")
