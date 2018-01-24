@@ -502,6 +502,19 @@ as you wish is critical to having a good emacs experience.
 
 Well, she is a /TRAMP/...
 
+TRAMP connections use persistent ssh
++ default to using rsync over ssh
+= super fast file interaction on remote servers.
+
+#+BEGIN_SRC emacs-lisp
+  (setq tramp-ssh-controlmaster-options
+        (concat
+         "-o ControlPath=/tmp/ssh-TRAMP-ControlPath-%%r@%%h:%%p "
+         "-o ControlMaster=auto -o ControlPersist=yes"))
+  (setq tramp-default-method "rsync")
+#+END_SRC
+
+
 Only use =bash= for shells.  Useful for remote shell through TRAMP
 
 #+BEGIN_SRC emacs-lisp
