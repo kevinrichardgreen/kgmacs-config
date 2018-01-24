@@ -877,6 +877,7 @@ Useful refs:
           `( ,(make-mu4e-context
                :name "UofS"	  ; University of Saskatchewan account
                :enter-func (lambda () "Switch to UofS context")
+               :leave-func (lambda () (setq mu4e-maildir-list nil))
                :match-func (lambda (msg) (when msg
                                            (string-prefix-p
                                             "/UofS"
@@ -891,6 +892,7 @@ Useful refs:
              ,(make-mu4e-context
                :name "Gmail"
                :enter-func (lambda () "Switch to Gmail context")
+               :leave-func (lambda () (setq mu4e-maildir-list nil))
                :match-func (lambda (msg) (when msg ; anything with /Gmail in the path
                                            (string-prefix-p
                                             "/Gmail"
