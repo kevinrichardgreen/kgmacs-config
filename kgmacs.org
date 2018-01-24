@@ -514,19 +514,10 @@ TRAMP connections use persistent ssh
   (setq tramp-default-method "rsync")
 #+END_SRC
 
-
 Only use =bash= for shells.  Useful for remote shell through TRAMP
 
 #+BEGIN_SRC emacs-lisp
   (setq explicit-shell-file-name "/bin/bash")
-#+END_SRC
-
-Multi-term for my shell addiction.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package multi-term
-    :config
-    (setq multi-term-program (eval explicit-shell-file-name)))
 #+END_SRC
 
 A prettified eshell.
