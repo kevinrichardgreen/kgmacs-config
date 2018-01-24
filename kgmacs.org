@@ -965,28 +965,3 @@ Useful refs:
       (setq mu-cite-prefix-format '("> ")))
     )
 #+END_SRC
-
-And mu4e alerts as well.
-
-*NOTE:* This breaks things when multiple emacs instances are running...
-the mu4e updates lock things from other instances.
-
-#+Begin_SRC emacs-lisp
-  ;; (use-package mu4e-alert
-  ;;   :after mu4e
-  ;;   :init
-  ;;   (setq mu4e-alert-interesting-mail-query
-  ;;     (concat
-  ;;      "flag:unread maildir:/UofS/INBOX "
-  ;;      "OR "
-  ;;      "flag:unread maildir:/Gmail/INBOX"
-  ;;      ))
-  ;;   (mu4e-alert-enable-mode-line-display)
-  ;;   (defun refresh-mu4e-alert-mode-line ()
-  ;;     (interactive)
-  ;;     (mu4e~proc-kill)
-  ;;     (mu4e-alert-enable-mode-line-display)
-  ;;     )
-  ;;   (run-with-timer 0 60 'refresh-mu4e-alert-mode-line)
-  ;;   )
-#+END_SRC
