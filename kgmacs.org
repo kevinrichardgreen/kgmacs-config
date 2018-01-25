@@ -512,6 +512,42 @@ TRAMP connections use persistent ssh
   (setq tramp-default-method "rsync")
 #+END_SRC
 
+Open an external ~gnome-terminal~ in the remote directory of a TRAMP
+buffer. This was pieced together using  elements from:
+- https://emacs.stackexchange.com/questions/18903/tramp-and-dired-initial-default-directory-dired-directory
+- https://stackoverflow.com/questions/23164073/run-a-shell-command-from-a-specific-directory-in-emacs
+- https://unix.stackexchange.com/questions/373186/open-gnome-terminal-window-and-execute-2-commands
+
+TODO: add a general ~open-gnome-terminal~ with the ability to detect if
+tramp or not.
+
+#+BEGIN_SRC emacs-lisp
+  (defun open-gnome-terminal-remote ()
+    "Opens a gnome-terminal at location of current TRAMP buffer
+  - ssh to machine using the existing ssh-TRAMP socket
+  - fails if not in a TRAMP buffer
+  - gnome-terminal closes when remote shell is terminated
+    - but shared ssh connection remains"
+    (interactive)
+    (let* ( ;; break current TRAMP directory into pieces
+           (remote-list (split-string (substring-no-properties default-directory) ":"))
+           (remote-protocol (nth 0 remote-list))
+           (remote-system   (nth 1 remote-list))
+           (remote-dir      (nth 2 remote-list))
+           ;; set directory to home on local machine
+           (default-directory (getenv "HOME"))
+           ;; map the %% -> % to be used in our command string
+           (ssh-shared-opts (format tramp-ssh-controlmaster-options))
+           ;; multiple leves of escaped quotes to avoid single quotes...
+           (gt-command (concat
+                        "gnome-terminal -e \"sh -c \\\"ssh "
+                        ssh-shared-opts " -t "
+                        remote-system
+                        " \\\\\\\"cd " remote-dir
+                        "; exec $SHELL\\\\\\\"\\\"\"")))
+      (shell-command gt-command)))
+#+END_SRC
+
 Only use =bash= for shells.  Useful for remote shell through TRAMP
 
 #+BEGIN_SRC emacs-lisp
