@@ -489,7 +489,8 @@ as you wish is critical to having a good emacs experience.
     (setq org-deadline-warning-days 5)
     (setq org-log-done 'time)
     (setq org-use-property-inheritance '("CATEGORY"))
-    (setq org-agenda-window-setup 'only-window)
+    (setq org-agenda-window-setup 'reorganize-frame)
+    (setq org-agenda-span 'day)
     ;; (add-to-list
     ;;  'ivy-completing-read-handlers-alist
     ;;  '(org-capture-refile . completing-read-default))
