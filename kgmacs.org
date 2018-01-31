@@ -566,6 +566,44 @@ tramp or not.
       (shell-command gt-command)))
 #+END_SRC
 
+Open a new ~multi-term~ in the remote directory of a TRAMP buffer.
+
+#+BEGIN_SRC emacs-lisp
+  (defun open-multi-term-remote ()
+    "Opens a multi-term at location of current TRAMP buffer
+    - ssh to machine using the existing ssh-TRAMP socket
+    - ssh command fails if not in a TRAMP buffer"
+    (interactive)
+    (multi-term)
+    (let* ( ;; break current TRAMP directory into pieces
+           (remote-list (split-string (substring-no-properties default-directory) ":"))
+           (remote-protocol (nth 0 remote-list))
+           (remote-system   (nth 1 remote-list))
+           (remote-dir      (nth 2 remote-list))
+           ;; set directory to home on local machine
+           (default-directory (getenv "HOME"))
+           ;; map the %% -> % to be used in our command string
+           (ssh-shared-opts (format tramp-ssh-controlmaster-options))
+           ;; multiple leves of escaped quotes to avoid single quotes...
+           (ssh-command (concat
+                         "ssh "
+                         ssh-shared-opts " -t "
+                         remote-system
+                         " \"cd " remote-dir
+                         "; exec $SHELL\"")))
+      (term-send-raw-string ssh-command)
+      (term-send-return)
+      (term-send-raw-string "clear")
+      (term-send-return)))
+
+  (defun open-multi-term ()
+    "Open a mulit-term session in current directory"
+    (interactive)
+    (if (file-remote-p default-directory)
+        (open-multi-term-remote)
+      (multi-term)))
+#+END_SRC
+
 Only use =bash= for shells.  Useful for remote shell through TRAMP
 
 #+BEGIN_SRC emacs-lisp
