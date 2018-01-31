@@ -226,6 +226,12 @@ System cut and paste mapped to <f-> keys.
   (global-set-key [f7] 'clipboard-yank)    ; paste
 #+END_SRC
 
+Don't allow backgrounding of emacs.
+
+#+BEGIN_SRC emacs-lisp
+  (global-unset-key (kbd "C-z"))
+#+END_SRC
+
 ** Web
 
 Ask for eww open
