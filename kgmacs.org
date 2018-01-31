@@ -327,7 +327,7 @@ Courtesy of [[https://stackoverflow.com/a/3141456/1899759][StackOverflow]].
           (forward-line (1- line-number))))))
 #+END_SRC
 
-* Ivy/Swiper/Counsel
+* Ivy/Swiper/Counsel & Avy
 
 Just as intuitive as IDO, seems lighter weight than helm.
 
@@ -367,6 +367,17 @@ Better buffer formatting in ~ivy-switch-buffer~
           ivy-rich-switch-buffer-align-virtual-buffer t
           ivy-rich-path-style 'abbrev)
   )
+#+END_SRC
+
+Avy for fast jumping anywhere visible.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :config
+    (global-set-key (kbd "C-:") 'avy-goto-char)
+    (global-set-key (kbd "C-'") 'avy-goto-char-2)
+    (global-set-key (kbd "M-g f") 'avy-goto-line)
+    (global-set-key (kbd "M-g w") 'avy-goto-word-1))
 #+END_SRC
 
 * Color themes
