@@ -303,11 +303,13 @@ Open certain directories in dired.
     )
 #+END_SRC
 
+Narrowing of ~dired~ directories.
+
 #+BEGIN_SRC emacs-lisp
-  (use-package dired-sidebar
-    :commands (dired-sidebar-toggle-sidebar)
-    :config
-    (setq dired-sidebar-use-all-the-icons nil))
+  (use-package dired-narrow
+    :ensure t
+    :bind (:map dired-mode-map
+                ("/" . dired-narrow)))
 #+END_SRC
 
 Open files and goto lines like we see from g++ etc. i.e. file:line.
