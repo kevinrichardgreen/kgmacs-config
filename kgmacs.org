@@ -536,9 +536,6 @@ buffer. This was pieced together using  elements from:
 - https://stackoverflow.com/questions/23164073/run-a-shell-command-from-a-specific-directory-in-emacs
 - https://unix.stackexchange.com/questions/373186/open-gnome-terminal-window-and-execute-2-commands
 
-TODO: add a general ~open-gnome-terminal~ with the ability to detect if
-tramp or not.
-
 #+BEGIN_SRC emacs-lisp
   (defun open-gnome-terminal-remote ()
     "Opens a gnome-terminal at location of current TRAMP buffer
@@ -564,6 +561,13 @@ tramp or not.
                         " \\\\\\\"cd " remote-dir
                         "; exec $SHELL\\\\\\\"\\\"\"")))
       (shell-command gt-command)))
+
+  (defun open-gnome-terminal ()
+    "Open a gnome-terminal session in current directory"
+    (interactive)
+    (if (file-remote-p default-directory)
+        (open-gnome-terminal-remote)
+      (shell-command "gnome-terminal")))
 #+END_SRC
 
 Open a new ~multi-term~ in the remote directory of a TRAMP buffer.
