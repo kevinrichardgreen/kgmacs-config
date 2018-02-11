@@ -232,6 +232,13 @@ Don't allow backgrounding of emacs.
   (global-unset-key (kbd "C-z"))
 #+END_SRC
 
+Splitting window thresholds that work well for a 1080p monitor
+
+#+BEGIN_SRC emacs-lisp
+  (setq split-height-threshold nil)
+  (setq split-width-threshold 160)
+#+END_SRC
+
 ** Web
 
 Ask for eww open
