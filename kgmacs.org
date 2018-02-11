@@ -342,6 +342,12 @@ Courtesy of [[https://stackoverflow.com/a/3141456/1899759][StackOverflow]].
           (forward-line (1- line-number))))))
 #+END_SRC
 
+Assign ffap to a key to save typing ~M-x ffap~ all of the time.
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c C-p") 'find-file-at-point)
+#+END_SRC
+
 * Ivy/Swiper/Counsel & Avy
 
 Just as intuitive as IDO, seems lighter weight than helm.
