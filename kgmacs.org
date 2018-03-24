@@ -358,6 +358,7 @@ Just as intuitive as IDO, seems lighter weight than helm.
     :config
     (global-set-key "\C-s" 'swiper)
     (global-set-key "\M-x" 'counsel-M-x)
+    (global-set-key (kbd "C-c k") 'counsel-ag)
     (setq ivy-use-virtual-buffers t
           ivy-count-format "%d/%d "
           enable-recursive-minibuffers t)
