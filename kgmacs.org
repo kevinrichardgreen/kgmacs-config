@@ -435,12 +435,14 @@ as you wish is critical to having a good emacs experience.
     (setq org-fontify-whole-heading-lines t)
     (setq org-html-validation-link nil)
     (setq org-startup-with-inline-images t)
-    (setq org-startup-with-latex-preview t)
+    (setq org-startup-with-latex-preview nil)
     (setq org-image-actual-width 400)
     (setq org-startup-indented t)
     (setq org-hide-emphasis-markers t)
     (setq org-src-fontify-natively t)
-    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+    (setq org-export-in-background nil)
+    (setq org-export-initial-scope 'subtree)
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 15.0))
     ;; Fancy bullets
     (use-package org-bullets
       :config
