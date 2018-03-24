@@ -923,6 +923,7 @@ that comes with emacs.
     (define-key pdf-view-mode-map (kbd "h") 'pdf-annot-add-highlight-markup-annotation)
     (define-key pdf-view-mode-map (kbd "t") 'pdf-annot-add-text-annotation)
     (define-key pdf-view-mode-map (kbd "D") 'pdf-annot-delete)
+    (define-key pdf-view-mode-map (kbd "s a") 'pdf-view-auto-slice-minor-mode)
     (use-package org-pdfview))
 #+END_SRC
 
@@ -977,6 +978,76 @@ Rotating pdf pages, courtesy of [[https://emacs.stackexchange.com/a/24766/16286]
 
   (define-key pdf-view-mode-map (kbd "R") 'pdf-view-rotate-clockwise)
 #+END_SRC
+
+Alternative colour schemes, idea from
+[[http://babbagefiles.blogspot.ca/2017/11/more-pdf-tools-tricks.html]]
+
+Get those moe-dark colours!
+
+#+BEGIN_SRC emacs-lisp
+  ;; midnite mode hook
+  (defun bms/pdf-no-filter ()
+    "View pdf without colour filter."
+    (interactive)
+    (pdf-view-midnight-minor-mode -1)
+    )
+
+  ;; change midnite mode colours functions
+  (defun bms/pdf-midnite-original ()
+    "Set pdf-view-midnight-colors to original colours."
+    (interactive)
+    (setq pdf-view-midnight-colors '("#839496" . "#002b36" ))
+    (pdf-view-midnight-minor-mode)
+    )
+
+  (defun bms/pdf-midnite-amber ()
+    "Set pdf-view-midnight-colors to amber on dark slate blue."
+    (interactive)
+    (setq pdf-view-midnight-colors '("#ff9900" . "#0a0a12" ))
+    (pdf-view-midnight-minor-mode)
+    )
+
+  (defun bms/pdf-midnite-green ()
+    "Set pdf-view-midnight-colors to green on black."
+    (interactive)
+    (setq pdf-view-midnight-colors '("#00B800" . "#000000" ))
+    (pdf-view-midnight-minor-mode)
+    )
+
+  (defun kg/pdf-midnite-moe-dark ()
+    "Set pdf-view-midnight-colors to white on moe-dark bg."
+    (interactive)
+    (setq pdf-view-midnight-colors '("#c6c6c6" . "#303030" ))
+    (pdf-view-midnight-minor-mode)
+    )
+
+  (defun kg/pdf-midnite-moe-dark-amber ()
+    "Set pdf-view-midnight-colors to amber on moe-dark bg."
+    (interactive)
+    (setq pdf-view-midnight-colors '("#ff9900" . "#303030" ))
+    (pdf-view-midnight-minor-mode)
+    )
+
+  (defun kg/pdf-midnite-moe-dark-green ()
+    "Set pdf-view-midnight-colors to green on moe-dark bg."
+    (interactive)
+    (setq pdf-view-midnight-colors '("#00B800" . "#303030" ))
+    (pdf-view-midnight-minor-mode)
+    )
+
+  (defun bms/pdf-midnite-colour-schemes ()
+    "Midnight mode colour schemes bound to keys"
+    (local-set-key (kbd "!") (quote bms/pdf-no-filter))
+    (local-set-key (kbd "@") (quote kg/pdf-midnite-moe-dark))
+    (local-set-key (kbd "#") (quote kg/pdf-midnite-moe-dark-amber))
+    (local-set-key (kbd "$") (quote kg/pdf-midnite-moe-dark-green))
+    )
+
+  (add-hook 'pdf-view-mode-hook 'bms/pdf-midnite-colour-schemes)
+  (add-hook 'pdf-view-mode-hook (lambda ()
+                                  (kg/pdf-midnite-moe-dark))) ; automatically selects a midnite mode
+#+END_SRC
+
 =interleave-mode= is the perfect way to take notes on pdf documents. My opinion on this has changed... I prefer annotations now.
 
 #+BEGIN_SRC emacs-lisp
