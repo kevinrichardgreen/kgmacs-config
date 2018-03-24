@@ -530,6 +530,21 @@ as you wish is critical to having a good emacs experience.
     )
 #+END_SRC
 
+** Time stamps
+
+Inactive org-mode style timestamps for today and right now.
+
+#+BEGIN_SRC emacs-lisp
+  (defun kg/insert-org-today-inactive () ""
+         (interactive)
+         (insert (format-time-string "[%Y-%M-%d %a]"))
+         )
+  (defun kg/insert-org-now-inactive () ""
+         (interactive)
+         (insert (format-time-string "[%Y-%M-%d %a %H:%M]"))
+         )
+#+END_SRC
+
 * She sells sea shells
 
 Well, she is a /TRAMP/...
