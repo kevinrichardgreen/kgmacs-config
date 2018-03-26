@@ -560,11 +560,11 @@ Inactive org-mode style timestamps for today and right now.
 #+BEGIN_SRC emacs-lisp
   (defun kg/insert-org-today-inactive () ""
          (interactive)
-         (insert (format-time-string "[%Y-%M-%d %a]"))
+         (insert (format-time-string "[%Y-%m-%d %a]"))
          )
   (defun kg/insert-org-now-inactive () ""
          (interactive)
-         (insert (format-time-string "[%Y-%M-%d %a %H:%M]"))
+         (insert (format-time-string "[%Y-%m-%d %a %H:%M]"))
          )
 #+END_SRC
 
