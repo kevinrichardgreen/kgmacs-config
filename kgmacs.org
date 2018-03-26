@@ -718,6 +718,12 @@ I want color!
   (add-hook 'shell-mode-hook 'my-shell-mode-hook)
 #+END_SRC
 
+Always try to open a ~shell~ in the same window where you are.
+
+#+BEGIN_SRC emacs-lisp
+  (push '("\\`\\*shell" display-buffer-same-window (inhibit-same-window)) display-buffer-alist)
+#+END_SRC
+
 * Version control
 
 ** Magit
