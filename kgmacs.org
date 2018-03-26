@@ -422,6 +422,10 @@ Then set some for avy movement.
      (interactive)
      (ding)
      (call-interactively 'avy-goto-char))
+    (defun kg/avy-goto-char-2-ding ()
+     (interactive)
+     (ding)
+     (call-interactively 'avy-goto-char-2))
     (defun kg/avy-goto-word-ding ()
      (interactive)
      (ding)
@@ -431,7 +435,7 @@ Then set some for avy movement.
      (ding)
      (call-interactively 'avy-goto-line))
     (key-chord-define-global "jj" 'kg/avy-goto-char-ding)
-    (key-chord-define-global "jk" 'kg/avy-goto-word-ding)
+    (key-chord-define-global "jk" 'kg/avy-goto-char-2-ding)
     (key-chord-define-global "jf" 'kg/avy-goto-line-ding))
 #+END_SRC
 
