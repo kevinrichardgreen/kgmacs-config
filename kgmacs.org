@@ -584,6 +584,21 @@ Inactive org-mode style timestamps for today and right now.
          )
 #+END_SRC
 
+** Note files
+
+Open notefile for today.
+
+#+BEGIN_SRC emacs-lisp
+  (defun kg/note ()
+    "Open today's note file, turn off read-only mode."
+    (interactive)
+    (let ((file (format-time-string "~/Dropbox/Documents/notes/dated/%Y%m%d.org")))
+      (find-file file)
+      (setq buffer-read-only nil)))
+#+END_SRC
+
+*** TODO Get a snippet to insert title/date etc
+
 * She sells sea shells
 
 Well, she is a /TRAMP/...
