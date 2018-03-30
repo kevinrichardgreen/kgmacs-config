@@ -601,8 +601,19 @@ Open notefile for today.
     "Open today's note file, turn off read-only mode."
     (interactive)
     (let ((file (format-time-string "~/Dropbox/Documents/notes/dated/%Y%m%d.org")))
-      (find-file file)
-      (setq buffer-read-only nil)))
+      (if (file-exists-p file)
+          (progn
+            (find-file file)
+            (setq buffer-read-only nil))
+        (progn
+          (find-file file)
+          (setq buffer-read-only nil)
+          (insert (concat "#+TITLE: Daily notes\n"
+                          "#+DATE: "))
+          (kg/insert-org-today-inactive)
+          (insert "\n\n* \n\n\n* References\n\nbibliography:index.bib bibliographystyle:acm")
+          (previous-line 5)
+          (end-of-line)))))
 #+END_SRC
 
 *** TODO Get a snippet to insert title/date etc
