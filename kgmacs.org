@@ -15,7 +15,6 @@ Frame titles - incorporate buffer names.
 #+END_SRC
 
 Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el][Harry R. Schwartz]].
-
 #+BEGIN_SRC emacs-lisp
   (load-file (expand-file-name "sensible-defaults.el" user-emacs-directory))
 
@@ -41,11 +40,11 @@ Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el][Ha
 #+END_SRC
 
 Font.  (set in a way that will work with emacsclient frames)
-
 #+BEGIN_SRC emacs-lisp
 (setq default-frame-alist '((font . "Monospace-10")))
 #+END_SRC
 
+Enable things relating to variable pitch font.
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c v") 'variable-pitch-mode)
   (use-package mixed-pitch
@@ -55,28 +54,25 @@ Font.  (set in a way that will work with emacsclient frames)
     :config
     (global-set-key (kbd "C-c m") 'mixed-pitch-mode))
 #+END_SRC
-Handle the top bars.
 
+Handle the top bars.
 #+BEGIN_SRC emacs-lisp
   (tool-bar-mode -1)
   (menu-bar-mode -1)
 #+END_SRC
 
 Line & column numbers
-
 #+BEGIN_SRC emacs-lisp
   (line-number-mode 1)
   (column-number-mode 1)
 #+END_SRC
 
 Disable automatic 'electric' indent (it conflicts with other things!)
-
 #+BEGIN_SRC emacs-lisp
   (electric-indent-mode 0)
 #+END_SRC
 
 Smoother scrolling, scroll bar handling
-
 #+BEGIN_SRC emacs-lisp
   (set-scroll-bar-mode nil) ; position of scroll bar
   (setq                     ; smoother scrolling
@@ -86,7 +82,6 @@ Smoother scrolling, scroll bar handling
 #+END_SRC
 
 An awesome tool for traversing the undo/redo tree.
-
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :config
@@ -94,16 +89,13 @@ An awesome tool for traversing the undo/redo tree.
 #+END_SRC
 
 Remember position in a file: keeps ~/ clean,  activated on all buffers
-
 #+BEGIN_SRC emacs-lisp
   (use-package saveplace
     :init (save-place-mode))
 #+END_SRC
 
-Line numbering - relative line numbers in programming and text modes only.
-
-DISABLED FOR NOW - trying all navigation with ~avy~.
-
+Line numbering - relative line numbers in programming and text modes
+only. DISABLED FOR NOW - trying all navigation with ~avy~.
 #+BEGIN_SRC emacs-lisp
   ;; (use-package linum-relative
   ;;   :config
@@ -113,15 +105,13 @@ DISABLED FOR NOW - trying all navigation with ~avy~.
   ;;   (add-hook 'prog-mode-hook 'linum-relative-mode))
 #+END_SRC
 
-Global line highlighting
-
+Global line highlighting.
 #+BEGIN_SRC emacs-lisp
   (global-hl-line-mode 1)
 #+END_SRC
 
 
 Allow certain functions that are disabled by default.
-
 #+BEGIN_SRC emacs-lisp
   (put 'downcase-region 'disabled nil)
   (put 'dired-find-alternate-file 'disabled nil)
@@ -130,8 +120,7 @@ Allow certain functions that are disabled by default.
   (put 'scroll-right 'disabled nil)
 #+END_SRC
 
-Scroll buffer in place: [[http://stackoverflow.com/questions/8993183/emacs-scroll-buffer-not-point][StackOverflow]]
-
+Scroll buffer in place: [[http://stackoverflow.com/questions/8993183/emacs-scroll-buffer-not-point][StackOverflow]].
 #+BEGIN_SRC emacs-lisp
   (defun scroll-down-in-place (n)
     "Scroll the buffer down, keeping the point in place."
@@ -151,24 +140,21 @@ Scroll buffer in place: [[http://stackoverflow.com/questions/8993183/emacs-scrol
   (global-set-key "\M-p" 'scroll-down-in-place)
 #+END_SRC
 
-Use spaces in ~align-regexp~ instead of tabs. - uses old advice syntax
-
+Use spaces in ~align-regexp~ instead of tabs -- uses old advice syntax.
 #+BEGIN_SRC emacs-lisp
   (defadvice align-regexp (around align-regexp-with-spaces activate)
     (let ((indent-tabs-mode nil))
       ad-do-it))
 #+END_SRC
 
-Browsing the kill ring
-
+Browsing the kill ring.
 #+BEGIN_SRC emacs-lisp
   (use-package browse-kill-ring+
     :config
     (browse-kill-ring-default-keybindings))
 #+END_SRC
 
-Backup settings. Courtesy of [[http://stackoverflow.com/a/20824625][Stack Overflow]]
-
+Backup settings. Courtesy of [[http://stackoverflow.com/a/20824625][Stack Overflow]].
 #+BEGIN_SRC emacs-lisp
   (setq
      backup-by-copying t      ; don't clobber symlinks
@@ -197,7 +183,6 @@ Backup settings. Courtesy of [[http://stackoverflow.com/a/20824625][Stack Overfl
 #+END_SRC
 
 Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https://cestlaz.github.io/posts/using-emacs-34-ibuffer-emmet/#.WiYJuOmnHRY][Using emacs 34]].
-
 #+BEGIN_SRC emacs-lisp
   (use-package ibuffer
     :config
@@ -236,7 +221,6 @@ Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https:/
 #+END_SRC
 
 System cut and paste mapped to <f-> keys.
-
 #+BEGIN_SRC emacs-lisp
   (global-set-key [f5] 'clipboard-kill-region)    ; cut
   (global-set-key [f6] 'clipboard-kill-ring-save) ; copy
@@ -244,22 +228,19 @@ System cut and paste mapped to <f-> keys.
 #+END_SRC
 
 Don't allow backgrounding of emacs.
-
 #+BEGIN_SRC emacs-lisp
   (global-unset-key (kbd "C-z"))
 #+END_SRC
 
 ** Window management
 
-Splitting window thresholds that work well for a 1080p monitor
-
+Splitting window thresholds that work well for a 1080p monitor.
 #+BEGIN_SRC emacs-lisp
   (setq split-height-threshold nil)
   (setq split-width-threshold 160)
 #+END_SRC
 
-Enable =winner-mode=
-
+Enable =winner-mode=.
 #+BEGIN_SRC emacs-lisp
   (winner-mode 1)
 #+END_SRC
@@ -268,8 +249,7 @@ Enable =winner-mode=
 
 *** darkroom
 
-From here: [[https://github.com/joaotavora/darkroom][darkroom]]
-
+From here: [[https://github.com/joaotavora/darkroom][darkroom]].
 #+BEGIN_SRC emacs-lisp
   (require 'darkroom)
 #+END_SRC
@@ -296,13 +276,13 @@ Ask for eww open
 ** Compilation
 
 Global bindings for fast compile, auto-scroll of compilation window.
-
 #+BEGIN_SRC emacs-lisp
   (global-set-key [f9] 'compile)
   (global-set-key [f10] 'recompile)
   (global-set-key [f12] 'gdb)
 #+END_SRC
 
+Better default behaviour of the \*compilation\* buffer.
 #+BEGIN_SRC emacs-lisp
   (setq compilation-scroll-output t)
   (setq compilation-auto-jump-to-first-error t)
@@ -311,7 +291,7 @@ Global bindings for fast compile, auto-scroll of compilation window.
 
 * English
 
-~flyspell~ for text files and code files
+~flyspell~ for text files and code files.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'text-mode-hook 'flyspell-mode)
   (add-hook 'prog-mode-hook 'flyspell-prog-mode)
@@ -320,7 +300,6 @@ Global bindings for fast compile, auto-scroll of compilation window.
 * Files and directories
 
 Open certain directories in dired.
-
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c o")
                   (lambda () (interactive) (find-file "~/Dropbox/Documents/")))
@@ -328,15 +307,13 @@ Open certain directories in dired.
                   (lambda () (interactive) (find-file "~/repositories/")))
 #+END_SRC
 
-~Wdired~ mode.  Allow changing permissions.
-
+~wdired~ mode.  Allow changing permissions.
 #+BEGIN_SRC emacs-lisp
   (setq wdired-allow-to-change-permissions t)
 #+END_SRC
 
 ~dired+~ for some more powerful behaviour (Note ~C-u s~ in a dired buffer
-lets you quickly change listing switches)
-
+lets you quickly change listing switches).
 #+BEGIN_SRC emacs-lisp
   (use-package dired+
     :config
@@ -347,7 +324,6 @@ lets you quickly change listing switches)
 #+END_SRC
 
 Narrowing of ~dired~ directories.
-
 #+BEGIN_SRC emacs-lisp
   (use-package dired-narrow
     :ensure t
@@ -355,11 +331,9 @@ Narrowing of ~dired~ directories.
                 ("/" . dired-narrow)))
 #+END_SRC
 
-Open files and goto lines like we see from g++ etc. i.e. =filename:line=.
-(Also useful for noweb source if formatted like this)
-
+Open files and goto lines like we see from g++ etc. i.e.
+=filename:line=. Also useful for noweb source if formatted in this way.
 Courtesy of [[https://stackoverflow.com/a/3141456/1899759][StackOverflow]].
-
 #+BEGIN_SRC emacs-lisp
   (defadvice find-file (around find-file-line-number
                                (filename &optional wildcards)
@@ -379,7 +353,6 @@ Courtesy of [[https://stackoverflow.com/a/3141456/1899759][StackOverflow]].
 #+END_SRC
 
 Assign ffap to a key to save typing ~M-x ffap~ all of the time.
-
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c C-p") 'find-file-at-point)
 #+END_SRC
@@ -387,7 +360,6 @@ Assign ffap to a key to save typing ~M-x ffap~ all of the time.
 * Ivy/Swiper/Counsel & Avy
 
 Just as intuitive as IDO, seems lighter weight than helm.
-
 #+BEGIN_SRC emacs-lisp
   (use-package ivy :demand
     :config
@@ -406,7 +378,6 @@ Just as intuitive as IDO, seems lighter weight than helm.
 #+END_SRC
 
 Flyspell ivy correction completion.
-
 #+BEGIN_SRC emacs-lisp
   (use-package flyspell-correct-ivy
     :config
@@ -414,8 +385,7 @@ Flyspell ivy correction completion.
   )
 #+END_SRC
 
-Better buffer formatting in ~ivy-switch-buffer~
-
+Better buffer formatting in ~ivy-switch-buffer~.
 #+BEGIN_SRC emacs-lisp
   (use-package ivy-rich
     :after ivy
@@ -430,7 +400,6 @@ Better buffer formatting in ~ivy-switch-buffer~
 ** Avy for fast jumping anywhere visible.
 
 First, enable key chords.
-
 #+BEGIN_SRC emacs-lisp
   (require 'key-chord)
   (key-chord-mode +1)
@@ -438,7 +407,6 @@ First, enable key chords.
 #+END_SRC
 
 Then set some for avy movement.
-
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :config
@@ -455,20 +423,15 @@ Then set some for avy movement.
      (interactive)
      (ding)
      (call-interactively 'avy-goto-word-1))
-    (defun kg/avy-goto-line-ding ()
-     (interactive)
-     (ding)
-     (call-interactively 'avy-goto-line))
     (key-chord-define-global "jk" 'kg/avy-goto-char-ding)
     (key-chord-define-global "jj" 'kg/avy-goto-char-2-ding)
-    (key-chord-define-global "jf" 'kg/avy-goto-line-ding))
+    (key-chord-define-global "jf" 'avy-goto-line))
 #+END_SRC
 
 * Color themes
 
 I use =moe-theme=, which is actually much more than just a color
-theme.  It's more of an overall style theme.
-
+theme.
 #+BEGIN_SRC emacs-lisp
   (use-package moe-theme
     :init
@@ -487,6 +450,7 @@ as you wish is critical to having a good emacs experience.
 
 ** Fundamental org
 
+Basic options for using/displaying =org-mode= in any of the many ways to come.
 #+BEGIN_SRC emacs-lisp
   (use-package org
     :config
@@ -515,7 +479,7 @@ as you wish is critical to having a good emacs experience.
 
 ** org-export
 
-Options for exporting =org-mode= documents.
+Settings for exporting =org-mode= documents.
 
 *** General export options
 
@@ -600,6 +564,10 @@ get it to work with importing org properties).
       \\chead{}\n\n")
       (setq org-latex-default-class "kgnote"))
 #+END_SRC
+
+*** Other exports
+
+Misc export formats that I haven't spent much time customizing.
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'org
     (use-package htmlize)  ; for source code block syntax highlighting
@@ -673,10 +641,10 @@ Customizations of my agenda. Calendar view, todo list and refiling.
  [[https://github.com/jkitchin/org-ref][John Kitchen]]'s =org-ref= package.
 
 I currently don't use this to its full potential. I think it is
-capable of everything that =ivy-bibtex= is and then some, but I haven't
-taken the time to figure it all out yet. It is very useful for citing
-references easily in org documents though. For example, squid axon cite:Hodgkin1952.
-
+capable of everything that =ivy-bibtex= is and then some, but I
+haven't taken the time to figure it all out yet. It is very useful for
+citing references easily in org documents though. For example, squid
+axon cite:Hodgkin1952.
 #+BEGIN_SRC emacs-lisp
   ;; References inside org-mode documents
   (use-package org-ref
@@ -685,9 +653,11 @@ references easily in org documents though. For example, squid axon cite:Hodgkin1
       (setq org-ref-notes-directory "~/Dropbox/Documents/notes/reading"
             org-ref-bibliography-notes "~/Dropbox/Documents/index.org"
             org-ref-default-bibliography '("~/Dropbox/Documents/index.bib")
-            org-ref-pdf-directory '("~/Dropbox/Documents/pdf_books/" "~/Dropbox/Documents/pdf_papers"))
+            org-ref-pdf-directory '("~/Dropbox/Documents/pdf_books/"
+                                    "~/Dropbox/Documents/pdf_papers"))
       (setq helm-bibtex-bibliography "~/Dropbox/Documents/index.bib"
-            helm-bibtex-library-path '("~/Dropbox/Documents/pdf_books/" "~/Dropbox/Documents/pdf_papers")
+            helm-bibtex-library-path '("~/Dropbox/Documents/pdf_books/"
+                                       "~/Dropbox/Documents/pdf_papers")
             helm-bibtex-notes-path "~/Dropbox/Documents/notes/reading"
             bibtex-completion-bibliography "~/Dropbox/Documents/index.bib")))
 #+END_SRC
@@ -695,7 +665,6 @@ references easily in org documents though. For example, squid axon cite:Hodgkin1
 ** Time stamps
 
 Inactive org-mode style timestamps for today and right now.
-
 #+BEGIN_SRC emacs-lisp
   (defun kg/insert-org-today-inactive () ""
          (interactive)
@@ -710,7 +679,6 @@ Inactive org-mode style timestamps for today and right now.
 ** Daily note files
 
 Open note file for today.
-
 #+BEGIN_SRC emacs-lisp
   (defun kg/note ()
     "Open today's note file, turn off read-only mode."
@@ -737,10 +705,9 @@ Open note file for today.
 
 Well, she is a /TRAMP/...
 
-TRAMP connections use persistent ssh
-+ default to using rsync over ssh
-= super fast file interaction on remote servers.
-
+Set TRAMP connections to use persistent ssh
+- default to using rsync over ssh
+- super fast file interaction on remote servers.
 #+BEGIN_SRC emacs-lisp
   (setq tramp-ssh-controlmaster-options
         (concat
@@ -754,9 +721,8 @@ buffer. This was pieced together using  elements from:
 - https://emacs.stackexchange.com/questions/18903/tramp-and-dired-initial-default-directory-dired-directory
 - https://stackoverflow.com/questions/23164073/run-a-shell-command-from-a-specific-directory-in-emacs
 - https://unix.stackexchange.com/questions/373186/open-gnome-terminal-window-and-execute-2-commands
-
 #+BEGIN_SRC emacs-lisp
-  (defun open-gnome-terminal-remote ()
+  (defun kg/open-gnome-terminal-remote ()
     "Opens a gnome-terminal at location of current TRAMP buffer
   - ssh to machine using the existing ssh-TRAMP socket
   - fails if not in a TRAMP buffer
@@ -781,7 +747,7 @@ buffer. This was pieced together using  elements from:
                         "; exec $SHELL\\\\\\\"\\\"\"")))
       (shell-command gt-command)))
 
-  (defun open-gnome-terminal ()
+  (defun kg/open-gnome-terminal ()
     "Open a gnome-terminal session in current directory"
     (interactive)
     (if (file-remote-p default-directory)
@@ -790,9 +756,8 @@ buffer. This was pieced together using  elements from:
 #+END_SRC
 
 Open a new ~multi-term~ in the remote directory of a TRAMP buffer.
-
 #+BEGIN_SRC emacs-lisp
-  (defun open-multi-term-remote ()
+  (defun kg/open-multi-term-remote ()
     "Opens a multi-term at location of current TRAMP buffer
     - ssh to machine using the existing ssh-TRAMP socket
     - ssh command fails if not in a TRAMP buffer"
@@ -819,7 +784,7 @@ Open a new ~multi-term~ in the remote directory of a TRAMP buffer.
       (term-send-raw-string "clear")
       (term-send-return)))
 
-  (defun open-multi-term ()
+  (defun kg/open-multi-term ()
     "Open a mulit-term session in current directory"
     (interactive)
     (if (file-remote-p default-directory)
@@ -827,14 +792,12 @@ Open a new ~multi-term~ in the remote directory of a TRAMP buffer.
       (multi-term)))
 #+END_SRC
 
-Only use =bash= for shells.  Useful for remote shell through TRAMP
-
+Only use =bash= for shells.  Useful for remote shell through TRAMP.
 #+BEGIN_SRC emacs-lisp
   (setq explicit-shell-file-name "/bin/bash")
 #+END_SRC
 
 A prettified eshell.
-
 #+BEGIN_SRC emacs-lisp
   (setq eshell-cmpl-cycle-completions nil)
 
@@ -857,7 +820,8 @@ A prettified eshell.
                                           ; Current directory
        (with-face (concat (eshell/pwd) " ") :background header-bg :foreground header-fg)
                                           ; Current time
-       (with-face (format-time-string "(%Y-%m-%d %H:%M:%S) " (current-time)) :background header-bg :foreground time-fg)
+       (with-face (format-time-string "(%Y-%m-%d %H:%M:%S) "
+                                      (current-time)) :background header-bg :foreground time-fg)
                                           ; Version control info of current directory
        (with-face
         (or (ignore-errors (format "(%s)" (vc-responsible-backend default-directory))) "")
@@ -873,9 +837,8 @@ A prettified eshell.
   (setq eshell-highlight-prompt nil)
 #+END_SRC
 
-For some reason, my TERM env is set to dumb when ~shell~ is run in emacs...
-I want color!
-
+For some reason, my TERM env is set to dumb when ~shell~ is run in
+emacs... I want color!
 #+BEGIN_SRC emacs-lisp
   (defun my-shell-mode-hook ()
     (process-send-string (get-buffer-process (current-buffer))
@@ -883,43 +846,37 @@ I want color!
   (add-hook 'shell-mode-hook 'my-shell-mode-hook)
 #+END_SRC
 
-Always try to open a ~shell~ in the same window where you are.
-
+Always /try/ to open a ~shell~ in the same window where you are.
 #+BEGIN_SRC emacs-lisp
   (push '("\\`\\*shell" display-buffer-same-window (inhibit-same-window)) display-buffer-alist)
 #+END_SRC
 
 * Version control
 
+Settings for version control modes.
+
 ** Magit
 
-Probably the best interface to git. It makes me want to code more just
+Probably the best interface to =git=. It makes me want to code more just
 so I can commit more.
-
 #+BEGIN_SRC emacs-lisp
-    (use-package magit
-      :config
-      (global-set-key (kbd "C-x g") 'magit-status)
-      (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
-  )
+  (use-package magit
+    :config
+    (global-set-key (kbd "C-x g") 'magit-status)
+    (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup))
 #+END_SRC
 
 * Languages/Programming
 
 GDB many open windows for debugging.  This is useful for seeing many things
-about your debug session, but does screw the window layout for a bit.
-
-- I'm curious to see how this interacts with frames-only-mode
-  - turns out it behaves as the original! (split the current frame
-    into 6 windows)
-
+about your debug session, but does screw the window layout for a bit (a good use case
+for [[*Window management][winner-mode]]).
 #+BEGIN_SRC emacs-lisp
   (setq gdb-many-windows t)
 #+END_SRC
 
 Ensure ~minimap-mode~ is available. Don't necessarily turn it on all the
 time though.
-
 #+BEGIN_SRC emacs-lisp
   (use-package minimap
     :ensure t)
@@ -927,11 +884,11 @@ time though.
 
 ** C/C++
 
+This likely needs to be updated.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'c-mode-hook 'counsel-gtags-mode)
   (add-hook 'c++-mode-hook 'counsel-gtags-mode)
 
-  ()
   (use-package counsel-gtags
     :config
     (define-key counsel-gtags-mode-map (kbd "M-t") 'counsel-gtags-find-definition)
@@ -939,10 +896,12 @@ time though.
     (define-key counsel-gtags-mode-map (kbd "M-s") 'counsel-gtags-find-symbol)
     (define-key counsel-gtags-mode-map (kbd "M-,") 'counsel-gtags-go-backward))
 #+END_SRC
+
+*** TODO Get rtags/counsel configured
+
 ** Haskell
 
 Useful for managing my xmonad setup.
-
 #+BEGIN_SRC emacs-lisp
   (use-package haskell-mode)
 #+END_SRC
@@ -951,7 +910,6 @@ Useful for managing my xmonad setup.
 
 Useful for customizing the shit of emacs. Close up those damn parens
 in all lisp modes.
-
 #+BEGIN_SRC emacs-lisp
   (use-package paredit
     :config
@@ -967,11 +925,13 @@ in all lisp modes.
 ** Matlab
 
 =matlab-mode= for syntax highlighting in .m files, as well as
-=matlab-shell= that can be used within emacs.
+=matlab-shell= that can be used within emacs. Since this is done through
+=comint=, I can easily run a =matlab-shell= on a remote system and TRAMP
+handles everything appropriately.
 
 A nice feature of this is that you can evaluate execution groups (is
-that what they're called in Matlab?) right from a .m file.
-
+that what they're called in Matlab?) right from a .m file
+(~C-M-<enter>~).
 #+BEGIN_SRC emacs-lisp
   (autoload 'matlab-mode "matlab" "Matlab Editing Mode" t)
   (matlab-cedet-setup)
@@ -989,8 +949,7 @@ that what they're called in Matlab?) right from a .m file.
 file extensions used./
 
 I downloaded this somewhere from the interwebz a long time ago... I
-don't see a melpa package for it.
-
+don't see a melpa package for it. It is on [[https://github.com/JoeRiel/maplev][GitHub]] however.
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path (concat user-emacs-directory "maple"))
   (require 'maplev)
@@ -1002,10 +961,11 @@ don't see a melpa package for it.
               auto-mode-alist))
 #+END_SRC
 
+*** TODO Incorporate JoeRiel's maplev github (as a git submodule?)
+
 ** LaTeX
 
 Ok, so this is a big one too.  AUCTeX+RefTex for LaTeX editing.
-
 #+BEGIN_SRC emacs-lisp
   (setq LaTeX-eqnarray-label "eq")
   (setq LaTeX-equation-label "eq")
@@ -1064,7 +1024,6 @@ Managing all of my BibTeX entries with =bibtex-utils=.
 ** Python
 
 =elpy= has some nice features. Want to use Ipython.
-
 #+BEGIN_SRC emacs-lisp
   (use-package elpy
     :config
@@ -1074,8 +1033,7 @@ Managing all of my BibTeX entries with =bibtex-utils=.
 
 ** Gnuplot
 
-Get the ~gnuplot~ script editing mode, and comint mode;
-
+Get the ~gnuplot~ script editing and comint modes.
 #+BEGIN_SRC emacs-lisp
   (use-package gnuplot
     :config
@@ -1085,8 +1043,7 @@ Get the ~gnuplot~ script editing mode, and comint mode;
 
 ** Noweb
 
-Configuration for doing noweb stuff.  Uses polymode
-
+Configuration for doing noweb stuff.  Uses polymode.
 #+BEGIN_SRC emacs-lisp
   (use-package polymode
     :config
@@ -1095,8 +1052,7 @@ Configuration for doing noweb stuff.  Uses polymode
 #+END_SRC
 
 Creating a new noweb chunk. (Does this global binding interfere with
-anything? I could perhaps make this for only in ~poly-noweb-mode~)
-
+anything? I could perhaps make this for only in ~poly-noweb-mode~).
 #+BEGIN_SRC emacs-lisp
   (defun create-new-chunk (chunk-display-name)
     "Create a new noweb chunk with display name from prompt"
@@ -1119,7 +1075,6 @@ anything? I could perhaps make this for only in ~poly-noweb-mode~)
 
 =pdf-tools= is a far superior pdf viewer than the default DocView mode
 that comes with emacs.
-
 #+BEGIN_SRC emacs-lisp
   (use-package pdf-tools
     :config
@@ -1135,8 +1090,8 @@ that comes with emacs.
     (use-package org-pdfview))
 #+END_SRC
 
-Rotating pdf pages, courtesy of [[https://emacs.stackexchange.com/a/24766/16286][StackOverflow]].
-
+Rotating pdf pages, courtesy of [[https://emacs.stackexchange.com/a/24766/16286][StackOverflow]]. Note: This permanently
+rotates them in the pdf, not just in this viewer.
 #+BEGIN_SRC emacs-lisp
   (defun pdf-view--rotate (&optional counterclockwise-p page-p)
     "Rotate PDF 90 degrees.  Requires pdftk to work.\n
@@ -1188,10 +1143,8 @@ Rotating pdf pages, courtesy of [[https://emacs.stackexchange.com/a/24766/16286]
 #+END_SRC
 
 Alternative colour schemes, idea from
-[[http://babbagefiles.blogspot.ca/2017/11/more-pdf-tools-tricks.html]]
-
-Get those moe-dark colours!
-
+[[http://babbagefiles.blogspot.ca/2017/11/more-pdf-tools-tricks.html]].
+Get a nice moe-dark-midnight style view.
 #+BEGIN_SRC emacs-lisp
   ;; midnite mode hook
   (defun bms/pdf-no-filter ()
@@ -1199,7 +1152,6 @@ Get those moe-dark colours!
     (interactive)
     (pdf-view-midnight-minor-mode -1)
     )
-
   ;; change midnite mode colours functions
   (defun bms/pdf-midnite-original ()
     "Set pdf-view-midnight-colors to original colours."
@@ -1207,42 +1159,36 @@ Get those moe-dark colours!
     (setq pdf-view-midnight-colors '("#839496" . "#002b36" ))
     (pdf-view-midnight-minor-mode)
     )
-
   (defun bms/pdf-midnite-amber ()
     "Set pdf-view-midnight-colors to amber on dark slate blue."
     (interactive)
     (setq pdf-view-midnight-colors '("#ff9900" . "#0a0a12" ))
     (pdf-view-midnight-minor-mode)
     )
-
   (defun bms/pdf-midnite-green ()
     "Set pdf-view-midnight-colors to green on black."
     (interactive)
     (setq pdf-view-midnight-colors '("#00B800" . "#000000" ))
     (pdf-view-midnight-minor-mode)
     )
-
   (defun kg/pdf-midnite-moe-dark ()
     "Set pdf-view-midnight-colors to white on moe-dark bg."
     (interactive)
     (setq pdf-view-midnight-colors '("#c6c6c6" . "#303030" ))
     (pdf-view-midnight-minor-mode)
     )
-
   (defun kg/pdf-midnite-moe-dark-amber ()
     "Set pdf-view-midnight-colors to amber on moe-dark bg."
     (interactive)
     (setq pdf-view-midnight-colors '("#ff9900" . "#303030" ))
     (pdf-view-midnight-minor-mode)
     )
-
   (defun kg/pdf-midnite-moe-dark-green ()
     "Set pdf-view-midnight-colors to green on moe-dark bg."
     (interactive)
     (setq pdf-view-midnight-colors '("#00B800" . "#303030" ))
     (pdf-view-midnight-minor-mode)
     )
-
   (defun bms/pdf-midnite-colour-schemes ()
     "Midnight mode colour schemes bound to keys"
     (local-set-key (kbd "!") (quote bms/pdf-no-filter))
@@ -1250,18 +1196,22 @@ Get those moe-dark colours!
     (local-set-key (kbd "#") (quote kg/pdf-midnite-moe-dark-amber))
     (local-set-key (kbd "$") (quote kg/pdf-midnite-moe-dark-green))
     )
-
   (add-hook 'pdf-view-mode-hook 'bms/pdf-midnite-colour-schemes)
   (add-hook 'pdf-view-mode-hook (lambda ()
                                   (kg/pdf-midnite-moe-dark))) ; automatically selects a midnite mode
 #+END_SRC
 
-=interleave-mode= is the perfect way to take notes on pdf documents. My opinion on this has changed... I prefer annotations now.
-
+Taking notes on pdfs. This seems to have better fine-grained control
+than =interleave= and fits my workflow better.
 #+BEGIN_SRC emacs-lisp
-;;  (use-package interleave)
+  (use-package org-noter
+    :ensure t)
 #+END_SRC
+
 * Email
+
+Handling email in emacs. What an amazing integration with everything
+else.
 
 ** mu4e
 
@@ -1278,7 +1228,6 @@ Useful refs:
 - [[https://notanumber.io/2016-10-03/better-email-with-mu4e/]] :: best
      description of using the newer style of contexts for multiple
      accounts and msmtp for sending.
-
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
   (with-eval-after-load "mu4e"
@@ -1409,11 +1358,11 @@ Useful refs:
       :config
       (setq mu4e-compose-cite-function 'mu-cite-original)
       (setq mu-cite-top-format '("On " date ",\n" from " wrote:\n\n"))
-      (setq mu-cite-prefix-format '("> ")))
-    )
+      (setq mu-cite-prefix-format '("> "))))
 #+END_SRC
+
 * References
 
-(Generally linked in place)
+Generally linked in place, otherwise here:
 
 bibliography:index.bib bibliographystyle:acm
