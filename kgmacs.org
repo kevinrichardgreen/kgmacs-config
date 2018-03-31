@@ -485,13 +485,17 @@ theme.  It's more of an overall style theme.
 =org-mode= is arguably the workhorse of emacs.  Making sure it behaves
 as you wish is critical to having a good emacs experience.
 
+** Fundamental org
+
 #+BEGIN_SRC emacs-lisp
   (use-package org
-  :config
+    :config
+    ;; Quick keys for linking, dispatching agenda, and capturing
     (global-set-key (kbd "C-c l") 'org-store-link)
     (global-set-key (kbd "C-c a") 'org-agenda)
     (global-set-key (kbd "C-c c") 'org-capture)
-
+    ;;
+    (setq org-use-property-inheritance '("CATEGORY"))
     (setq org-use-speed-commands t)
     (setq org-fontify-whole-heading-lines t)
     (setq org-html-validation-link nil)
@@ -501,48 +505,124 @@ as you wish is critical to having a good emacs experience.
     (setq org-startup-indented t)
     (setq org-hide-emphasis-markers t)
     (setq org-src-fontify-natively t)
-    (setq org-export-in-background nil)
-    (setq org-export-initial-scope 'subtree)
     (setq org-format-latex-options (plist-put org-format-latex-options :scale 15.0))
     ;; Fancy bullets
     (use-package org-bullets
       :config
       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-      (setq org-hide-leading-stars t))
-    ;; References inside org-mode documents
-    (use-package org-ref
-      :config
-      (with-eval-after-load 'org
-        (setq org-ref-notes-directory "~/Dropbox/Documents/notes/reading"
-              org-ref-bibliography-notes "~/Dropbox/Documents/index.org"
-              org-ref-default-bibliography '("~/Dropbox/Documents/index.bib")
-              org-ref-pdf-directory '("~/Dropbox/Documents/pdf_books/" "~/Dropbox/Documents/pdf_papers"))
-        (setq helm-bibtex-bibliography "~/Dropbox/Documents/index.bib"
-              helm-bibtex-library-path '("~/Dropbox/Documents/pdf_books/" "~/Dropbox/Documents/pdf_papers")
-              helm-bibtex-notes-path "~/Dropbox/Documents/notes/reading"
-              bibtex-completion-bibliography "~/Dropbox/Documents/index.bib")))
-    (use-package ivy-bibtex)
-    ;; Managing bibtex entries
-    (use-package bibtex-utils
-      :config
-      (setq bu-bibtex-fields-ignore-list '("keywords" "abstract" "file" "issn" "annote"))
-      (setq bibtex-align-at-equal-sign t)
-      (add-hook 'bibtex-mode-hook (lambda () (set-fill-column 2000))))
-    ;; Some export modes/options
-    (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+      (setq org-hide-leading-stars t)))
+#+END_SRC
+
+** org-export
+
+Options for exporting =org-mode= documents.
+
+*** General export options
+
+My general preferences for all types.
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'org
+    (setq org-export-initial-scope 'subtree
+          org-export-in-background nil
+          org-export-with-title nil
+          org-export-with-toc 1
+          org-export-with-section-numbers t))
+#+END_SRC
+
+*** \LaTeX export
+
+\LaTeX specific, includes adding my own class for latex export. I'm
+sure there is a cleaner way to do all of this, right now it's pretty
+hacky between writing to the package alists, redefining hyperref setup
+including addition of header contents (that's the only place I could
+get it to work with importing org properties).
+#+BEGIN_SRC emacs-lisp
+    (with-eval-after-load 'ox-latex
+      ;; Set how to build the pdf
+      (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+      ;; Unfortunately this has to be set entirely just to change hyperref
+      (setq org-latex-default-packages-alist
+            (quote
+             (("AUTO" "inputenc" t
+               ("pdflatex"))
+              ("T1" "fontenc" t
+               ("pdflatex"))
+              ("" "graphicx" t nil)
+              ("" "grffile" t nil)
+              ("" "longtable" nil nil)
+              ("" "wrapfig" nil nil)
+              ("" "rotating" nil nil)
+              ("normalem" "ulem" t nil)
+              ("" "amsmath" t nil)
+              ("" "textcomp" t nil)
+              ("" "amssymb" t nil)
+              ("" "capt-of" nil nil)
+              ("colorlinks,breaklinks" "hyperref" nil nil)))) ; <-- Only change from default
+      ;; Additional packages I like
+      (setq org-latex-packages-alist
+            (quote (("" "etoolbox" nil)                           ; useful for patchcmd
+                    ("hyphenbreaks" "breakurl" nil)               ; break long urls
+                    ("margin=1in,headheight=27.2pt" "geometry" nil) ; page margins
+                    ("" "fancyhdr" nil)                           ; Move things to header
+                    ("" "listings" nil)                           ; nice code formatting
+                    ("" "color" nil))))                           ; syntax highlighting
+      ;; using listings rather than verbatim code sections
+      (setq org-latex-listings t)
+      (setq org-latex-listings-options (quote (("frame" "single")
+                                               ("basicstyle" "\\ttfamily"))))
+      ;; Display TOC with an hrule below it
+      (setq org-latex-toc-command
+            "\\tableofcontents\n\n\\vspace{1em}
+    \\noindent\\rule{\\textwidth}{0.4pt}\n\n\\vspace{1em}")
+      ;; Create a latex class to easily handle my notes, set it to be the default
+      (add-to-list 'org-latex-classes
+                   '("kgnote"
+                     "\\documentclass{article}
+      \\usepackage[scaled=0.8]{DejaVuSansMono}
+      [DEFAULT-PACKAGES]
+      [PACKAGES]
+      % Configure things from org-latex-(default-)packages-alist here (if you want)
+      \\patchcmd{\\thebibliography}{\\section*{\\refname}}{}{}{}
+      [EXTRA]"
+                     ("\\section{%s}" . "\\section*{%s}")
+                     ("\\subsection{%s}" . "\\subsection*{%s}")
+                     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+      ;; Add link colours, set up headers
+      (setq org-latex-hyperref-template
+            "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
+    pdflang={%L},\n citecolor=[rgb]{0.117,0.564,1.0},\n linkcolor=[rgb]{0.117,0.564,1.0},
+  urlcolor=[rgb]{0.0, 0.412, 0.243}}\n
+      \\pagestyle{fancyplain}
+      \\lhead{\\bf %d -- %t}
+      \\rhead{\\href{https://github.com/kevinrichardgreen}{%a}}
+      \\chead{}\n\n")
+      (setq org-latex-default-class "kgnote"))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'org
     (use-package htmlize)  ; for source code block syntax highlighting
-    (use-package ox-twbs)  ; Twitter-bootstrap formatted html
-    (use-package ox-trac)  ; export to trac-wiki to paste into tickets
+    (use-package ox-twbs) ; Twitter-bootstrap formatted html
+    (use-package ox-trac) ; export to trac-wiki to paste into tickets
     (use-package ox-reveal
       :config
       (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-      (setq org-reveal-mathjax t))
+      (setq org-reveal-mathjax t)))
+#+END_SRC
+
+** Agenda
+
+Customizations of my agenda. Calendar view, todo list and refiling.
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'org
     ;; sync with Google Calendar
     (setq package-check-signature nil)
     (use-package org-gcal
       :config
       (load "~/Dropbox/Documents/gtd/gcal-details")
-      ;; Special key for gcal sync and refresh
+      ;; Special key for gcal sync and refresh: G
+      ;; (allows agenda update without internet connection via 'g' key)
       (require 'org-agenda)
       (defun org-agenda-gcal-sync-and-redo-all (&optional all)
         (interactive "P")
@@ -550,7 +630,7 @@ as you wish is critical to having a good emacs experience.
         (org-agenda-redo-all))
       (define-key org-agenda-mode-map "G" 'org-agenda-gcal-sync-and-redo-all)
       )
-      ;; (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+    ;; (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
     ;; GTD things
     (setq org-agenda-files '("~/Dropbox/Documents/gtd/gcal.org"
                              "~/Dropbox/Documents/gtd/inbox.org"
@@ -559,7 +639,7 @@ as you wish is critical to having a good emacs experience.
     (setq org-refile-targets '(("~/Dropbox/Documents/gtd/work.org" :maxlevel . 1)
                                ("~/Dropbox/Documents/gtd/personal.org" :maxlevel . 1)
                                ("~/Dropbox/Documents/gtd/someday.org" :level . 1)))
-
+    ;; Special treatment of mu4e buffers
     (require 'org-mu4e)
     (setq org-mu4e-link-query-in-headers-mode nil)
     ;; Capture templates
@@ -572,23 +652,44 @@ as you wish is critical to having a good emacs experience.
             ("t" "Todo [inbox]" entry
              (file "~/Dropbox/Documents/gtd/inbox.org")
              "* TODO %i%?")))
-    (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "IN-PROGRESS(p)" "|" "DONE(d)" "CANCELLED(c)")))
+    ;; My personal brand of keywords
+    (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "IN-PROGRESS(p)"
+                                        "|" "DONE(d)" "CANCELLED(c)")))
+    ;; And a bunch of settings
+    (setq org-refile-use-outline-path nil
+          org-outline-path-complete-in-steps t
+          org-refile-allow-creating-parent-nodes 'confirm
+          org-agenda-start-on-weekday nil
+          org-agenda-todo-ignore-scheduled "all"
+          org-agenda-skip-scheduled-if-done t
+          org-deadline-warning-days 5
+          org-log-done 'time
+          org-agenda-window-setup 'reorganize-frame
+          org-agenda-span 'day))
+#+END_SRC
 
-    (setq org-refile-use-outline-path nil)
-    (setq org-outline-path-complete-in-steps t)
-    (setq org-refile-allow-creating-parent-nodes 'confirm)
-    (setq org-agenda-start-on-weekday nil)
-    (setq org-agenda-todo-ignore-scheduled "all")
-    (setq org-agenda-skip-scheduled-if-done t)
-    (setq org-deadline-warning-days 5)
-    (setq org-log-done 'time)
-    (setq org-use-property-inheritance '("CATEGORY"))
-    (setq org-agenda-window-setup 'reorganize-frame)
-    (setq org-agenda-span 'day)
-    ;; (add-to-list
-    ;;  'ivy-completing-read-handlers-alist
-    ;;  '(org-capture-refile . completing-read-default))
-    )
+** org-ref
+
+ [[https://github.com/jkitchin/org-ref][John Kitchen]]'s =org-ref= package.
+
+I currently don't use this to its full potential. I think it is
+capable of everything that =ivy-bibtex= is and then some, but I haven't
+taken the time to figure it all out yet. It is very useful for citing
+references easily in org documents though. For example, squid axon cite:Hodgkin1952.
+
+#+BEGIN_SRC emacs-lisp
+  ;; References inside org-mode documents
+  (use-package org-ref
+    :config
+    (with-eval-after-load 'org
+      (setq org-ref-notes-directory "~/Dropbox/Documents/notes/reading"
+            org-ref-bibliography-notes "~/Dropbox/Documents/index.org"
+            org-ref-default-bibliography '("~/Dropbox/Documents/index.bib")
+            org-ref-pdf-directory '("~/Dropbox/Documents/pdf_books/" "~/Dropbox/Documents/pdf_papers"))
+      (setq helm-bibtex-bibliography "~/Dropbox/Documents/index.bib"
+            helm-bibtex-library-path '("~/Dropbox/Documents/pdf_books/" "~/Dropbox/Documents/pdf_papers")
+            helm-bibtex-notes-path "~/Dropbox/Documents/notes/reading"
+            bibtex-completion-bibliography "~/Dropbox/Documents/index.bib")))
 #+END_SRC
 
 ** Time stamps
@@ -606,9 +707,9 @@ Inactive org-mode style timestamps for today and right now.
          )
 #+END_SRC
 
-** Note files
+** Daily note files
 
-Open notefile for today.
+Open note file for today.
 
 #+BEGIN_SRC emacs-lisp
   (defun kg/note ()
@@ -625,12 +726,12 @@ Open notefile for today.
           (insert (concat "#+TITLE: Daily notes\n"
                           "#+DATE: "))
           (kg/insert-org-today-inactive)
+          (insert "\n#+DESCRIPTION: ")
+          (kg/insert-org-today-inactive)
           (insert "\n\n* \n\n\n* References\n\nbibliography:index.bib bibliographystyle:acm")
           (previous-line 5)
           (end-of-line)))))
 #+END_SRC
-
-*** TODO Get a snippet to insert title/date etc
 
 * She sells sea shells
 
@@ -820,7 +921,8 @@ Ensure ~minimap-mode~ is available. Don't necessarily turn it on all the
 time though.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package minimap)
+  (use-package minimap
+    :ensure t)
 #+END_SRC
 
 ** C/C++
@@ -944,6 +1046,19 @@ Ok, so this is a big one too.  AUCTeX+RefTex for LaTeX editing.
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
             #'TeX-revert-document-buffer)
   (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "LatexMk")))
+#+END_SRC
+
+*** BibTeX
+
+Managing all of my BibTeX entries with =bibtex-utils=.
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-bibtex)
+  ;; Managing bibtex entries
+  (use-package bibtex-utils
+    :config
+    (setq bu-bibtex-fields-ignore-list '("keywords" "abstract" "file" "issn" "annote"))
+    (setq bibtex-align-at-equal-sign t)
+    (add-hook 'bibtex-mode-hook (lambda () (set-fill-column 2000))))
 #+END_SRC
 
 ** Python
