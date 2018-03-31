@@ -355,7 +355,7 @@ Narrowing of ~dired~ directories.
                 ("/" . dired-narrow)))
 #+END_SRC
 
-Open files and goto lines like we see from g++ etc. i.e. file:line.
+Open files and goto lines like we see from g++ etc. i.e. =filename:line=.
 (Also useful for noweb source if formatted like this)
 
 Courtesy of [[https://stackoverflow.com/a/3141456/1899759][StackOverflow]].
@@ -1297,3 +1297,8 @@ Useful refs:
       (setq mu-cite-prefix-format '("> ")))
     )
 #+END_SRC
+* References
+
+(Generally linked in place)
+
+bibliography:index.bib bibliographystyle:acm
