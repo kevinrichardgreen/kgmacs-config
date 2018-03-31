@@ -1,4 +1,10 @@
-#+TITLE: Configuration file for Kevin Green's Emacs
+#+TITLE: Configuration file for Emacs
+#+DESCRIPTION:
+
+Me:
+#+BEGIN_SRC emacs-lisp
+(setq user-full-name "Kevin R Green")
+#+END_SRC
 
 * Fundamentals/defaults
 
@@ -1194,7 +1200,6 @@ Useful refs:
                                             "/UofS"
                                             (mu4e-message-field msg :maildir))))
                :vars '((user-mail-address . "kevin.green@usask.ca")
-                       (user-full-name . "Kevin R Green")
                        (mu4e-sent-folder . "/UofS/Sent Items")
                        (mu4e-drafts-folder . "/UofS/Drafts")
                        (mu4e-trash-folder . "/UofS/Deleted Items")
@@ -1210,7 +1215,6 @@ Useful refs:
                                             (mu4e-message-field msg :maildir))))
                :leave-func (lambda () (mu4e-clear-caches))
                :vars '((user-mail-address . "kevin.richard.green@gmail.com")
-                       (user-full-name . "Kevin R Green")
                        (mu4e-sent-folder . "/Gmail/[Gmail].All Mail")
                        (mu4e-drafts-folder . "/Gmail/[Gmail].Drafts")
                        (mu4e-trash-folder . "/Gmail/[Gmail].Trash")
