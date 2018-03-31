@@ -249,11 +249,19 @@ Don't allow backgrounding of emacs.
   (global-unset-key (kbd "C-z"))
 #+END_SRC
 
+** Window management
+
 Splitting window thresholds that work well for a 1080p monitor
 
 #+BEGIN_SRC emacs-lisp
   (setq split-height-threshold nil)
   (setq split-width-threshold 160)
+#+END_SRC
+
+Enable =winner-mode=
+
+#+BEGIN_SRC emacs-lisp
+  (winner-mode 1)
 #+END_SRC
 
 ** Distraction-free environments & buffer decorations
