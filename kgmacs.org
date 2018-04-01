@@ -751,8 +751,10 @@ buffer. This was pieced together using  elements from:
     "Open a gnome-terminal session in current directory"
     (interactive)
     (if (file-remote-p default-directory)
-        (open-gnome-terminal-remote)
+        (kg/open-gnome-terminal-remote)
       (shell-command "gnome-terminal")))
+  ;; Hotkey for gnome terminal -- Think "open {T}erminal"
+  (global-set-key (kbd "C-c t") 'kg/open-gnome-terminal)
 #+END_SRC
 
 Open a new ~multi-term~ in the remote directory of a TRAMP buffer.
@@ -788,7 +790,7 @@ Open a new ~multi-term~ in the remote directory of a TRAMP buffer.
     "Open a mulit-term session in current directory"
     (interactive)
     (if (file-remote-p default-directory)
-        (open-multi-term-remote)
+        (kg/open-multi-term-remote)
       (multi-term)))
 #+END_SRC
 
