@@ -490,6 +490,7 @@ My general preferences for all types.
           org-export-in-background nil
           org-export-with-title nil
           org-export-with-toc 1
+          org-export-with-sub-superscripts (quote {})
           org-export-with-section-numbers t))
 #+END_SRC
 
