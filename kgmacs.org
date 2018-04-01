@@ -521,11 +521,10 @@ get it to work with importing org properties).
               ("" "textcomp" t nil)
               ("" "amssymb" t nil)
               ("" "capt-of" nil nil)
-              ("colorlinks,breaklinks" "hyperref" nil nil)))) ; <-- Only change from default
+              ("colorlinks" "hyperref" nil nil)))) ; <-- Only change from default
       ;; Additional packages I like
       (setq org-latex-packages-alist
             (quote (("" "etoolbox" nil)                           ; useful for patchcmd
-                    ("hyphenbreaks" "breakurl" nil)               ; break long urls
                     ("margin=1in,headheight=27.2pt" "geometry" nil) ; page margins
                     ("" "fancyhdr" nil)                           ; Move things to header
                     ("" "listings" nil)                           ; nice code formatting
@@ -544,6 +543,7 @@ get it to work with importing org properties).
                      "\\documentclass{article}
       \\usepackage[scaled=0.8]{DejaVuSansMono}
       [DEFAULT-PACKAGES]
+      \\def\\UrlBreaks{\\do\\/\\do-}
       [PACKAGES]
       % Configure things from org-latex-(default-)packages-alist here (if you want)
       \\patchcmd{\\thebibliography}{\\section*{\\refname}}{}{}{}
