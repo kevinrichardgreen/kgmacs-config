@@ -423,9 +423,8 @@ Then set some for avy movement.
      (interactive)
      (ding)
      (call-interactively 'avy-goto-word-1))
-    (key-chord-define-global "jk" 'kg/avy-goto-char-ding)
-    (key-chord-define-global "jj" 'kg/avy-goto-char-2-ding)
-    (key-chord-define-global "jf" 'avy-goto-line))
+    (key-chord-define-global "kj" 'kg/avy-goto-char-ding)
+    (key-chord-define-global "ij" 'avy-goto-line))
 #+END_SRC
 
 * Color themes
