@@ -533,11 +533,13 @@ get it to work with importing org properties).
                     ("margin=1in,headheight=27.2pt" "geometry" nil) ; page margins
                     ("" "fancyhdr" nil)                           ; Move things to header
                     ("" "listings" nil)                           ; nice code formatting
+                    ("" "parskip" nil)                            ; no indent paragraphs
                     ("" "color" nil))))                           ; syntax highlighting
       ;; using listings rather than verbatim code sections
       (setq org-latex-listings t)
       (setq org-latex-listings-options (quote (("frame" "single")
-                                               ("basicstyle" "\\ttfamily"))))
+                                               ("basicstyle" "\\ttfamily")
+                                               ("breaklines" "true"))))
       ;; Display TOC with an hrule below it
       (setq org-latex-toc-command
             "\\tableofcontents\n\n\\vspace{1em}
