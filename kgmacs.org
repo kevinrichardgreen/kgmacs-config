@@ -628,19 +628,19 @@ Customizations of my agenda. Calendar view, todo list and refiling.
              (file "~/Dropbox/Documents/gtd/inbox.org")
              "* TODO %i%?")))
     ;; My personal brand of keywords
-    (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "IN-PROGRESS(p)"
-                                        "|" "DONE(d)" "CANCELLED(c)")))
+    (setq org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@)" "PROG(p!)"
+                                        "|" "DONE(d!)" "CANC(c@)")))
     ;; And a bunch of settings
-    (setq org-refile-use-outline-path nil
-          org-outline-path-complete-in-steps t
+    (setq org-refile-use-outline-path 'file
+          org-outline-path-complete-in-steps nil
           org-refile-allow-creating-parent-nodes 'confirm
           org-agenda-start-on-weekday nil
           org-agenda-todo-ignore-scheduled "all"
           org-agenda-skip-scheduled-if-done t
           org-deadline-warning-days 5
           org-log-done 'time
-          org-agenda-window-setup 'reorganize-frame
-          org-agenda-span 'day))
+          org-agenda-window-setup 'current-window
+          org-agenda-span 'week))
 #+END_SRC
 
 ** org-ref
