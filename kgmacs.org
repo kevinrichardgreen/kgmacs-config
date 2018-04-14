@@ -41,16 +41,16 @@ Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el][Ha
 
 Font.  (set in a way that will work with emacsclient frames)
 #+BEGIN_SRC emacs-lisp
-(setq default-frame-alist '((font . "Monospace-10")))
+(setq default-frame-alist '((font . "Monospace-9")))
 #+END_SRC
 
 Enable things relating to variable pitch font.
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c v") 'variable-pitch-mode)
   (use-package mixed-pitch
-    :hook
+    ;; :hook
     ;; If you want it in all text modes:
-    (text-mode . mixed-pitch-mode)
+    ;; (text-mode . mixed-pitch-mode)
     :config
     (global-set-key (kbd "C-c m") 'mixed-pitch-mode))
 #+END_SRC
