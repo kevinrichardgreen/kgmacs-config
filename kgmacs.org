@@ -432,14 +432,19 @@ Then set some for avy movement.
 I use =moe-theme=, which is actually much more than just a color
 theme.
 #+BEGIN_SRC emacs-lisp
-  (use-package moe-theme
-    :init
-    (setq moe-theme-resize-org-title '(1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0 1.0))
-    (setq moe-theme-resize-markdown-title '(1.4 1.3 1.2 1.1 1.0 1.0))
-    (setq moe-theme-resize-rst-title '(1.4 1.3 1.2 1.1 1.0 1.0))
-    :config
-    (moe-theme-set-color 'w/b)
-    (moe-dark))
+  ;; (use-package moe-theme
+  ;;   :init
+  ;;   (setq moe-theme-resize-org-title '(1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0 1.0))
+  ;;   (setq moe-theme-resize-markdown-title '(1.4 1.3 1.2 1.1 1.0 1.0))
+  ;;   (setq moe-theme-resize-rst-title '(1.4 1.3 1.2 1.1 1.0 1.0))
+  ;;   :config
+  ;;   (moe-theme-set-color 'w/b)
+  ;;   (moe-dark))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (setq custom-safe-themes t)
+  (load-theme 'gruvbox-dark-soft)
 #+END_SRC
 
 * Org mode
@@ -466,7 +471,7 @@ Basic options for using/displaying =org-mode= in any of the many ways to come.
     (setq org-startup-with-latex-preview nil)
     (setq org-image-actual-width 400)
     (setq org-startup-indented t)
-    (setq org-hide-emphasis-markers t)
+    (setq org-hide-emphasis-markers nil)
     (setq org-src-fontify-natively t)
     (setq org-format-latex-options (plist-put org-format-latex-options :scale 15.0))
     ;; Fancy bullets
@@ -1199,8 +1204,8 @@ Get a nice moe-dark-midnight style view.
     (local-set-key (kbd "$") (quote kg/pdf-midnite-moe-dark-green))
     )
   (add-hook 'pdf-view-mode-hook 'bms/pdf-midnite-colour-schemes)
-  (add-hook 'pdf-view-mode-hook (lambda ()
-                                  (kg/pdf-midnite-moe-dark))) ; automatically selects a midnite mode
+  ;; (add-hook 'pdf-view-mode-hook (lambda ()
+  ;;                                 (kg/pdf-midnite-moe-dark))) ; automatically selects a midnite mode
 #+END_SRC
 
 Taking notes on pdfs. This seems to have better fine-grained control
