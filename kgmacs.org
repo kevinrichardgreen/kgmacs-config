@@ -687,25 +687,26 @@ Inactive org-mode style timestamps for today and right now.
 
 Open note file for today.
 #+BEGIN_SRC emacs-lisp
-  (defun kg/note ()
+  (defun kg/note-journal ()
     "Open today's note file, turn off read-only mode."
     (interactive)
-    (let ((file (format-time-string "~/Dropbox/Documents/notes/dated/%Y%m%d.org")))
+    (let ((file (format-time-string "~/Dropbox/Documents/notes/journal/%Y-%B.org"))
+          (month (format-time-string "%B"))
+          (year  (format-time-string "%Y")))
       (if (file-exists-p file)
           (progn
             (find-file file)
+            (end-of-buffer)
+            (previous-line 4) ; position the cursor near the bottom
             (setq buffer-read-only nil))
         (progn
           (find-file file)
           (setq buffer-read-only nil)
-          (insert (concat "#+TITLE: Daily notes\n"
-                          "#+DATE: "))
-          (kg/insert-org-today-inactive)
-          (insert "\n#+DESCRIPTION: ")
-          (kg/insert-org-today-inactive)
+          (insert (concat "#+TITLE: " month " " year " Journal\n")
+          (insert "#+DESCRIPTION: \n")
           (insert "\n\n* \n\n\n* References\n\nbibliography:index.bib bibliographystyle:acm")
           (previous-line 5)
-          (end-of-line)))))
+          (end-of-line))))))
 #+END_SRC
 
 * She sells sea shells
