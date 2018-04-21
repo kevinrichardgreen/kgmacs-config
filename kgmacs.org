@@ -628,8 +628,8 @@ Customizations of my agenda. Calendar view, todo list and refiling.
              (file "~/Dropbox/Documents/gtd/inbox.org")
              "* TODO %i%?")))
     ;; My personal brand of keywords
-    (setq org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@)" "PROG(p!)"
-                                        "|" "DONE(d!)" "CANC(c@)")))
+    (setq org-todo-keywords '((sequence "TODO(t!)" "WAITING(w@)" "PROGRESS(p@)" "DELEGATED(g@)"
+                                        "|" "DONE(d!)" "DEFERRED(r@)" "CANCELLED(c@)")))
     ;; And a bunch of settings
     (setq org-refile-use-outline-path 'file
           org-outline-path-complete-in-steps nil
