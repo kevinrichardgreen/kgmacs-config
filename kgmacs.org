@@ -188,24 +188,24 @@ Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https:/
     :config
     (global-set-key (kbd "C-x C-b") 'ibuffer)
     (setq ibuffer-saved-filter-groups
-          (quote (("default"
-                   ("dired" (mode . dired-mode))
-                   ("org" (name . "^.*org$"))
-                   ("programming" (or
+          (quote (("default"  ; define our own default ibuffer view
+                   ("Dired" (mode . dired-mode))
+                   ("Brain" (filename . "^.*/tmp/brain/.*$"))
+                   ("Org" (name . "^.*org$"))
+                   ("Programming" (or
                                    (mode . python-mode)
                                    (mode . c++-mode)
                                    (mode . c-mode)
                                    (mode . fortran-mode)))
                    ("TeX" (or
                              (name . "^.*tex$")
-                             (name . "^.*bib$")))
-                   ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
-                   ("mu4e" (name . "\*mu4e\*"))
+                             (name . "^.*bib$")
+                             (name . "^.*nw$")))
+                   ("Shells" (or (mode . eshell-mode) (mode . shell-mode)))
+                   ("Email" (name . "\*mu4e\*"))
                    ("Magit" (name . "\*magit\*"))
-                   ("web" (or (mode . web-mode) (mode . js2-mode)))
-                   ("emacs" (or
-                             (name . "^\\*scratch\\*$")
-                             (name . "^\\*Messages\\*$")))
+                   ("Web" (or (mode . web-mode) (mode . js2-mode)))
+                   ("Emacs" (name . "^\\*.*\\*$"))
                    ))))
     (add-hook 'ibuffer-mode-hook
               (lambda ()
@@ -1386,6 +1386,18 @@ Using [[brain:org-brain]] to organize notes and thoughts.
     (global-set-key (kbd "C-c b") 'org-brain-visualize)
   )
 #+END_SRC
+
+Ignoring =org-brain= files in ibuffer
+#+BEGIN_SRC emacs-lisp
+  (setq ibuffer-saved-filters
+        '(("brain" ((filename . "^.*/brain/.*org$")))))
+
+  (add-hook 'ibuffer-mode-hook
+            (lambda nil
+              (ibuffer-add-saved-filters "brain")
+              (ibuffer-negate-filter)))
+#+END_SRC
+
 * References
 
 Generally linked in place, otherwise here:
