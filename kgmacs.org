@@ -191,20 +191,43 @@ Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https:/
           (quote (("default"  ; define our own default ibuffer view
                    ("Dired" (mode . dired-mode))
                    ("Brain" (filename . "^.*/tmp/brain/.*$"))
-                   ("Org" (name . "^.*org$"))
+                   ("Org" (or
+                           (name . "^.*org$")
+                           (name . "^.*org_archive$")))
                    ("Programming" (or
                                    (mode . python-mode)
                                    (mode . c++-mode)
                                    (mode . c-mode)
-                                   (mode . fortran-mode)))
+                                   (mode . fortran-mode)
+                                   (mode . matlab-mode)))
+                   ("Text Files" (or
+                                  (name . "^.*txt$")
+                                  (name . "^.*toml$")
+                                  (name . "^.*yaml$")
+                                  (name . "^.*xml$")
+                                  (name . "^.*md$")))
                    ("TeX" (or
-                             (name . "^.*tex$")
-                             (name . "^.*bib$")
-                             (name . "^.*nw$")))
-                   ("Shells" (or (mode . eshell-mode) (mode . shell-mode)))
-                   ("Email" (name . "\*mu4e\*"))
-                   ("Magit" (name . "\*magit\*"))
-                   ("Web" (or (mode . web-mode) (mode . js2-mode)))
+                           (name . "^.*tex$")
+                           (name . "^.*bib$")
+                           (name . "^.*nw$")))
+                   ("View (pdf,jpgs, etc)" (or
+                                            (name . "^.*pdf$")
+                                            (mode . image-mode)))
+                   ("Shells" (or
+                              (mode . eshell-mode)
+                              (mode . shell-mode)))
+                   ("Email" (or
+                             (name . "\*mu4e\*")
+                             (mode . mu4e:compose)
+                             (mode . mu4e:view)
+                             ))
+                   ("Magit" (or
+                             (name . "\*magit\*")
+                             (name . "^magit.*$")))
+                   ("Web" (or
+                           (mode . web-mode)
+                           (mode . js2-mode)
+                           (name . "^.*html$")))
                    ("Emacs" (name . "^\\*.*\\*$"))
                    ))))
     (add-hook 'ibuffer-mode-hook
