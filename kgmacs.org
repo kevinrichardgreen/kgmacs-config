@@ -297,6 +297,14 @@ Better default behaviour of the \*compilation\* buffer.
   (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 #+END_SRC
 
+Better upcase/downcase/capitalize functions
+#+BEGIN_SRC emacs-lisp
+  (use-package fix-word
+    :bind (("M-u" . fix-word-upcase)
+           ("M-l" . fix-word-downcase)
+           ("M-c" . fix-word-capitalize)))
+#+END_SRC
+
 * Files and directories
 
 Open certain directories in dired.
