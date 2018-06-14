@@ -41,7 +41,7 @@ Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el][Ha
 
 Font.  (set in a way that will work with emacsclient frames)
 #+BEGIN_SRC emacs-lisp
-(setq default-frame-alist '((font . "Monospace-9")))
+(setq default-frame-alist '((font . "Monospace-8")))
 #+END_SRC
 
 Enable things relating to variable pitch font.
@@ -210,7 +210,7 @@ Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https:/
                            (name . "^.*tex$")
                            (name . "^.*bib$")
                            (name . "^.*nw$")))
-                   ("View (pdf,jpgs, etc)" (or
+                   ("View (pdf,jpgs,etc)" (or
                                             (name . "^.*pdf$")
                                             (mode . image-mode)))
                    ("Shells" (or

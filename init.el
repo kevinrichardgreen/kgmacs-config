@@ -34,6 +34,7 @@
 (use-package org)
 
 ;; Tangle configuration
+(setq custom-safe-themes t)
 (org-babel-load-file (expand-file-name "kgmacs.org" user-emacs-directory))
 (garbage-collect)
 
