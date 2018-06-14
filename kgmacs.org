@@ -675,6 +675,30 @@ Customizations of my agenda. Calendar view, todo list and refiling.
           org-agenda-span 'week))
 #+END_SRC
 
+Archiving done states in a file: [[https://stackoverflow.com/a/27043756/1899759][StackOverflow]] (note as far as I can
+tell you /have/ to use a separate lambda for each... maybe a macro or
+higher order function would do, but time!)
+#+BEGIN_SRC emacs-lisp
+  (defun kg/org-archive-done-tasks ()
+    (interactive)
+    (org-map-entries
+     (lambda ()
+       (org-archive-subtree)
+       (setq org-map-continue-from (outline-previous-heading)))
+     "/DONE" 'file)
+    (org-map-entries
+     (lambda ()
+       (org-archive-subtree)
+       (setq org-map-continue-from (outline-previous-heading)))
+     "/CANCELLED" 'file)
+    (org-map-entries
+     (lambda ()
+       (org-archive-subtree)
+       (setq org-map-continue-from (outline-previous-heading)))
+     "/DEFERRED" 'file)
+  )
+#+END_SRC
+
 ** org-ref
 
  [[https://github.com/jkitchin/org-ref][John Kitchen]]'s =org-ref= package.
