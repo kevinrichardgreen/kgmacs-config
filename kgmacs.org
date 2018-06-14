@@ -362,6 +362,12 @@ Narrowing of ~dired~ directories.
                 ("/" . dired-narrow)))
 #+END_SRC
 
+DWIM for copying files between dired buffers that are currently
+displayed in windows
+#+BEGIN_SRC emacs-lisp
+  (setq dired-dwim-target t)
+#+END_SRC
+
 Open files and goto lines like we see from g++ etc. i.e.
 =filename:line=. Also useful for noweb source if formatted in this way.
 Courtesy of [[https://stackoverflow.com/a/3141456/1899759][StackOverflow]].
