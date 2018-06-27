@@ -255,6 +255,15 @@ Don't allow backgrounding of emacs.
   (global-unset-key (kbd "C-z"))
 #+END_SRC
 
+** Text scaling
+
+Presentation mode scales all buffers
+#+BEGIN_SRC emacs-lisp
+  (use-package presentation)
+#+END_SRC
+
+*** TODO move all text manipulation modes/settings together
+
 ** Window management
 
 Splitting window thresholds that work well for a 1080p monitor.
