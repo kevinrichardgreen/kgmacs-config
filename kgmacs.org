@@ -297,8 +297,7 @@ Ask for eww open
          'eww-browse-url
        'gk-urls-external-browser)
      args))
-
-  (setq browse-url-browser-function #'gk-browse-url)
+  ;; (setq browse-url-browser-function #'gk-browse-url)
 #+END_SRC
 
 ** Compilation
