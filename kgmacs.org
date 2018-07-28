@@ -950,15 +950,23 @@ Always /try/ to open a ~shell~ in the same window where you are.
 
 Settings for version control modes.
 
-** Magit
+** Git
 
-Probably the best interface to =git=. It makes me want to code more just
-so I can commit more.
+Magit is probably the best interface to =git=. It makes me want to
+code more just so I can commit more.
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :config
     (global-set-key (kbd "C-x g") 'magit-status)
     (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup))
+#+END_SRC
+
+=git-gutter= shows where things have been changed right in buffers.
+#+BEGIN_SRC emacs-lisp
+  (use-package git-gutter
+    :config
+    (global-git-gutter-mode +1)
+  )
 #+END_SRC
 
 * Languages/Programming
@@ -977,6 +985,14 @@ time though.
     :ensure t)
 #+END_SRC
 
+** CMake
+
+A CMake mode for dealing with =CMakeLists.txt= etc.
+#+BEGIN_SRC emacs-lisp
+  (use-package cmake-mode
+    :defer t
+    )
+#+END_SRC
 ** C/C++
 
 This likely needs to be updated.
