@@ -1033,7 +1033,7 @@ in all lisp modes.
     (add-hook 'scheme-mode-hook           #'enable-paredit-mode))
 #+END_SRC
 
-** Matlab
+** COMMENT Matlab
 
 =matlab-mode= for syntax highlighting in .m files, as well as
 =matlab-shell= that can be used within emacs. Since this is done through
@@ -1054,7 +1054,7 @@ that what they're called in Matlab?) right from a .m file
   (setq matlab-completion-technique 'increment)
 #+END_SRC
 
-** Maple
+** COMMENT Maple
 
 ~maplev-mode~ for basic syntax highlighting in maple text files. /Note the
 file extensions used./
