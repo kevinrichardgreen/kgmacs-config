@@ -351,20 +351,26 @@ Open certain directories in dired.
 ~dired+~ for some more powerful behaviour (Note ~C-u s~ in a dired buffer
 lets you quickly change listing switches).
 #+BEGIN_SRC emacs-lisp
-  (use-package dired+
-    :config
-    (require 'dired+)
-    (setq global-dired-hide-details-mode nil) ;; show details by default
-    (setq dired-listing-switches "-lh --group-directories-first") ;; don't list all by default
-    )
+  ;; (use-package dired+
+  ;;   :config
+  ;;   (require 'dired+)
+  ;;   (setq global-dired-hide-details-mode nil) ;; show details by default
+  ;; (setq dired-listing-switches "-lh --group-directories-first") ;; don't list all by default
+  ;; )
 #+END_SRC
 
 Narrowing of ~dired~ directories.
 #+BEGIN_SRC emacs-lisp
   (use-package dired-narrow
-    :ensure t
     :bind (:map dired-mode-map
                 ("/" . dired-narrow)))
+#+END_SRC
+
+Hiding dotfiles.
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'dired
+	(setq dired-listing-switches "-lh --group-directories-first") ;; don't list all by default
+  )
 #+END_SRC
 
 DWIM for copying files between dired buffers that are currently
