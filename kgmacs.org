@@ -3,7 +3,7 @@
 
 Me:
 #+BEGIN_SRC emacs-lisp
-(setq user-full-name "Kevin R Green")
+(setq user-full-name "Kevin R. Green")
 #+END_SRC
 
 * Fundamentals/defaults
@@ -11,37 +11,12 @@ Me:
 Frame titles - incorporate buffer names.
 
 #+BEGIN_SRC emacs-lisp
-  (setq frame-title-format '("emacs: %b [%m]"))
-#+END_SRC
-
-Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el][Harry R. Schwartz]].
-#+BEGIN_SRC emacs-lisp
-  (load-file (expand-file-name "sensible-defaults.el" user-emacs-directory))
-
-  (sensible-defaults/bind-commenting-and-uncommenting)
-  (sensible-defaults/bind-keys-to-change-text-size)
-
-  (sensible-defaults/increase-gc-threshold)
-  (sensible-defaults/delete-trailing-whitespace)
-  (sensible-defaults/treat-camelcase-as-separate-words)
-  (sensible-defaults/make-scripts-executable)
-  (sensible-defaults/single-space-after-periods)
-  (sensible-defaults/offer-to-create-parent-directories-on-save)
-  (sensible-defaults/ensure-that-files-end-with-newline)
-  (sensible-defaults/quiet-startup)
-  (sensible-defaults/make-dired-file-sizes-human-readable)
-  (sensible-defaults/shorten-yes-or-no)
-  (sensible-defaults/always-highlight-code)
-  (sensible-defaults/refresh-buffers-when-files-change)
-  (sensible-defaults/show-matching-parens)
-  (setq show-paren-style 'expression)     ;; NOTE this goes well with above
-  (sensible-defaults/flash-screen-instead-of-ringing-bell)
-  (sensible-defaults/yank-to-point-on-mouse-click)
+  (setq frame-title-format '("%b"))
 #+END_SRC
 
 Font.  (set in a way that will work with emacsclient frames)
 #+BEGIN_SRC emacs-lisp
-(setq default-frame-alist '((font . "Monospace-8")))
+  (setq default-frame-alist '((font . "Monospace-10")))
 #+END_SRC
 
 Enable things relating to variable pitch font.
@@ -249,10 +224,31 @@ System cut and paste mapped to <f-> keys.
   (global-set-key [f6] 'clipboard-kill-ring-save) ; copy
   (global-set-key [f7] 'clipboard-yank)    ; paste
 #+END_SRC
+** Sensible defaults
 
-Don't allow backgrounding of emacs.
+Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el][Harry R. Schwartz]].
 #+BEGIN_SRC emacs-lisp
-  (global-unset-key (kbd "C-z"))
+  (load-file (expand-file-name "sensible-defaults.el" user-emacs-directory))
+
+  (sensible-defaults/bind-commenting-and-uncommenting)
+  (sensible-defaults/bind-keys-to-change-text-size)
+
+  (sensible-defaults/increase-gc-threshold)
+  (sensible-defaults/delete-trailing-whitespace)
+  (sensible-defaults/treat-camelcase-as-separate-words)
+  (sensible-defaults/make-scripts-executable)
+  (sensible-defaults/single-space-after-periods)
+  (sensible-defaults/offer-to-create-parent-directories-on-save)
+  (sensible-defaults/ensure-that-files-end-with-newline)
+  (sensible-defaults/quiet-startup)
+  (sensible-defaults/make-dired-file-sizes-human-readable)
+  (sensible-defaults/shorten-yes-or-no)
+  (sensible-defaults/always-highlight-code)
+  (sensible-defaults/refresh-buffers-when-files-change)
+  (sensible-defaults/show-matching-parens)
+  (setq show-paren-style 'expression)     ;; NOTE this goes well with above
+  (sensible-defaults/flash-screen-instead-of-ringing-bell)
+  (sensible-defaults/yank-to-point-on-mouse-click)
 #+END_SRC
 
 ** Text scaling
@@ -478,19 +474,20 @@ Then set some for avy movement.
 I use =moe-theme=, which is actually much more than just a color
 theme.
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package moe-theme
-  ;;   :init
-  ;;   (setq moe-theme-resize-org-title '(1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0 1.0))
-  ;;   (setq moe-theme-resize-markdown-title '(1.4 1.3 1.2 1.1 1.0 1.0))
-  ;;   (setq moe-theme-resize-rst-title '(1.4 1.3 1.2 1.1 1.0 1.0))
-  ;;   :config
-  ;;   (moe-theme-set-color 'w/b)
-  ;;   (moe-dark))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (setq custom-safe-themes t)
-  (load-theme 'gruvbox-dark-soft)
+  (use-package moe-theme
+    :init
+    (setq moe-theme-resize-org-title '(1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0 1.0))
+    (setq moe-theme-resize-markdown-title '(1.4 1.3 1.2 1.1 1.0 1.0))
+    (setq moe-theme-resize-rst-title '(1.4 1.3 1.2 1.1 1.0 1.0))
+    :config
+    (moe-theme-set-color 'w/b)
+    (moe-dark)
+    (use-package spaceline
+      :ensure t
+      :config
+      (setq powerline-default-separator 'wave)
+      (spaceline-emacs-theme))
+    )
 #+END_SRC
 
 * Org mode
@@ -520,6 +517,14 @@ Basic options for using/displaying =org-mode= in any of the many ways to come.
     (setq org-hide-emphasis-markers nil)
     (setq org-src-fontify-natively t)
     (setq org-format-latex-options (plist-put org-format-latex-options :scale 15.0)))
+#+END_SRC
+
+Org bullets are back, baby.
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  )
 #+END_SRC
 
 ** org-export
