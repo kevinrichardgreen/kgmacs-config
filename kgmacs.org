@@ -159,63 +159,15 @@ Backup settings. Courtesy of [[http://stackoverflow.com/a/20824625][Stack Overfl
 
 Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https://cestlaz.github.io/posts/using-emacs-34-ibuffer-emmet/#.WiYJuOmnHRY][Using emacs 34]].
 #+BEGIN_SRC emacs-lisp
-  (use-package ibuffer
+  (use-package ibuffer)
+  (use-package ibuffer-vc
     :config
-    (global-set-key (kbd "C-x C-b") 'ibuffer)
-    (setq ibuffer-saved-filter-groups
-          (quote (("default"  ; define our own default ibuffer view
-                   ("Dired" (mode . dired-mode))
-                   ("Brain" (filename . "^.*/tmp/brain/.*$"))
-                   ("Org" (or
-                           (name . "^.*org$")
-                           (name . "^.*org_archive$")))
-                   ("Programming" (or
-                                   (mode . python-mode)
-                                   (mode . c++-mode)
-                                   (mode . c-mode)
-                                   (mode . fortran-mode)
-                                   (mode . matlab-mode)))
-                   ("Text Files" (or
-                                  (name . "^.*txt$")
-                                  (name . "^.*toml$")
-                                  (name . "^.*yaml$")
-                                  (name . "^.*xml$")
-                                  (name . "^.*md$")))
-                   ("TeX" (or
-                           (name . "^.*tex$")
-                           (name . "^.*bib$")
-                           (name . "^.*nw$")))
-                   ("View (pdf,jpgs,etc)" (or
-                                            (name . "^.*pdf$")
-                                            (mode . image-mode)))
-                   ("Shells" (or
-                              (mode . eshell-mode)
-                              (mode . shell-mode)))
-                   ("Email" (or
-                             (name . "\*mu4e\*")
-                             (mode . mu4e:compose)
-                             (mode . mu4e:view)
-                             ))
-                   ("Magit" (or
-                             (name . "\*magit\*")
-                             (name . "^magit.*$")))
-                   ("Web" (or
-                           (mode . web-mode)
-                           (mode . js2-mode)
-                           (name . "^.*html$")))
-                   ("Emacs" (name . "^\\*.*\\*$"))
-                   ))))
-    (add-hook 'ibuffer-mode-hook
-              (lambda ()
-                (ibuffer-auto-mode 1)
-                (ibuffer-switch-to-saved-filter-groups "default")))
-
-    ;; don't show these
-                                          ;(add-to-list 'ibuffer-never-show-predicates "zowie")
-    ;; Don't show filter groups if there are no buffers in that group
-    (setq ibuffer-show-empty-filter-groups nil)
-
-    )
+    (defun kg/ibuffer-vc ()
+      "Ensure buffers get sorted by vc in ibuffer."
+      (interactive)
+      (ibuffer)
+      (ibuffer-vc-set-filter-groups-by-vc-root))
+    (global-set-key (kbd "C-x C-b") 'kg/ibuffer-vc))
 #+END_SRC
 
 System cut and paste mapped to <f-> keys.
