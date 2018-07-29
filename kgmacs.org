@@ -1267,34 +1267,6 @@ than =interleave= and fits my workflow better.
     :ensure t)
 #+END_SRC
 
-* Brain
-
-Using [[brain:org-brain]] to organize notes and thoughts.
-#+BEGIN_SRC emacs-lisp
-  (use-package org-brain :ensure t
-    :init
-    (setq org-brain-path "~/brain")
-    :config
-    (setq org-id-track-globally t)
-    (setq org-id-locations-file "~/brain/.org-id-locations")
-    (setq org-brain-visualize-default-choices 'all)
-    (setq org-brain-file-entries-use-title nil)
-
-    (global-set-key (kbd "C-c b") 'org-brain-visualize)
-  )
-#+END_SRC
-
-Ignoring =org-brain= files in ibuffer
-#+BEGIN_SRC emacs-lisp
-  (setq ibuffer-saved-filters
-        '(("brain" ((filename . "^.*/brain/.*org$")))))
-
-  (add-hook 'ibuffer-mode-hook
-            (lambda nil
-              (ibuffer-add-saved-filters "brain")
-              (ibuffer-negate-filter)))
-#+END_SRC
-
 * References
 
 Generally linked in place, otherwise here:
