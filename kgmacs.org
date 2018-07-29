@@ -223,13 +223,21 @@ Enable =winner-mode=.
   (winner-mode 1)
 #+END_SRC
 
+Setup =ace-window= mode.
+#+BEGIN_SRC emacs-lisp
+  (use-package ace-window
+    :config
+    (global-set-key (kbd "M-o") 'ace-window)
+  )
+#+END_SRC
+
 ** Distraction-free environments & buffer decorations
 
 *** darkroom
 
 From here: [[https://github.com/joaotavora/darkroom][darkroom]].
 #+BEGIN_SRC emacs-lisp
-  (require 'darkroom)
+(use-package darkroom)
 #+END_SRC
 
 ** Web
