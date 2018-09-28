@@ -362,6 +362,14 @@ Assign ffap to a key to save typing ~M-x ffap~ all of the time.
   (global-set-key (kbd "C-c C-p") 'find-file-at-point)
 #+END_SRC
 
+Increase the recentf list length, save them often
+#+BEGIN_SRC emacs-lisp
+  (use-package sync-recentf
+    :ensure t)
+  (setq recentf-max-menu-items 200)
+  (setq recentf-max-saved-items 200)
+#+END_SRC
+
 * Ivy/Swiper/Counsel & Avy
 
 Just as intuitive as IDO, seems lighter weight than helm.
