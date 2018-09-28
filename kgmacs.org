@@ -1068,12 +1068,19 @@ Managing all of my BibTeX entries with =bibtex-utils=.
 
 ** Python
 
-=elpy= has some nice features. Want to use Ipython.
+=elpy= has some nice features.
 #+BEGIN_SRC emacs-lisp
     (use-package elpy
       :config
       (elpy-enable))
 #+END_SRC
+
+Jupyter notebooks through =ein=
+#+BEGIN_SRC emacs-lisp
+  (use-package ein
+    :config )
+#+END_SRC
+
 
 ** Gnuplot
 
