@@ -197,7 +197,6 @@ Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el][Ha
   (sensible-defaults/refresh-buffers-when-files-change)
   (sensible-defaults/show-matching-parens)
   (setq show-paren-style 'expression)     ;; NOTE this goes well with above
-  (sensible-defaults/flash-screen-instead-of-ringing-bell)
   (sensible-defaults/yank-to-point-on-mouse-click)
 #+END_SRC
 
