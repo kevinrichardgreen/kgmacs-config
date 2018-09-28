@@ -409,14 +409,17 @@ First, enable key chords.
   (use-package key-chord
     :config
     (key-chord-mode +1)
+    (defun translate-to-key-chord-lead-key ()
+      (interactive)
+      (push ?` unread-command-events)
+      )
+    (global-set-key (kbd "<mouse-3>") 'translate-to-key-chord-lead-key)
     )
-
-
 #+END_SRC
 
 Then set some for avy movement.
 #+BEGIN_SRC emacs-lisp
-  (use-package avy
+  (use-package avy :after key-chord
     :config
     ; define variants that flash the bell
     (defun kg/avy-goto-char-ding ()
@@ -431,8 +434,8 @@ Then set some for avy movement.
      (interactive)
      (ding)
      (call-interactively 'avy-goto-word-1))
-    (key-chord-define-global "ij" 'kg/avy-goto-char-ding)
-    (key-chord-define-global "kj" 'avy-goto-line))
+    (key-chord-define-global "`f" 'kg/avy-goto-char-ding)
+    (key-chord-define-global "`d" 'avy-goto-line))
 #+END_SRC
 
 * Color themes
