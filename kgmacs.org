@@ -768,6 +768,12 @@ Set TRAMP connections to use persistent ssh
   (setq tramp-default-method "rsync")
 #+END_SRC
 
+*Note:* using an Ubuntu Mate distribution has resulted in a different
+ terminal name: ~mate-terminal~
+#+BEGIN_SRC emacs-lisp
+  (setq sys-terminal-name "mate-terminal")
+#+END_SRC
+
 Open an external ~gnome-terminal~ in the remote directory of a TRAMP
 buffer. This was pieced together using  elements from:
 - https://emacs.stackexchange.com/questions/18903/tramp-and-dired-initial-default-directory-dired-directory
@@ -792,19 +798,19 @@ buffer. This was pieced together using  elements from:
            (ssh-shared-opts (format tramp-ssh-controlmaster-options))
            ;; multiple leves of escaped quotes to avoid single quotes...
            (gt-command (concat
-                        "gnome-terminal -e \"sh -c \\\"ssh "
+                        sys-terminal-name  " -e \"sh -c \\\"ssh "
                         ssh-shared-opts " -t "
                         remote-system
                         " \\\\\\\"cd " remote-dir
                         "; exec $SHELL\\\\\\\"\\\"\"")))
-      (shell-command gt-command)))
+      (async-shell-command gt-command)))
 
   (defun kg/open-gnome-terminal ()
     "Open a gnome-terminal session in current directory"
     (interactive)
     (if (file-remote-p default-directory)
         (kg/open-gnome-terminal-remote)
-      (shell-command "gnome-terminal")))
+      (shell-command sys-terminal-name)))
   ;; Hotkey for gnome terminal -- Think "open {T}erminal"
   (global-set-key (kbd "C-c t") 'kg/open-gnome-terminal)
 #+END_SRC
