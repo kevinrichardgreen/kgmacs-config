@@ -485,7 +485,7 @@ Basic options for using/displaying =org-mode= in any of the many ways to come.
     (setq org-startup-indented t)
     (setq org-hide-emphasis-markers nil)
     (setq org-src-fontify-natively t)
-    (setq org-format-latex-options (plist-put org-format-latex-options :scale 15.0)))
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0)))
 #+END_SRC
 
 Org bullets are back, baby.
