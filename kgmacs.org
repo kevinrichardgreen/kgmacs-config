@@ -928,10 +928,12 @@ A CMake mode for dealing with =CMakeLists.txt= etc.
 #+END_SRC
 ** C/C++
 
-This likely needs to be updated.
+Nicer syntax highlighting for C++.
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'c-mode-hook 'counsel-gtags-mode)
-  (add-hook 'c++-mode-hook 'counsel-gtags-mode)
+  (use-package modern-cpp-font-lock
+    :config
+    (modern-c++-font-lock-global-mode t))
+#+END_SRC
 
   (use-package counsel-gtags
     :config
