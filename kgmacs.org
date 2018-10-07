@@ -426,34 +426,29 @@ First, enable key chords.
 #+BEGIN_SRC emacs-lisp
   (use-package key-chord
     :config
-    (key-chord-mode +1)
-    (defun translate-to-key-chord-lead-key ()
-      (interactive)
-      (push ?` unread-command-events)
-      )
-    (global-set-key (kbd "<mouse-3>") 'translate-to-key-chord-lead-key)
-    )
+    (key-chord-mode +1))
 #+END_SRC
 
 Then set some for avy movement.
 #+BEGIN_SRC emacs-lisp
   (use-package avy :after key-chord
     :config
-    ; define variants that flash the bell
+    ; define variants that ding the bell
     (defun kg/avy-goto-char-ding ()
-     (interactive)
-     (ding)
-     (call-interactively 'avy-goto-char))
+      (interactive)
+      (ding)
+      (call-interactively 'avy-goto-char))
     (defun kg/avy-goto-char-2-ding ()
-     (interactive)
-     (ding)
-     (call-interactively 'avy-goto-char-2))
+      (interactive)
+      (ding)
+      (call-interactively 'avy-goto-char-2))
     (defun kg/avy-goto-word-ding ()
-     (interactive)
-     (ding)
-     (call-interactively 'avy-goto-word-1))
-    (key-chord-define-global "`f" 'kg/avy-goto-char-ding)
-    (key-chord-define-global "`d" 'avy-goto-line))
+      (interactive)
+      (ding)
+      (call-interactively 'avy-goto-word-1))
+    (global-set-key (kbd "M-j") 'kg/avy-goto-char-ding)
+    (global-set-key (kbd "M-s") 'avy-goto-line)
+    )
 #+END_SRC
 
 * Color themes
