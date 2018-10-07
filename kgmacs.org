@@ -941,6 +941,15 @@ Nicer syntax highlighting for C++.
 #+END_SRC
 
   (use-package counsel-gtags
+Prettify code with clang-format
+#+BEGIN_SRC emacs-lisp
+  ;; clang-format can be triggered using C-c C-f
+  ;; Create clang-format file using google style
+  ;; clang-format -style=google -dump-config > .clang-format
+  (use-package clang-format
+    :config
+    (global-set-key (kbd "C-c C-f") 'clang-format-region))
+#+END_SRC
     :config
     (define-key counsel-gtags-mode-map (kbd "M-t") 'counsel-gtags-find-definition)
     (define-key counsel-gtags-mode-map (kbd "M-r") 'counsel-gtags-find-reference)
