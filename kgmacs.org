@@ -369,6 +369,17 @@ Increase the recentf list length, save them often
   (setq recentf-max-saved-items 200)
 #+END_SRC
 
+** TODO dired-hacks
+
+Main repository: [[https://github.com/Fuco1/dired-hacks][GitHub]]
+- Provides functions for some pretty amazing functionality.
+- But, /only/ the functions... so you can customize to your liking!
+- Figure it out
+#+BEGIN_SRC emacs-lisp
+  (use-package dired-subtree)
+  (use-package dired-collapse)
+#+END_SRC
+
 * Ivy/Swiper/Counsel & Avy
 
 Just as intuitive as IDO, seems lighter weight than helm.
