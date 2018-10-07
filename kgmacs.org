@@ -940,7 +940,6 @@ Nicer syntax highlighting for C++.
     (modern-c++-font-lock-global-mode t))
 #+END_SRC
 
-  (use-package counsel-gtags
 Prettify code with clang-format
 #+BEGIN_SRC emacs-lisp
   ;; clang-format can be triggered using C-c C-f
