@@ -222,11 +222,19 @@ Enable =winner-mode=.
   (winner-mode 1)
 #+END_SRC
 
+Enable =eyebrowse=.
+#+BEGIN_SRC emacs-lisp
+  (use-package eyebrowse
+    :config
+  (eyebrowse-mode t))
+#+END_SRC
+
 Setup =ace-window= mode.
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
     :config
-    (global-set-key (kbd "M-o") 'ace-window)
+    ;; (global-set-key (kbd "M-o") 'ace-window)
+    (global-set-key (kbd "M-o") 'other-window)
   )
 #+END_SRC
 
