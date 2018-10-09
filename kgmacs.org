@@ -238,6 +238,35 @@ Setup =ace-window= mode.
   )
 #+END_SRC
 
+** Mode line
+
+Make sure spaceline is set up after the theme you use.
+#+BEGIN_SRC emacs-lisp
+  (use-package spaceline :after moe-theme
+    :ensure t
+    :config
+    (setq powerline-default-separator 'wave)
+    (spaceline-emacs-theme))
+#+END_SRC
+
+Set up spaceline with a toggle.
+#+BEGIN_SRC emacs-lisp
+  (defun kg/toggle-spaceline ()
+    "Toggle between no mode-line and spaceline"
+    (interactive)
+    (if (get 'kg/toggle-spaceline 'state)
+        (progn
+          (setq mode-line-format nil)
+          (put 'kg/toggle-spaceline 'state nil)
+          )
+      (progn
+        (setq mode-line-format '("%e" (:eval (spaceline-ml-main))))
+        (put 'kg/toggle-spaceline 'state t))))
+
+  (setq-default mode-line-format nil)
+  (global-set-key (kbd "M-s") 'kg/toggle-spaceline)
+#+END_SRC
+
 ** Distraction-free environments & buffer decorations
 
 *** darkroom
@@ -472,11 +501,6 @@ theme.
     :config
     (moe-theme-set-color 'w/b)
     (moe-dark)
-    (use-package spaceline
-      :ensure t
-      :config
-      (setq powerline-default-separator 'wave)
-      (spaceline-emacs-theme))
     )
 #+END_SRC
 
