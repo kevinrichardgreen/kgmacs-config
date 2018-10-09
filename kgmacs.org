@@ -494,6 +494,7 @@ I use =moe-theme=, which is actually much more than just a color
 theme.
 #+BEGIN_SRC emacs-lisp
   (use-package moe-theme
+    :after markdown-mode
     :init
     (setq moe-theme-resize-org-title '(1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0 1.0))
     (setq moe-theme-resize-markdown-title '(1.4 1.3 1.2 1.1 1.0 1.0))
@@ -1171,6 +1172,21 @@ anything? I could perhaps make this for only in ~poly-noweb-mode~).
               "%-------------------------------------------------------------------------------\n")
       (previous-line 4)))  ; go back to code entry point before exit
   (global-set-key (kbd "C-c h") 'create-new-chunk)
+#+END_SRC
+
+** Markdown
+
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+    :ensure t
+    :config
+    )
+#+END_SRC
+
+** JSON
+
+#+BEGIN_SRC emacs-lisp
+  (use-package json-mode)
 #+END_SRC
 
 * Pdf viewing
