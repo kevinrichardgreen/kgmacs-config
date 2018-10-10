@@ -233,8 +233,8 @@ Setup =ace-window= mode.
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
     :config
-    ;; (global-set-key (kbd "M-o") 'ace-window)
-    (global-set-key (kbd "M-o") 'other-window)
+    (global-set-key (kbd "M-o") 'ace-window)
+    (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l ?\;))
   )
 #+END_SRC
 
