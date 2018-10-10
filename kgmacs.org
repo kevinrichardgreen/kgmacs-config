@@ -159,15 +159,32 @@ Backup settings. Courtesy of [[http://stackoverflow.com/a/20824625][Stack Overfl
 
 Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https://cestlaz.github.io/posts/using-emacs-34-ibuffer-emmet/#.WiYJuOmnHRY][Using emacs 34]].
 #+BEGIN_SRC emacs-lisp
-  (use-package ibuffer)
-  (use-package ibuffer-vc
+  (use-package ibuffer
     :config
-    (defun kg/ibuffer-vc ()
-      "Ensure buffers get sorted by vc in ibuffer."
+    (global-set-key (kbd "C-x C-b") 'ibuffer))
+
+  (use-package ibuffer-vc
+    :after ibuffer
+    :config
+    (add-hook 'ibuffer-mode-hook
+              #'ibuffer-vc-set-filter-groups-by-vc-root))
+
+  (use-package ibuffer-tramp
+    :after ibuffer-vc
+    :config
+    (defun kg/ibuffer-toggle-tramp-vc ()
+      "Toggles between TRAMP sort and VC project sort in ibuffer-mode"
       (interactive)
-      (ibuffer)
-      (ibuffer-vc-set-filter-groups-by-vc-root))
-    (global-set-key (kbd "C-x C-b") 'kg/ibuffer-vc))
+      (if (get 'kg/ibuffer-toggle-tramp-vc 'state)
+          (progn
+            (ibuffer-vc-set-filter-groups-by-vc-root)
+            (put 'kg/ibuffer-toggle-tramp-vc 'state nil)
+            )
+        (progn
+          (ibuffer-tramp-set-filter-groups-by-tramp-connection)
+          (put 'kg/ibuffer-toggle-tramp-vc 'state t))))
+    (add-hook 'ibuffer-mode-hook
+              (lambda () (local-set-key (kbd "M-t") #'kg/ibuffer-toggle-tramp-vc))))
 #+END_SRC
 
 Don't allow backgrounding of emacs.
