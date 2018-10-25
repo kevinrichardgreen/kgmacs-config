@@ -983,7 +983,8 @@ time though.
 A CMake mode for dealing with =CMakeLists.txt= etc.
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode
-    :defer t
+    :config
+    (add-to-list 'auto-mode-alist '(".*CMakeLists.*" . cmake-mode))
     )
 #+END_SRC
 ** C/C++
