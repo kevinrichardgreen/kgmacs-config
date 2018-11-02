@@ -656,16 +656,12 @@ Misc export formats that I haven't spent much time customizing.
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'org
     (use-package htmlize
-      :defer t
       )  ; for source code block syntax highlighting
     (use-package ox-twbs
-      :defer t
       ) ; Twitter-bootstrap formatted html
     (use-package ox-trac
-      :defer t
       ) ; export to trac-wiki to paste into tickets
     (use-package ox-reveal
-      :defer t
       :config
       (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
       (setq org-reveal-mathjax t)))
