@@ -85,6 +85,27 @@ Global line highlighting.
   (global-hl-line-mode 1)
 #+END_SRC
 
+** TODO handle case when region is active
+
+Soft word wrap for text modes.
+#+BEGIN_SRC emacs-lisp
+  (use-package visual-fill-column
+    :config
+    (setq-default fill-column 80)
+    (defun kg/fill-paragraph-text-mode ()
+      (interactive)
+      (let ((fill-column (point-max)))
+        (fill-paragraph nil)))
+    (defun kg/custom-text-mode-paragraphing ()
+      (local-set-key (kbd "M-q") 'kg/fill-paragraph-text-mode)
+      (setq fill-column 120)
+      (visual-fill-column-mode)
+      (visual-line-mode)
+      (toggle-word-wrap)
+      )
+    (add-hook 'text-mode-hook #'kg/custom-text-mode-paragraphing)
+    )
+#+END_SRC
 
 Allow certain functions that are disabled by default.
 #+BEGIN_SRC emacs-lisp
