@@ -1198,6 +1198,7 @@ anything? I could perhaps make this for only in ~poly-noweb-mode~).
   (use-package markdown-mode
     :ensure t
     :config
+    (add-to-list 'auto-mode-alist '("README" . markdown-mode))
     )
 #+END_SRC
 
