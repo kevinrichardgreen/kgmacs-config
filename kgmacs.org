@@ -267,13 +267,19 @@ Enable =eyebrowse=.
   (eyebrowse-mode t))
 #+END_SRC
 
-Setup =ace-window= mode.
+Setup =ace-window= mode. [[https://github.com/abo-abo/ace-window]]
 #+BEGIN_SRC emacs-lisp
-  (use-package ace-window
-    :config
-    (global-set-key (kbd "M-o") 'ace-window)
-    (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l ?\;))
-  )
+  ;; (use-package ace-window
+  ;;   :config
+  ;;   (global-set-key (kbd "M-o") 'ace-window)
+  ;;   (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l ?\;))
+  ;; )
+#+END_SRC
+
+Simpler window movement
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-o") 'other-window)
+  (global-set-key (kbd "M-O") (lambda () (interactive) (other-window -1)))
 #+END_SRC
 
 ** Mode line
@@ -472,7 +478,10 @@ Just as intuitive as IDO, seems lighter weight than helm.
     (setq ivy-re-builders-alist
           ;; allow input not in order
           '((t   . ivy--regex-ignore-order)))
-  )
+    ;; ivy defaults to 'ivy-dispatching-done for M-o... overwrite
+    (define-key ivy-minibuffer-map (kbd "M-o") 'other-window)
+    (global-set-key (kbd "M-O") (lambda () (interactive) (other-window -1)))
+    )
 #+END_SRC
 
 Flyspell ivy correction completion.
