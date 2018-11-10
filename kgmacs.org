@@ -101,7 +101,7 @@ Soft word wrap for text modes.
       (setq fill-column 120)
       (visual-fill-column-mode)
       (visual-line-mode)
-      (toggle-word-wrap)
+      (toggle-word-wrap 1)
       )
     (add-hook 'text-mode-hook #'kg/custom-text-mode-paragraphing)
     )
