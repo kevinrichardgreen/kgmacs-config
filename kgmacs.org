@@ -85,6 +85,27 @@ Global line highlighting.
   (global-hl-line-mode 1)
 #+END_SRC
 
+** TODO handle case when region is active
+
+Soft word wrap for text modes.
+#+BEGIN_SRC emacs-lisp
+  (use-package visual-fill-column
+    :config
+    (setq-default fill-column 80)
+    (defun kg/fill-paragraph-text-mode ()
+      (interactive)
+      (let ((fill-column (point-max)))
+        (fill-paragraph nil)))
+    (defun kg/custom-text-mode-paragraphing ()
+      (local-set-key (kbd "M-q") 'kg/fill-paragraph-text-mode)
+      (setq fill-column 120)
+      (visual-fill-column-mode)
+      (visual-line-mode)
+      (toggle-word-wrap 1)
+      )
+    (add-hook 'text-mode-hook #'kg/custom-text-mode-paragraphing)
+    )
+#+END_SRC
 
 Allow certain functions that are disabled by default.
 #+BEGIN_SRC emacs-lisp
@@ -252,13 +273,19 @@ Enable =eyebrowse=.
   (eyebrowse-mode t))
 #+END_SRC
 
-Setup =ace-window= mode.
+Setup =ace-window= mode. [[https://github.com/abo-abo/ace-window]]
 #+BEGIN_SRC emacs-lisp
-  (use-package ace-window
-    :config
-    (global-set-key (kbd "M-o") 'ace-window)
-    (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l ?\;))
-  )
+  ;; (use-package ace-window
+  ;;   :config
+  ;;   (global-set-key (kbd "M-o") 'ace-window)
+  ;;   (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l ?\;))
+  ;; )
+#+END_SRC
+
+Simpler window movement
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-o") 'other-window)
+  (global-set-key (kbd "M-O") (lambda () (interactive) (other-window -1)))
 #+END_SRC
 
 Toggle window split: [[https://www.emacswiki.org/emacs/ToggleWindowSplit][EmacsWiki - ToggleWindowSplit]]
@@ -487,7 +514,10 @@ Just as intuitive as IDO, seems lighter weight than helm.
     (setq ivy-re-builders-alist
           ;; allow input not in order
           '((t   . ivy--regex-ignore-order)))
-  )
+    ;; ivy defaults to 'ivy-dispatching-done for M-o... overwrite
+    (define-key ivy-minibuffer-map (kbd "M-o") 'other-window)
+    (global-set-key (kbd "M-O") (lambda () (interactive) (other-window -1)))
+    )
 #+END_SRC
 
 Flyspell ivy correction completion.
@@ -692,16 +722,12 @@ Misc export formats that I haven't spent much time customizing.
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'org
     (use-package htmlize
-      :defer t
       )  ; for source code block syntax highlighting
     (use-package ox-twbs
-      :defer t
       ) ; Twitter-bootstrap formatted html
     (use-package ox-trac
-      :defer t
       ) ; export to trac-wiki to paste into tickets
     (use-package ox-reveal
-      :defer t
       :config
       (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
       (setq org-reveal-mathjax t)))
@@ -1019,7 +1045,8 @@ time though.
 A CMake mode for dealing with =CMakeLists.txt= etc.
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode
-    :defer t
+    :config
+    (add-to-list 'auto-mode-alist '(".*CMakeLists.*" . cmake-mode))
     )
 #+END_SRC
 ** C/C++
@@ -1233,6 +1260,7 @@ anything? I could perhaps make this for only in ~poly-noweb-mode~).
   (use-package markdown-mode
     :ensure t
     :config
+    (add-to-list 'auto-mode-alist '("README" . markdown-mode))
     )
 #+END_SRC
 
