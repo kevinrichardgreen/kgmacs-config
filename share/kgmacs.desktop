@@ -1,0 +1,8 @@
+# Copy this to /usr/share/xsessions/kgmacs.desktop
+#  NOTE: symbolic link doesn't seem to work
+[Desktop Entry]
+Name=KGMACS-WM
+Comment=KGMACS window manager
+Exec=emacs -q --load ~/.emacs.d/init_exwm.el
+Icon=emacs.png
+Type=Application
