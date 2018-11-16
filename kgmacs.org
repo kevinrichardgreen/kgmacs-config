@@ -933,7 +933,7 @@ buffer. This was pieced together using  elements from:
     (interactive)
     (if (file-remote-p default-directory)
         (kg/open-gnome-terminal-remote)
-      (shell-command sys-terminal-name)))
+      (async-shell-command sys-terminal-name)))
   ;; Hotkey for gnome terminal -- Think "open {T}erminal"
   (global-set-key (kbd "C-c t") 'kg/open-gnome-terminal)
 #+END_SRC
