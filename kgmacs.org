@@ -620,8 +620,9 @@ Basic options for using/displaying =org-mode= in any of the many ways to come.
     (setq org-startup-with-inline-images t)
     (setq org-startup-with-latex-preview nil)
     (setq org-image-actual-width 400)
-    (setq org-startup-indented t)
+    (setq org-startup-indented nil)
     (setq org-hide-emphasis-markers nil)
+    (setq org-src-window-setup 'current-window)
     (setq org-src-fontify-natively t)
     (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0)))
 #+END_SRC
