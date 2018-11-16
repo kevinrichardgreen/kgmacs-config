@@ -38,4 +38,27 @@
 (org-babel-load-file (expand-file-name "kgmacs.org" user-emacs-directory))
 (garbage-collect)
 
+;; Dashboard needs to be out here because starting with --load
+(use-package dashboard
+  :ensure t
+  :config
+  ;; (setq dashboard-banner-logo-title "")
+  ;; (setq dashboard-startup-banner "/path/to/image")
+  (setq dashboard-items '((recents  . 10)
+                          (bookmarks . 10))))
+(dashboard-insert-startupify-lists)
+(dashboard-refresh-buffer)
+
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(variable-pitch ((t (:family "Bitstream Charter")))))

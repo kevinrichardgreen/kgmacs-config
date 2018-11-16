@@ -1422,16 +1422,3 @@ than =interleave= and fits my workflow better.
 Generally linked in place, otherwise here:
 
 bibliography:index.bib bibliographystyle:acm
-
-
-#+BEGIN_SRC emacs-lisp
-  (use-package dashboard
-    :ensure t
-    :diminish dashboard-mode
-    :config
-    ;; (setq dashboard-banner-logo-title "")
-    ;; (setq dashboard-startup-banner "/path/to/image")
-    (setq dashboard-items '((recents  . 10)
-                            (bookmarks . 10)))
-    (dashboard-setup-startup-hook))
-#+END_SRC
