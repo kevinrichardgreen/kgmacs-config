@@ -212,6 +212,12 @@ Don't allow backgrounding of emacs.
 #+BEGIN_SRC emacs-lisp
   (global-unset-key (kbd "C-z"))
 #+END_SRC
+
+Define an alias for fast query regexp replace
+#+BEGIN_SRC emacs-lisp
+  (defalias 'qrr 'query-replace-regexp)
+#+END_SRC
+
 ** Sensible defaults
 
 Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el][Harry R. Schwartz]].
@@ -282,33 +288,34 @@ Simpler window movement
   (global-set-key (kbd "M-O") (lambda () (interactive) (other-window -1)))
 #+END_SRC
 
-** Mode line
-
-Make sure spaceline is set up after the theme you use.
+Toggle window split: [[https://www.emacswiki.org/emacs/ToggleWindowSplit][EmacsWiki - ToggleWindowSplit]]
 #+BEGIN_SRC emacs-lisp
-  (use-package spaceline :after moe-theme
-    :ensure t
-    :config
-    (setq powerline-default-separator 'wave)
-    (spaceline-emacs-theme))
-#+END_SRC
-
-Set up spaceline with a toggle.
-#+BEGIN_SRC emacs-lisp
-  (defun kg/toggle-spaceline ()
-    "Toggle between no mode-line and spaceline"
+  (defun toggle-window-split ()
     (interactive)
-    (if (get 'kg/toggle-spaceline 'state)
-        (progn
-          (setq mode-line-format nil)
-          (put 'kg/toggle-spaceline 'state nil)
-          )
-      (progn
-        (setq mode-line-format '("%e" (:eval (spaceline-ml-main))))
-        (put 'kg/toggle-spaceline 'state t))))
+    (if (= (count-windows) 2)
+        (let* ((this-win-buffer (window-buffer))
+               (next-win-buffer (window-buffer (next-window)))
+               (this-win-edges (window-edges (selected-window)))
+               (next-win-edges (window-edges (next-window)))
+               (this-win-2nd (not (and (<= (car this-win-edges)
+                                           (car next-win-edges))
+                                       (<= (cadr this-win-edges)
+                                           (cadr next-win-edges)))))
+               (splitter
+                (if (= (car this-win-edges)
+                       (car (window-edges (next-window))))
+                    'split-window-horizontally
+                  'split-window-vertically)))
+          (delete-other-windows)
+          (let ((first-win (selected-window)))
+            (funcall splitter)
+            (if this-win-2nd (other-window 1))
+            (set-window-buffer (selected-window) this-win-buffer)
+            (set-window-buffer (next-window) next-win-buffer)
+            (select-window first-win)
+            (if this-win-2nd (other-window 1))))))
 
-  (setq-default mode-line-format nil)
-  (global-set-key (kbd "M-s") 'kg/toggle-spaceline)
+  (global-set-key (kbd "C-|") 'toggle-window-split)
 #+END_SRC
 
 ** Distraction-free environments & buffer decorations
@@ -506,16 +513,9 @@ Better buffer formatting in ~ivy-switch-buffer~.
 
 ** Avy for fast jumping anywhere visible.
 
-First, enable key chords.
+Set keys for avy movement.
 #+BEGIN_SRC emacs-lisp
-  (use-package key-chord
-    :config
-    (key-chord-mode +1))
-#+END_SRC
-
-Then set some for avy movement.
-#+BEGIN_SRC emacs-lisp
-  (use-package avy :after key-chord
+  (use-package avy
     :config
     ; define variants that ding the bell
     (defun kg/avy-goto-char-ding ()
@@ -535,10 +535,11 @@ Then set some for avy movement.
     )
 #+END_SRC
 
-* Color themes
+* Visual
 
-I use =moe-theme=, which is actually much more than just a color
-theme.
+** Moe theme
+
+Moe theme can be loaded the same way as other themes now (can be hot-swapped with ~counsel-select-theme~)
 #+BEGIN_SRC emacs-lisp
   (use-package moe-theme
     :after markdown-mode
@@ -547,9 +548,53 @@ theme.
     (setq moe-theme-resize-markdown-title '(1.4 1.3 1.2 1.1 1.0 1.0))
     (setq moe-theme-resize-rst-title '(1.4 1.3 1.2 1.1 1.0 1.0))
     :config
-    (moe-theme-set-color 'w/b)
-    (moe-dark)
+    ; (moe-dark)
     )
+#+END_SRC
+
+** Doom themes
+
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-themes
+    :config
+    (load-theme 'doom-vibrant))
+#+END_SRC
+
+* Mode line
+
+** Moody and minions
+
+From [[github.com/tarsius][tarsius (github)]].
+#+BEGIN_SRC emacs-lisp
+  (use-package moody
+    :config
+    (setq x-underline-at-descent-line t)
+    )
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package minions
+    :config
+    (minions-mode 1))
+#+END_SRC
+
+** Modeline setup
+
+    Completely custom modeline using eyebrowse, moody, and minions.
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default mode-line-format
+     (quote
+      ("%e"
+       ((eyebrowse-mode
+	 (:eval
+	  (eyebrowse-mode-line-indicator))))
+       " " mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification moody-mode-line-buffer-identification " " mode-line-position
+       (vc-mode moody-vc-mode)
+       " " minions-mode-line-modes " "
+       (:eval
+	(format-time-string "%Y-%m-%d [%H:%M]"))
+       mode-line-end-spaces)))
 #+END_SRC
 
 * Org mode
@@ -575,8 +620,9 @@ Basic options for using/displaying =org-mode= in any of the many ways to come.
     (setq org-startup-with-inline-images t)
     (setq org-startup-with-latex-preview nil)
     (setq org-image-actual-width 400)
-    (setq org-startup-indented t)
+    (setq org-startup-indented nil)
     (setq org-hide-emphasis-markers nil)
+    (setq org-src-window-setup 'current-window)
     (setq org-src-fontify-natively t)
     (setq org-src-window-setup 'current-window)
     (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0)))
@@ -866,7 +912,7 @@ Set TRAMP connections to use persistent ssh
 *Note:* using an Ubuntu Mate distribution has resulted in a different
  terminal name: ~mate-terminal~
 #+BEGIN_SRC emacs-lisp
-  (setq sys-terminal-name "gnome-terminal")
+  (setq sys-terminal-name "mate-terminal")
 #+END_SRC
 
 Open an external ~gnome-terminal~ in the remote directory of a TRAMP
@@ -905,7 +951,7 @@ buffer. This was pieced together using  elements from:
     (interactive)
     (if (file-remote-p default-directory)
         (kg/open-gnome-terminal-remote)
-      (shell-command sys-terminal-name)))
+      (async-shell-command sys-terminal-name)))
   ;; Hotkey for gnome terminal -- Think "open {T}erminal"
   (global-set-key (kbd "C-c t") 'kg/open-gnome-terminal)
 #+END_SRC
@@ -1377,16 +1423,3 @@ than =interleave= and fits my workflow better.
 Generally linked in place, otherwise here:
 
 bibliography:index.bib bibliographystyle:acm
-
-
-#+BEGIN_SRC emacs-lisp
-  (use-package dashboard
-    :ensure t
-    :diminish dashboard-mode
-    :config
-    ;; (setq dashboard-banner-logo-title "")
-    ;; (setq dashboard-startup-banner "/path/to/image")
-    (setq dashboard-items '((recents  . 10)
-                            (bookmarks . 10)))
-    (dashboard-setup-startup-hook))
-#+END_SRC
