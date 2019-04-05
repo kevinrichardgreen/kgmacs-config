@@ -473,19 +473,19 @@ Main repository: [[https://github.com/Fuco1/dired-hacks][GitHub]]
 
 Just as intuitive as IDO, seems lighter weight than helm.
 #+BEGIN_SRC emacs-lisp
-  (use-package ivy :demand
+  (use-package ivy
     :config
     (global-set-key "\C-s" 'swiper)
-    (global-set-key "\M-x" 'counsel-M-x)
+    (global-set-key (kbd "M-x") 'counsel-M-x)
     (global-set-key (kbd "C-c k") 'counsel-ag)
     (setq ivy-use-virtual-buffers t
-          ivy-count-format "%d/%d "
-          enable-recursive-minibuffers t)
+	  ivy-count-format "%d/%d "
+	  enable-recursive-minibuffers t)
     (ivy-mode 1)
     ;; configure regexp engine.
     (setq ivy-re-builders-alist
-          ;; allow input not in order
-          '((t   . ivy--regex-ignore-order)))
+	  ;; allow input not in order
+	  '((t   . ivy--regex-ignore-order)))
     ;; ivy defaults to 'ivy-dispatching-done for M-o... overwrite
     (define-key ivy-minibuffer-map (kbd "M-o") 'other-window)
     (global-set-key (kbd "M-O") (lambda () (interactive) (other-window -1)))
