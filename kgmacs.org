@@ -1096,7 +1096,12 @@ Prettify code with clang-format
   ;; clang-format -style=google -dump-config > .clang-format
   (use-package clang-format
     :config
-    (global-set-key (kbd "C-c C-f") 'clang-format-region))
+    (global-set-key (kbd "C-c C-f") 'clang-format-region)
+    ; clang-format save hooks for the C programming modes
+    (add-hook 'c-mode-hook (lambda () (add-to-list 'write-file-functions 'clang-format-buffer)))
+    (add-hook 'c++-mode-hook (lambda () (add-to-list 'write-file-functions 'clang-format-buffer)))
+    (add-hook 'glsl-mode-hook (lambda () (add-to-list 'write-file-functions 'clang-format-buffer)))
+  )
 #+END_SRC
 
 *** COMMENT TODO Get rtags/counsel configured
