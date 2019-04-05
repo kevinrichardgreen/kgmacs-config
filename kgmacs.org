@@ -16,7 +16,7 @@ Frame titles - incorporate buffer names.
 
 Font.  (set in a way that will work with emacsclient frames)
 #+BEGIN_SRC emacs-lisp
-  (setq default-frame-alist '((font . "Monospace-13")))
+  (setq default-frame-alist '((font . "Monospace-10")))
 #+END_SRC
 
 Enable things relating to variable pitch font.
