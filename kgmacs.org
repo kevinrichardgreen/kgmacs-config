@@ -932,7 +932,7 @@ Set TRAMP connections to use persistent ssh
 *Note:* using an Ubuntu Mate distribution has resulted in a different
  terminal name: ~mate-terminal~
 #+BEGIN_SRC emacs-lisp
-  (setq sys-terminal-name "mate-terminal")
+  (setq sys-terminal-name "gnome-terminal")
 #+END_SRC
 
 Open an external ~gnome-terminal~ in the remote directory of a TRAMP
