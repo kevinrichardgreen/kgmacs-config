@@ -316,6 +316,7 @@ Toggle window split: [[https://www.emacswiki.org/emacs/ToggleWindowSplit][EmacsW
             (if this-win-2nd (other-window 1))))))
 
   (global-set-key (kbd "C-|") 'toggle-window-split)
+  (global-set-key (kbd "C-\\") 'window-swap-states)
 #+END_SRC
 
 ** Distraction-free environments & buffer decorations
