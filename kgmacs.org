@@ -1098,14 +1098,16 @@ Prettify code with clang-format
     :config
     (global-set-key (kbd "C-c C-f") 'clang-format-region))
 #+END_SRC
+
+*** COMMENT TODO Get rtags/counsel configured
+
+#+BEGIN_SRC emacs-lisp
     :config
     (define-key counsel-gtags-mode-map (kbd "M-t") 'counsel-gtags-find-definition)
     (define-key counsel-gtags-mode-map (kbd "M-r") 'counsel-gtags-find-reference)
     (define-key counsel-gtags-mode-map (kbd "M-s") 'counsel-gtags-find-symbol)
     (define-key counsel-gtags-mode-map (kbd "M-,") 'counsel-gtags-go-backward))
 #+END_SRC
-
-*** TODO Get rtags/counsel configured
 
 ** Haskell
 
