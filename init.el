@@ -44,7 +44,7 @@
   :config
   ;; (setq dashboard-banner-logo-title "")
   ;; (setq dashboard-startup-banner "/path/to/image")
-  (setq dashboard-items '((recents  . 10)
+  (setq dashboard-items '((recents  . 25)
                           (bookmarks . 10))))
 (dashboard-insert-startupify-lists)
 (dashboard-refresh-buffer)
