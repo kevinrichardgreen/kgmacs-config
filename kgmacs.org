@@ -569,36 +569,11 @@ Moe theme can be loaded the same way as other themes now (can be hot-swapped wit
 
 From [[github.com/tarsius][tarsius (github)]].
 #+BEGIN_SRC emacs-lisp
-  (use-package moody
-    :config
-    (setq x-underline-at-descent-line t)
-    )
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
   (use-package minions
     :config
     (minions-mode 1))
 #+END_SRC
-
-** Modeline setup
-
-    Completely custom modeline using eyebrowse, moody, and minions.
-
-#+BEGIN_SRC emacs-lisp
-  (setq-default mode-line-format
-     (quote
-      ("%e"
-       ((eyebrowse-mode
-	 (:eval
-	  (eyebrowse-mode-line-indicator))))
-       " " mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification moody-mode-line-buffer-identification " " mode-line-position
-       (vc-mode moody-vc-mode)
-       " " minions-mode-line-modes " "
-       (:eval
-	(format-time-string "%Y-%m-%d [%H:%M]"))
-       mode-line-end-spaces)))
-#+END_SRC
+Note the simplicity of the default modeline with minions. Very info-dense.
 
 * Org mode
 
