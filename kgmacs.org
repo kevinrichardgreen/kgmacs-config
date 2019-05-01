@@ -1077,6 +1077,40 @@ Prettify code with clang-format
   )
 #+END_SRC
 
+*** clang-format-file-remotely
+
+Idea: Run =clang-format= on the remote machine.
+- easily accomplished via eshell
+- needs some more protections/extensions to be very useful:
+  - check that it is the clang-format program being run (ie., not the elisp clang-format function)
+  - incorporate style and assume-file-name arguments as in the clang-format.el package
+  - allow for region and/or buffer only formatting
+#+begin_src emacs-lisp
+  (defun kg/clang-format-file-remotely ()
+    "Use clang-format on the remote machine. This is quirky as
+    hell, but works well enough for the time being. NOTES 1. uses
+    eshell 2. clang-format must be installed on the remote machine
+    3. outputs to the original buffer (useful for undo/redo) 4.
+    eshell prompts to quite due to process still running, WAIT
+    UNTIL IT FINISHES BEFORE HITTING \"y\"
+  "
+  (interactive)
+  (let* (
+	 (remote-file (file-name-nondirectory buffer-file-name))
+	 (the-buffer-name (buffer-name))
+	 (clang-format-command (concat
+				"clang-format " ;; problems if clang-format not installed on remote machine...
+				remote-file
+				" > #<buffer " the-buffer-name ">"
+				;; redirect to original buffer
+				)))
+    (eshell 42) ; eshell is nice enough to open in the correct directory through TRAMP
+    (insert clang-format-command)
+    (eshell-send-input)
+    (kill-buffer "*eshell*<42>")))
+#+end_src
+
+
 *** COMMENT TODO Get rtags/counsel configured
 
 #+BEGIN_SRC emacs-lisp
