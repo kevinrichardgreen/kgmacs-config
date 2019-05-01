@@ -549,7 +549,8 @@ Moe theme can be loaded the same way as other themes now (can be hot-swapped wit
     (setq moe-theme-resize-markdown-title '(1.4 1.3 1.2 1.1 1.0 1.0))
     (setq moe-theme-resize-rst-title '(1.4 1.3 1.2 1.1 1.0 1.0))
     :config
-    ; (moe-dark)
+    (moe-theme-set-color 'red)
+    (moe-dark)
     )
 #+END_SRC
 
@@ -558,7 +559,8 @@ Moe theme can be loaded the same way as other themes now (can be hot-swapped wit
 #+BEGIN_SRC emacs-lisp
   (use-package doom-themes
     :config
-    (load-theme 'doom-vibrant))
+    ;; (load-theme 'doom-vibrant)
+  )
 #+END_SRC
 
 * Mode line
