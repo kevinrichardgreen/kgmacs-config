@@ -545,15 +545,6 @@ Moe theme can be loaded the same way as other themes now (can be hot-swapped wit
     )
 #+END_SRC
 
-** Doom themes
-
-#+BEGIN_SRC emacs-lisp
-  (use-package doom-themes
-    :config
-    ;; (load-theme 'doom-vibrant)
-  )
-#+END_SRC
-
 * Mode line
 
 ** Moody and minions
