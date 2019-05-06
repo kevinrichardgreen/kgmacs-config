@@ -69,17 +69,6 @@ Remember position in a file: keeps ~/ clean,  activated on all buffers
     :init (save-place-mode))
 #+END_SRC
 
-Line numbering - relative line numbers in programming and text modes
-only. DISABLED FOR NOW - trying all navigation with ~avy~.
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package linum-relative
-  ;;   :config
-  ;;   (setq relative-line-numbers-motion-function 'forward-visible-line)
-  ;;   (setq linum-relative-current-symbol "")
-  ;;   (add-hook 'text-mode-hook 'linum-relative-mode)
-  ;;   (add-hook 'prog-mode-hook 'linum-relative-mode))
-#+END_SRC
-
 Global line highlighting.
 #+BEGIN_SRC emacs-lisp
   (global-hl-line-mode 1)
