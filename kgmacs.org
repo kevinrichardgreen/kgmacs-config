@@ -433,9 +433,11 @@ Assign ffap to a key to save typing ~M-x ffap~ all of the time.
 Increase the recentf list length, save them often
 #+BEGIN_SRC emacs-lisp
   (use-package sync-recentf
-    :ensure t)
-  (setq recentf-max-menu-items 200)
-  (setq recentf-max-saved-items 200)
+    :ensure t
+    :config
+    (setq recent-auto-cleanup 600) ;; Clenaup every 10 mins
+    (setq recentf-max-menu-items 200)
+    (setq recentf-max-saved-items 200))
 #+END_SRC
 
 ** TODO dired-hacks
@@ -536,7 +538,7 @@ Moe theme can be loaded the same way as other themes now (can be hot-swapped wit
 
 * Mode line
 
-** Moody and minions
+** Minions
 
 From [[github.com/tarsius][tarsius (github)]].
 #+BEGIN_SRC emacs-lisp
