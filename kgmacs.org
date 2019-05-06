@@ -1441,6 +1441,12 @@ Get a nice moe-dark-midnight style view.
     (setq pdf-view-midnight-colors '("#c6c6c6" . "#303030" ))
     (pdf-view-midnight-minor-mode)
     )
+  (defun kg/pdf-midnite-moe-inverse-dark ()
+    "Set pdf-view-midnight-colors to white on moe-dark bg."
+    (interactive)
+    (setq pdf-view-midnight-colors '("#707070" . "#c6c6c6" ))
+    (pdf-view-midnight-minor-mode)
+    )
   (defun kg/pdf-midnite-moe-dark-amber ()
     "Set pdf-view-midnight-colors to amber on moe-dark bg."
     (interactive)
@@ -1457,8 +1463,9 @@ Get a nice moe-dark-midnight style view.
     "Midnight mode colour schemes bound to keys"
     (local-set-key (kbd "!") (quote bms/pdf-no-filter))
     (local-set-key (kbd "@") (quote kg/pdf-midnite-moe-dark))
-    (local-set-key (kbd "#") (quote kg/pdf-midnite-moe-dark-amber))
-    (local-set-key (kbd "$") (quote kg/pdf-midnite-moe-dark-green))
+    (local-set-key (kbd "#") (quote kg/pdf-midnite-moe-inverse-dark))
+    (local-set-key (kbd "$") (quote kg/pdf-midnite-moe-dark-amber))
+    (local-set-key (kbd "%") (quote kg/pdf-midnite-moe-dark-green))
     )
   (add-hook 'pdf-view-mode-hook 'bms/pdf-midnite-colour-schemes)
   ;; (add-hook 'pdf-view-mode-hook (lambda ()
