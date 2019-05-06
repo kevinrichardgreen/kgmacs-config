@@ -1254,13 +1254,6 @@ Managing all of my BibTeX entries with =bibtex-utils=.
       (elpy-enable))
 #+END_SRC
 
-Jupyter notebooks through =ein=
-#+BEGIN_SRC emacs-lisp
-  (use-package ein
-    :config )
-#+END_SRC
-
-
 ** Gnuplot
 
 Get the ~gnuplot~ script editing and comint modes.
