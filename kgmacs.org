@@ -886,6 +886,26 @@ Open note file for today.
           (end-of-line))))))
 #+END_SRC
 
+** org-present
+
+Simple mode for displaying (presenting) org files. Sane defaults set.
+#+begin_src emacs-lisp
+  (use-package org-present
+  :config
+       (add-hook 'org-present-mode-hook
+		 (lambda ()
+		   (org-present-big)
+		   (org-display-inline-images)
+		   (org-present-hide-cursor)
+		   (org-present-read-only)))
+       (add-hook 'org-present-mode-quit-hook
+		 (lambda ()
+		   (org-present-small)
+		   (org-remove-inline-images)
+		   (org-present-show-cursor)
+		   (org-present-read-write))))
+#+end_src
+
 * She sells sea shells
 
 Well, she is a /TRAMP/...
