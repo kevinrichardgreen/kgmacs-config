@@ -1416,13 +1416,13 @@ Get a nice moe-dark-midnight style view.
   (defun kg/pdf-midnite-moe-dark-amber ()
     "Set pdf-view-midnight-colors to amber on moe-dark bg."
     (interactive)
-    (setq pdf-view-midnight-colors '("#ff9900" . "#303030" ))
+    (setq pdf-view-midnight-colors '("#ee8800" . "#303030" ))
     (pdf-view-midnight-minor-mode)
     )
   (defun kg/pdf-midnite-moe-dark-green ()
     "Set pdf-view-midnight-colors to green on moe-dark bg."
     (interactive)
-    (setq pdf-view-midnight-colors '("#00B800" . "#303030" ))
+    (setq pdf-view-midnight-colors '("#008800" . "#303030" ))
     (pdf-view-midnight-minor-mode)
     )
   (defun bms/pdf-midnite-colour-schemes ()
