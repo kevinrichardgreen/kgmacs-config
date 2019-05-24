@@ -1445,6 +1445,16 @@ than =interleave= and fits my workflow better.
     :ensure t)
 #+END_SRC
 
+** Saving place in pdfs
+
+#+begin_src emacs-lisp
+  (use-package pdf-view-restore
+    :after pdf-tools
+    :config
+    (add-hook 'pdf-view-mode-hook 'pdf-view-restore-mode)
+    (setq pdf-view-restore-filename "~/.emacs.d/.pdf-view-restore"))
+#+end_src
+
 * References
 
 Generally linked in place, otherwise here:
