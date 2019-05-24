@@ -522,7 +522,7 @@ Set keys for avy movement.
 
 ** Moe theme
 
-Moe theme can be loaded the same way as other themes now (can be hot-swapped with ~counsel-select-theme~)
+Moe theme can be loaded the same way as other themes now (can be hot-swapped with ~counsel-load-theme~)
 #+BEGIN_SRC emacs-lisp
   (use-package moe-theme
     :after markdown-mode
@@ -1303,6 +1303,8 @@ anything? I could perhaps make this for only in ~poly-noweb-mode~).
 
 * Pdf viewing
 
+** pdf-tools
+
 =pdf-tools= is a far superior pdf viewer than the default DocView mode
 that comes with emacs.
 #+BEGIN_SRC emacs-lisp
@@ -1372,8 +1374,9 @@ rotates them in the pdf, not just in this viewer.
   (define-key pdf-view-mode-map (kbd "R") 'pdf-view-rotate-clockwise)
 #+END_SRC
 
-Alternative colour schemes, idea from
-[[http://babbagefiles.blogspot.ca/2017/11/more-pdf-tools-tricks.html]].
+** Alternative colour schemes in pdf-view mode
+
+idea from [[http://babbagefiles.blogspot.ca/2017/11/more-pdf-tools-tricks.html]].
 Get a nice moe-dark-midnight style view.
 #+BEGIN_SRC emacs-lisp
   ;; midnite mode hook
@@ -1437,6 +1440,8 @@ Get a nice moe-dark-midnight style view.
   ;; (add-hook 'pdf-view-mode-hook (lambda ()
   ;;                                 (kg/pdf-midnite-moe-dark))) ; automatically selects a midnite mode
 #+END_SRC
+
+** Taking notes on pdfs using org-noter
 
 Taking notes on pdfs. This seems to have better fine-grained control
 than =interleave= and fits my workflow better.
