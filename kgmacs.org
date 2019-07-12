@@ -451,10 +451,9 @@ Main repository: [[https://github.com/Fuco1/dired-hacks][GitHub]]
 Just as intuitive as IDO, seems lighter weight than helm.
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
+    :after counsel
     :config
     (global-set-key "\C-s" 'swiper)
-    (global-set-key (kbd "M-x") 'counsel-M-x)
-    (global-set-key (kbd "C-c k") 'counsel-ag)
     (setq ivy-use-virtual-buffers t
 	  ivy-count-format "%d/%d "
 	  enable-recursive-minibuffers t)
@@ -468,6 +467,13 @@ Just as intuitive as IDO, seems lighter weight than helm.
     (global-set-key (kbd "M-O") (lambda () (interactive) (other-window -1)))
     )
 #+END_SRC
+#+begin_src emacs-lisp
+  (use-package counsel
+    :config
+    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "C-c k") 'counsel-ag)
+  )
+#+end_src
 
 Flyspell ivy correction completion.
 #+BEGIN_SRC emacs-lisp
