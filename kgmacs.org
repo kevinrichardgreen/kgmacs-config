@@ -69,6 +69,11 @@ Remember position in a file: keeps ~/ clean,  activated on all buffers
     :init (save-place-mode))
 #+END_SRC
 
+Global highlight line mode
+#+BEGIN_SRC emacs-lisp
+(global-hl-line-mode)
+#+END_SRC
+
 ** TODO handle case when region is active
 
 Soft word wrap for text modes.
