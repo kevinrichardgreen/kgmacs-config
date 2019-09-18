@@ -255,13 +255,6 @@ Enable =winner-mode=.
   (winner-mode 1)
 #+END_SRC
 
-Enable =eyebrowse=.
-#+BEGIN_SRC emacs-lisp
-  (use-package eyebrowse
-    :config
-  (eyebrowse-mode t))
-#+END_SRC
-
 Simpler window movement (*Note funny interaction with ivy's minibuffer expansions... think of a better key combo for this*)
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-o") 'other-window)
