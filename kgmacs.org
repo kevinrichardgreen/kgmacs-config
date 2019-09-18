@@ -705,59 +705,69 @@ Misc export formats that I haven't spent much time customizing.
       (setq org-reveal-mathjax t)))
 #+END_SRC
 
-** COMMENT Agenda
+** Agenda
 
 Customizations of my agenda. Calendar view, todo list and refiling.
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'org
     ;; sync with Google Calendar
     (setq package-check-signature nil)
-    (use-package org-gcal
-      :config
-      (load "~/Dropbox/Documents/gtd/gcal-details")
-      ;; Special key for gcal sync and refresh: G
-      ;; (allows agenda update without internet connection via 'g' key)
-      (require 'org-agenda)
-      (defun org-agenda-gcal-sync-and-redo-all (&optional all)
-        (interactive "P")
-        (org-gcal-sync)
-        (org-agenda-redo-all))
-      (define-key org-agenda-mode-map "G" 'org-agenda-gcal-sync-and-redo-all)
-      )
+    ;; (use-package org-gcal
+    ;;   :config
+    ;;   (load "~/Dropbox/Documents/gtd/gcal-details")
+    ;;   ;; Special key for gcal sync and refresh: G
+    ;;   ;; (allows agenda update without internet connection via 'g' key)
+    ;;   (require 'org-agenda)
+    ;;   (defun org-agenda-gcal-sync-and-redo-all (&optional all)
+    ;;     (interactive "P")
+    ;;     (org-gcal-sync)
+    ;;     (org-agenda-redo-all))
+    ;;   (define-key org-agenda-mode-map "G" 'org-agenda-gcal-sync-and-redo-all))
     ;; (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
     ;; GTD things
-    (setq org-agenda-files '("~/Dropbox/Documents/gtd/gcal.org"
-                             "~/Dropbox/Documents/gtd/inbox.org"
-                             "~/Dropbox/Documents/gtd/work.org"
-                             "~/Dropbox/Documents/gtd/personal.org"))
-    (setq org-refile-targets '(("~/Dropbox/Documents/gtd/work.org" :maxlevel . 1)
-                               ("~/Dropbox/Documents/gtd/personal.org" :maxlevel . 1)
-                               ("~/Dropbox/Documents/gtd/someday.org" :level . 1)))
+    (setq org-agenda-files '("~/pCloudDrive/Documents/org/inbox.org"
+			     "~/pCloudDrive/Documents/org/work.org"
+			     "~/pCloudDrive/Documents/org/personal.org"
+			     "~/pCloudDrive/Documents/org/meet.org"
+			     "~/pCloudDrive/Documents/org/appts.org"))
+    (setq org-refile-targets '(("~/pCloudDrive/Documents/org/work.org" :maxlevel . 1)
+			       ("~/pCloudDrive/Documents/org/personal.org" :maxlevel . 1)
+			       ("~/pCloudDrive/Documents/org/meetings.org" :maxlevel . 1)
+			       ("~/pCloudDrive/Documents/org/someday.org" :level . 1)
+))
     ;; Special treatment of mu4e buffers
     ;; Capture templates
     (setq org-capture-templates
-          '(
-            ("a" "Appointment" entry (file  "~/Dropbox/Documents/gtd/gcal.org" )
-             "* %?\n\n%^T\n\n")
-            ("f" "File-todo [inbox]" entry (file  "~/Dropbox/Documents/gtd/inbox.org" )
-             "* TODO %?\n\n%a\n")
-            ("t" "Todo [inbox]" entry
-             (file "~/Dropbox/Documents/gtd/inbox.org")
-             "* TODO %i%?")))
+	  '(
+	    ;; ("a" "Appointment" entry (file  "~/Dropbox/Documents/gtd/gcal.org" )
+	    ;;  "* %?\n\n%^T\n\n")
+	    ("t" "Todo [inbox]" entry
+	     (file "~/pCloudDrive/Documents/org/inbox.org")
+	     "* TODO %i%?")
+	    ("f" "File-todo [inbox]" entry (file  "~/pCloudDrive/Documents/org/inbox.org" )
+	     "* TODO %?\n\n%a\n")
+	    ("j" "Journal Entry"
+	     entry (file+datetree "~/pCloudDrive/Crypto Folder/org/journal.org")
+	     "* %?"
+	     :empty-lines 1)
+	    ("a" "Appointment"
+	     entry (file "~/pCloudDrive/Documents/org/appts.org")
+	     "* TODO %?"
+	     :empty-lines 1)))
     ;; My personal brand of keywords
-    (setq org-todo-keywords '((sequence "TODO(t!)" "WAITING(w@)" "PROGRESS(p@)" "DELEGATED(g@)"
-                                        "|" "DONE(d!)" "DEFERRED(r@)" "CANCELLED(c@)")))
+    (setq org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@)" "PROG(p@)" "DLGT(g@)"
+					"|" "DONE(d!)" "DFRD(r@)" "CNCL(c@)")))
     ;; And a bunch of settings
     (setq org-refile-use-outline-path 'file
-          org-outline-path-complete-in-steps nil
-          org-refile-allow-creating-parent-nodes 'confirm
-          org-agenda-start-on-weekday nil
-          org-agenda-todo-ignore-scheduled "all"
-          org-agenda-skip-scheduled-if-done t
-          org-deadline-warning-days 5
-          org-log-done 'time
-          org-agenda-window-setup 'current-window
-          org-agenda-span 'week))
+	  org-outline-path-complete-in-steps nil
+	  org-refile-allow-creating-parent-nodes 'confirm
+	  org-agenda-start-on-weekday nil
+	  org-agenda-todo-ignore-scheduled "all"
+	  org-agenda-skip-scheduled-if-done nil
+	  org-deadline-warning-days 7
+	  org-log-done 'time
+	  org-agenda-window-setup 'current-window
+	  org-agenda-span 'day))
 #+END_SRC
 
 Archiving done states in a file: [[https://stackoverflow.com/a/27043756/1899759][StackOverflow]] (note as far as I can
