@@ -835,16 +835,16 @@ axon cite:Hodgkin1952.
   (use-package org-ref
     :config
     (with-eval-after-load 'org
-      (setq org-ref-notes-directory "~/Dropbox/Documents/notes/reading"
-            org-ref-bibliography-notes "~/Dropbox/Documents/index.org"
-            org-ref-default-bibliography '("~/Dropbox/Documents/index.bib")
-            org-ref-pdf-directory '("~/Dropbox/Documents/pdf_books/"
-                                    "~/Dropbox/Documents/pdf_papers"))
-      (setq helm-bibtex-bibliography "~/Dropbox/Documents/index.bib"
-            helm-bibtex-library-path '("~/Dropbox/Documents/pdf_books/"
-                                       "~/Dropbox/Documents/pdf_papers")
-            helm-bibtex-notes-path "~/Dropbox/Documents/notes/reading"
-            bibtex-completion-bibliography "~/Dropbox/Documents/index.bib")))
+      (setq org-ref-notes-directory "~/pCloudDrive/Documents/notes/reading"
+            org-ref-bibliography-notes "~/pCloudDrive/Documents/bib_notes.org"
+            org-ref-default-bibliography '("~/pCloudDrive/Documents/index.bib")
+            org-ref-pdf-directory '("~/pCloudDrive/Documents/pdf_books/"
+                                    "~/pCloudDrive/Documents/pdf_papers"))
+      (setq helm-bibtex-bibliography "~/pCloudDrive/Documents/index.bib"
+            helm-bibtex-library-path '("~/pCloudDrive/Documents/pdf_books/"
+                                       "~/pCloudDrive/Documents/pdf_papers")
+            helm-bibtex-notes-path "~/pCloudDrive/Documents/bib_notes.org"
+            bibtex-completion-bibliography "~/pCloudDrive/Documents/index.bib")))
 #+END_SRC
 
 ** Time stamps
