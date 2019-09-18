@@ -561,23 +561,6 @@ Note the simplicity of the default modeline with minions. Very info-dense.
 =org-mode= is arguably the workhorse of emacs.  Making sure it behaves
 as you wish is critical to having a good emacs experience.
 
-** Bugfix (TEMP) for new org blocks
-
-Hopefully fixed soon... for now, set this manually:
-#+BEGIN_SRC emacs-lisp
-  (setq org-structure-template-alist
-	(quote
-	 (("a" . "export ascii")
-	  ("c" . "center")
-	  ("C" . "comment")
-	  ("e" . "example")
-	  ("E" . "export")
-	  ("h" . "export html")
-	  ("l" . "export latex")
-	  ("q" . "quote")
-	  ("s" . "src"))))
-#+END_SRC
-
 ** Fundamental org
 
 Basic options for using/displaying =org-mode= in any of the many ways to come.
