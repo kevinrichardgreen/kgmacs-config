@@ -495,9 +495,17 @@ Better buffer formatting in ~ivy-switch-buffer~.
 
 ** Avy for fast jumping anywhere visible.
 
+First, enable key chords.
+#+BEGIN_SRC emacs-lisp
+  (use-package key-chord
+    :config
+    (key-chord-mode +1))
+#+END_SRC
+
 Set keys for avy movement.
 #+BEGIN_SRC emacs-lisp
   (use-package avy
+    :after key-chord
     :config
     ; define variants that ding the bell
     (defun kg/avy-goto-char-ding ()
@@ -512,8 +520,8 @@ Set keys for avy movement.
       (interactive)
       (ding)
       (call-interactively 'avy-goto-word-1))
-    (global-set-key (kbd "M-j") 'kg/avy-goto-char-ding)
-    (global-set-key (kbd "M-s") 'avy-goto-line)
+    (key-chord-define-global "ij" 'kg/avy-goto-char-ding)
+    (key-chord-define-global "kj" 'avy-goto-line)
     )
 #+END_SRC
 
