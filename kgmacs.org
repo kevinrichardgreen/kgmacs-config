@@ -763,7 +763,7 @@ Customizations of my agenda. Calendar view, todo list and refiling.
 	  org-refile-allow-creating-parent-nodes 'confirm
 	  org-agenda-start-on-weekday nil
 	  org-agenda-todo-ignore-scheduled "all"
-	  org-agenda-skip-scheduled-if-done nil
+	  org-agenda-skip-scheduled-if-done t
 	  org-deadline-warning-days 7
 	  org-log-done 'time
 	  org-agenda-window-setup 'current-window
