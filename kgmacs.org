@@ -751,9 +751,9 @@ Customizations of my agenda. Calendar view, todo list and refiling.
 	    ;;  "* %?\n\n%^T\n\n")
 	    ("t" "Todo [inbox]" entry
 	     (file "~/pCloudDrive/Documents/org/inbox.org")
-	     "* TODO %i%?")
+	     "* TODO [#B] %i%?")
 	    ("f" "File-todo [inbox]" entry (file  "~/pCloudDrive/Documents/org/inbox.org" )
-	     "* TODO %?\n\n%a\n")
+	     "* TODO [#B] %?\n\n%a\n")
 	    ("j" "Journal Entry"
 	     entry (file+datetree "~/pCloudDrive/Crypto Folder/org/journal.org")
 	     "* %?"
