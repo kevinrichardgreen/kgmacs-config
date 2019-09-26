@@ -525,8 +525,8 @@ Set keys for avy movement.
       (interactive)
       (ding)
       (call-interactively 'avy-goto-word-1))
-    (key-chord-define-global "ij" 'kg/avy-goto-char-ding)
-    (key-chord-define-global "kj" 'avy-goto-line)
+    (key-chord-define-global "kj" 'kg/avy-goto-char-ding)
+    (key-chord-define-global "ij" 'avy-goto-line)
     )
 #+END_SRC
 
