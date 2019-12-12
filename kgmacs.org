@@ -354,6 +354,13 @@ Better default behaviour of the \*compilation\* buffer.
   (setq compilation-skip-threshold 2) ; don't worry about warnings!
 #+END_SRC
 
+** async process spawning
+
+Bury the annoying buffers that pop up: [[help:async-shell-command]]
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'display-buffer-alist (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+#+END_SRC
+
 * English
 
 ~flyspell~ for text files and code files.
