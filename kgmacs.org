@@ -366,7 +366,7 @@ Bury the annoying buffers that pop up: [[help:async-shell-command]]
 ~flyspell~ for text files and code files.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'text-mode-hook 'flyspell-mode)
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+  ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 #+END_SRC
 
 Better upcase/downcase/capitalize functions
