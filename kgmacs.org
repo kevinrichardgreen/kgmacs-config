@@ -1156,6 +1156,12 @@ Prettify code with clang-format
   )
 #+END_SRC
 
+*** Charm++ highlighting
+
+=.ci= files in Charm++ can be highlighted like normal C++ files.
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.ci\\'" . c++-mode))
+#+END_SRC
 *** clang-format-file-remotely
 
 Idea: Run =clang-format= on the remote machine.
