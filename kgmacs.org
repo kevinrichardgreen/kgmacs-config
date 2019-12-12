@@ -1018,7 +1018,7 @@ buffer. This was pieced together using  elements from:
                         ssh-shared-opts " -t "
                         remote-system
                         " \\\\\\\"cd " remote-dir
-                        "; exec $SHELL\\\\\\\"\\\"\"")))
+                        "; exec $SHELL; \\\\\\\"\\\"\"")))
       (async-shell-command gt-command)))
 
   (defun kg/open-gnome-terminal ()
