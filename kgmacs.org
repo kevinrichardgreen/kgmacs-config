@@ -176,8 +176,11 @@ Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https:/
   (use-package ibuffer-vc
     :after ibuffer
     :config
+    (setq ibuffer-vc-skip-if-remote t) ;; set to nil is useful, but takes a long
+				       ;; time over slow connections... set
+				       ;; manually if you're on a fast connection
     (add-hook 'ibuffer-mode-hook
-              #'ibuffer-vc-set-filter-groups-by-vc-root))
+	      #'ibuffer-vc-set-filter-groups-by-vc-root))
 
   (use-package ibuffer-tramp
     :after ibuffer-vc
@@ -186,15 +189,31 @@ Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https:/
       "Toggles between TRAMP sort and VC project sort in ibuffer-mode"
       (interactive)
       (if (get 'kg/ibuffer-toggle-tramp-vc 'state)
-          (progn
-            (ibuffer-vc-set-filter-groups-by-vc-root)
-            (put 'kg/ibuffer-toggle-tramp-vc 'state nil)
-            )
-        (progn
-          (ibuffer-tramp-set-filter-groups-by-tramp-connection)
-          (put 'kg/ibuffer-toggle-tramp-vc 'state t))))
+	  (progn
+	    (ibuffer-vc-set-filter-groups-by-vc-root)
+	    (put 'kg/ibuffer-toggle-tramp-vc 'state nil)
+	    )
+	(progn
+	  (ibuffer-tramp-set-filter-groups-by-tramp-connection)
+	  (put 'kg/ibuffer-toggle-tramp-vc 'state t))))
     (add-hook 'ibuffer-mode-hook
-              (lambda () (local-set-key (kbd "M-t") #'kg/ibuffer-toggle-tramp-vc))))
+	      (lambda () (local-set-key (kbd "M-t") #'kg/ibuffer-toggle-tramp-vc))))
+#+END_SRC
+
+Collapse and expand all filter groups in =ibuffer=.
+#+BEGIN_SRC emacs-lisp
+  (defun kg/collapse-all-ibuffer-filter-groups ()
+    "Collapse all filter groups at once"
+    (interactive)
+    (setq ibuffer-hidden-filter-groups
+	  (mapcar #'car (ibuffer-current-filter-groups-with-position)))
+    (ibuffer-update nil t))
+
+  (defun kg/expand-all-ibuffer-filter-groups ()
+    "Expand all filter groups at once"
+    (interactive)
+    (setq ibuffer-hidden-filter-groups nil)
+    (ibuffer-update nil t))
 #+END_SRC
 
 Don't allow backgrounding of emacs.
