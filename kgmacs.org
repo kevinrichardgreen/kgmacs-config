@@ -423,7 +423,15 @@ displayed in windows
   (setq dired-dwim-target t)
 #+END_SRC
 
-Open files and goto lines like we see from g++ etc. i.e.
+Get git information in dired buffers
+#+BEGIN_SRC emacs-lisp
+(use-package dired-git-info
+    :ensure t
+    :bind (:map dired-mode-map
+                (")" . dired-git-info-mode)))
+#+END_SRC
+
+Open files and goto lines like we see from g++ errors, etc. i.e.
 =filename:line=. Also useful for noweb source if formatted in this way.
 Courtesy of [[https://stackoverflow.com/a/3141456/1899759][StackOverflow]].
 #+BEGIN_SRC emacs-lisp
