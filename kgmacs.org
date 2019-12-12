@@ -756,65 +756,66 @@ Misc export formats that I haven't spent much time customizing.
 
 Customizations of my agenda. Calendar view, todo list and refiling.
 #+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'org
-    ;; sync with Google Calendar
-    (setq package-check-signature nil)
-    ;; (use-package org-gcal
-    ;;   :config
-    ;;   (load "~/Dropbox/Documents/gtd/gcal-details")
-    ;;   ;; Special key for gcal sync and refresh: G
-    ;;   ;; (allows agenda update without internet connection via 'g' key)
-    ;;   (require 'org-agenda)
-    ;;   (defun org-agenda-gcal-sync-and-redo-all (&optional all)
-    ;;     (interactive "P")
-    ;;     (org-gcal-sync)
-    ;;     (org-agenda-redo-all))
-    ;;   (define-key org-agenda-mode-map "G" 'org-agenda-gcal-sync-and-redo-all))
-    ;; (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
-    ;; GTD things
-    (setq org-agenda-files '("~/pCloudDrive/Documents/org/inbox.org"
-			     "~/pCloudDrive/Documents/org/work.org"
-			     "~/pCloudDrive/Documents/org/personal.org"
-			     "~/pCloudDrive/Documents/org/meet.org"
-			     "~/pCloudDrive/Documents/org/appts.org"))
-    (setq org-refile-targets '(("~/pCloudDrive/Documents/org/work.org" :maxlevel . 1)
-			       ("~/pCloudDrive/Documents/org/personal.org" :maxlevel . 1)
-			       ("~/pCloudDrive/Documents/org/meetings.org" :maxlevel . 1)
-			       ("~/pCloudDrive/Documents/org/someday.org" :level . 1)
-))
-    ;; Special treatment of mu4e buffers
-    ;; Capture templates
-    (setq org-capture-templates
-	  '(
-	    ;; ("a" "Appointment" entry (file  "~/Dropbox/Documents/gtd/gcal.org" )
-	    ;;  "* %?\n\n%^T\n\n")
-	    ("t" "Todo [inbox]" entry
-	     (file "~/pCloudDrive/Documents/org/inbox.org")
-	     "* TODO [#B] %i%?")
-	    ("f" "File-todo [inbox]" entry (file  "~/pCloudDrive/Documents/org/inbox.org" )
-	     "* TODO [#B] %?\n\n%a\n")
-	    ("j" "Journal Entry"
-	     entry (file+datetree "~/pCloudDrive/Crypto Folder/org/journal.org")
-	     "* %?"
-	     :empty-lines 1)
-	    ("a" "Appointment"
-	     entry (file "~/pCloudDrive/Documents/org/appts.org")
-	     "* TODO %?"
-	     :empty-lines 1)))
-    ;; My personal brand of keywords
-    (setq org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@)" "PROG(p@)" "DLGT(g@)"
-					"|" "DONE(d!)" "DFRD(r@)" "CNCL(c@)")))
-    ;; And a bunch of settings
-    (setq org-refile-use-outline-path 'file
-	  org-outline-path-complete-in-steps nil
-	  org-refile-allow-creating-parent-nodes 'confirm
-	  org-agenda-start-on-weekday nil
-	  org-agenda-todo-ignore-scheduled "all"
-	  org-agenda-skip-scheduled-if-done t
-	  org-deadline-warning-days 7
-	  org-log-done 'time
-	  org-agenda-window-setup 'current-window
-	  org-agenda-span 'day))
+    (with-eval-after-load 'org
+      ;; sync with Google Calendar
+      (setq package-check-signature nil)
+      ;; (use-package org-gcal
+      ;;   :config
+      ;;   (load "~/Dropbox/Documents/gtd/gcal-details")
+      ;;   ;; Special key for gcal sync and refresh: G
+      ;;   ;; (allows agenda update without internet connection via 'g' key)
+      ;;   (require 'org-agenda)
+      ;;   (defun org-agenda-gcal-sync-and-redo-all (&optional all)
+      ;;     (interactive "P")
+      ;;     (org-gcal-sync)
+      ;;     (org-agenda-redo-all))
+      ;;   (define-key org-agenda-mode-map "G" 'org-agenda-gcal-sync-and-redo-all))
+      ;; (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+      ;; GTD things
+      (setq org-agenda-files '("~/Documents/org/inbox.org"
+			       "~/Documents/org/simlab.org"
+			       "~/Documents/org/dailySL.org"
+			       "~/Documents/org/personal.org"
+			       "~/Documents/org/appts.org"))
+      (setq org-refile-targets '(("~/Documents/org/simlab.org" :maxlevel . 1)
+				 ("~/Documents/org/personal.org" :maxlevel . 1)
+				 ("~/Documents/org/dailySL.org" :level . 1)
+				 ("~/Documents/org/someday.org" :level . 1)
+				 ("~/Documents/org/appts.org" :level . 1)
+				 ))
+      ;; Special treatment of mu4e buffers
+      ;; Capture templates
+      (setq org-capture-templates
+	    '(
+	      ;; ("a" "Appointment" entry (file  "~/Dropbox/Documents/gtd/gcal.org" )
+	      ;;  "* %?\n\n%^T\n\n")
+	      ("t" "Todo [inbox]" entry
+	       (file "~/Documents/org/inbox.org")
+	       "* TODO [#B] %i%?")
+	      ("f" "File-todo [inbox]" entry (file  "~/Documents/org/inbox.org" )
+	       "* TODO [#B] %?\n\n%a\n")
+	      ("j" "Journal Entry"
+	       entry (file+datetree "~/pCloudDrive/Crypto Folder/org/journal.org")
+	       "* %?"
+	       :empty-lines 1)
+	      ("a" "Appointment"
+	       entry (file "~/Documents/org/appts.org")
+	       "* TODO %?"
+	       :empty-lines 1)))
+      ;; My personal brand of keywords
+      (setq org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "PROG(p)" "DLGT(g)"
+					  "|" "DONE(d)" "DFRD(r)" "CNCL(c)")))
+      ;; And a bunch of settings
+      (setq org-refile-use-outline-path 'file
+	    org-outline-path-complete-in-steps nil
+	    org-refile-allow-creating-parent-nodes 'confirm
+	    org-agenda-start-on-weekday 1
+	    org-agenda-todo-ignore-scheduled "all"
+	    org-agenda-skip-scheduled-if-done t
+	    org-deadline-warning-days 7
+	    org-log-done nil
+	    org-agenda-window-setup 'current-window
+	    org-agenda-span 'day))
 #+END_SRC
 
 Archiving done states in a file: [[https://stackoverflow.com/a/27043756/1899759][StackOverflow]] (note as far as I can
@@ -832,12 +833,12 @@ higher order function would do, but time!)
      (lambda ()
        (org-archive-subtree)
        (setq org-map-continue-from (outline-previous-heading)))
-     "/CANCELLED" 'file)
+     "/CANC" 'file)
     (org-map-entries
      (lambda ()
        (org-archive-subtree)
        (setq org-map-continue-from (outline-previous-heading)))
-     "/DEFERRED" 'file)
+     "/DFRD" 'file)
   )
 #+END_SRC
 
@@ -848,7 +849,7 @@ Clocking tasks within my org-agenda
   (with-eval-after-load 'org
     ;; Agenda clock report parameters
     (setq org-agenda-clockreport-parameter-plist
-	  '(:maxlevel 3 :fileskip0 t :compact t :narrow 60 :score 0))
+	  '(:link t :maxlevel 3 :fileskip0 t :compact t :narrow 60 :score 0))
     ;; If idle for more than 15 minutes, resolve the things by asking what to do
     ;; with the clock time
     (setq org-clock-idle-time 30)
