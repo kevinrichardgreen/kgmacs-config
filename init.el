@@ -13,6 +13,25 @@
 	 (list start end)))
   )
 
+;; GC hacking: startup speed and gc-when out of focus
+;; - set high gc threshold, runs startup, reset gc threshold to desired runtime value after init
+;; - from here: https://github.com/seagle0128/.emacs.d/blob/24d17d3a36841c1c3c27c6ab26e4d3cb975095f3/init.el#L38
+;; - Also sets gc to run when emacs goes out of focus! (describe-variable 'focus-out-hook)
+(defvar default-file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+(setq gc-cons-threshold 800000000)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            "Restore defalut values after init."
+            (setq file-name-handler-alist default-file-name-handler-alist)
+            (setq gc-cons-threshold 800000) ; default value is 800kB
+            (if (boundp 'after-focus-change-function)
+                (add-function :after after-focus-change-function
+                              (lambda ()
+                                (unless (frame-focus-state)
+                                  (garbage-collect))))
+              (add-hook 'focus-out-hook 'garbage-collect))))
+
 ;; Set repositories
 (require 'package)
 (setq-default
