@@ -354,6 +354,16 @@ Better default behaviour of the \*compilation\* buffer.
   (setq compilation-skip-threshold 2) ; don't worry about warnings!
 #+END_SRC
 
+Enable coloration in *compilation* buffer (inspired by conan's default use of colors)
+#+BEGIN_SRC emacs-lisp
+  (use-package ansi-color
+    :config
+    (defun my/ansi-colorize-buffer ()
+      (let ((buffer-read-only nil))
+	(ansi-color-apply-on-region (point-min) (point-max))))
+    (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer))
+#+END_SRC
+
 ** async process spawning
 
 Bury the annoying buffers that pop up: [[help:async-shell-command]]
