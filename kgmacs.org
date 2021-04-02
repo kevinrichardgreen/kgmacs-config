@@ -1421,7 +1421,7 @@ that comes with emacs.
     (define-key pdf-view-mode-map (kbd "D") 'pdf-annot-delete)
     (define-key pdf-view-mode-map (kbd "s a") 'pdf-view-auto-slice-minor-mode)
     (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-    (use-package org-pdfview))
+    (use-package org-pdftools))
 #+END_SRC
 
 Rotating pdf pages, courtesy of [[https://emacs.stackexchange.com/a/24766/16286][StackOverflow]]. Note: This permanently
