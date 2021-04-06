@@ -505,7 +505,9 @@ Just as intuitive as IDO, seems lighter weight than helm.
     (global-set-key "\C-s" 'swiper)
     (setq ivy-use-virtual-buffers t
 	  ivy-count-format "%d/%d "
-	  enable-recursive-minibuffers t)
+	  enable-recursive-minibuffers t
+	  ivy-rich-parse-remote-buffer nil
+	  ivy-rich-parse-remote-file-path t)
     (ivy-mode 1)
     ;; configure regexp engine.
     (setq ivy-re-builders-alist
