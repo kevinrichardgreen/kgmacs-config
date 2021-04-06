@@ -435,10 +435,12 @@ displayed in windows
 
 Get git information in dired buffers
 #+BEGIN_SRC emacs-lisp
-(use-package dired-git-info
+  (use-package dired-git-info
     :ensure t
-    :bind (:map dired-mode-map
-                (")" . dired-git-info-mode)))
+    :config
+    (with-eval-after-load 'dired
+      (define-key dired-mode-map ")" 'dired-git-info-mode))
+    (setq dgi-auto-hide-details-p nil))
 #+END_SRC
 
 Open files and goto lines like we see from g++ errors, etc. i.e.
