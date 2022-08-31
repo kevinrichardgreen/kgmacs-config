@@ -9,15 +9,19 @@ Me:
 * Fundamentals/defaults
 
 Frame titles - incorporate buffer names.
-
 #+BEGIN_SRC emacs-lisp
   (setq frame-title-format '("%b"))
 #+END_SRC
 
 Font.  (set in a way that will work with emacsclient frames)
 #+BEGIN_SRC emacs-lisp
-  (setq default-frame-alist '((font . "Monospace-9")))
+  (setq default-frame-alist '((font . "Monospace-11")))
 #+END_SRC
+
+Add an elisp directory to load path for misc packages
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/lisp/")
+#+end_src
 
 Enable things relating to variable pitch font.
 #+BEGIN_SRC emacs-lisp
@@ -27,7 +31,9 @@ Enable things relating to variable pitch font.
     ;; If you want it in all text modes:
     ;; (text-mode . mixed-pitch-mode)
     :config
-    (global-set-key (kbd "C-c m") 'mixed-pitch-mode))
+    (global-set-key (kbd "C-c m") 'mixed-pitch-mode)
+    ;; useful scaling to get fixed and variable pitch the same size
+    (set-face-attribute 'variable-pitch nil :height 120))
 #+END_SRC
 
 Handle the top bars.
@@ -57,13 +63,16 @@ Smoother scrolling, scroll bar handling
 #+END_SRC
 
 An awesome tool for traversing the undo/redo tree.
+- *Note* do not auto-save history... blows up disk space really quick
+- if you do, consider saving it with a directory pattern similar to =~/.emacs_backups/=
 #+BEGIN_SRC emacs-lisp
-  (use-package undo-tree
-    :config
-    (global-undo-tree-mode))
+    (use-package undo-tree
+      :config
+      (global-undo-tree-mode)
+      (setq undo-tree-auto-save-history nil))
 #+END_SRC
 
-Remember position in a file: keeps ~/ clean,  activated on all buffers
+Remember position in a file: keeps =~/= clean,  activated on all buffers
 #+BEGIN_SRC emacs-lisp
   (use-package saveplace
     :init (save-place-mode))
@@ -77,6 +86,7 @@ Global highlight line mode
 ** TODO handle case when region is active
 
 Soft word wrap for text modes.
+- sometimes useful, sometimes not... *there's got to be a better way to set this up for quick toggling*
 #+BEGIN_SRC emacs-lisp
   (use-package visual-fill-column
     :config
@@ -84,10 +94,10 @@ Soft word wrap for text modes.
     (defun kg/fill-paragraph-text-mode ()
       (interactive)
       (let ((fill-column (point-max)))
-        (fill-paragraph nil)))
+	(fill-paragraph nil)))
     (defun kg/custom-text-mode-paragraphing ()
       (local-set-key (kbd "M-q") 'kg/fill-paragraph-text-mode)
-      (setq fill-column 120)
+      (setq fill-column 100)
       (visual-fill-column-mode)
       (visual-line-mode)
       (toggle-word-wrap 1)
@@ -169,36 +179,97 @@ Backup settings. Courtesy of [[http://stackoverflow.com/a/20824625][Stack Overfl
 
 Use ~ibuffer~ as default over ~list-buffers~. Group configuration from [[https://cestlaz.github.io/posts/using-emacs-34-ibuffer-emmet/#.WiYJuOmnHRY][Using emacs 34]].
 #+BEGIN_SRC emacs-lisp
-  (use-package ibuffer
-    :config
-    (global-set-key (kbd "C-x C-b") 'ibuffer))
+    (use-package ibuffer
+      :config
+      (global-set-key (kbd "C-x C-b") 'ibuffer))
 
-  (use-package ibuffer-vc
-    :after ibuffer
-    :config
-    (setq ibuffer-vc-skip-if-remote t) ;; set to nil is useful, but takes a long
-				       ;; time over slow connections... set
-				       ;; manually if you're on a fast connection
-    (add-hook 'ibuffer-mode-hook
-	      #'ibuffer-vc-set-filter-groups-by-vc-root))
+    (use-package ibuffer-vc
+      :after ibuffer
+      :config
+      (setq ibuffer-vc-skip-if-remote t) ;; set to nil is useful, but takes a long
+					 ;; time over slow connections... set
+					 ;; manually if you're on a fast connection
+      (add-hook 'ibuffer-mode-hook
+		#'ibuffer-vc-set-filter-groups-by-vc-root))
 
-  (use-package ibuffer-tramp
-    :after ibuffer-vc
-    :config
-    (defun kg/ibuffer-toggle-tramp-vc ()
-      "Toggles between TRAMP sort and VC project sort in ibuffer-mode"
-      (interactive)
-      (if (get 'kg/ibuffer-toggle-tramp-vc 'state)
+    (use-package ibuffer-tramp
+      :after ibuffer-vc
+      :config
+      (defun kg/ibuffer-toggle-tramp-vc ()
+	"Toggles between TRAMP sort and VC project sort in ibuffer-mode"
+	(interactive)
+	(if (get 'kg/ibuffer-toggle-tramp-vc 'state)
+	    (progn
+	      (ibuffer-vc-set-filter-groups-by-vc-root)
+	      (put 'kg/ibuffer-toggle-tramp-vc 'state nil)
+	      )
 	  (progn
-	    (ibuffer-vc-set-filter-groups-by-vc-root)
-	    (put 'kg/ibuffer-toggle-tramp-vc 'state nil)
-	    )
-	(progn
-	  (ibuffer-tramp-set-filter-groups-by-tramp-connection)
-	  (put 'kg/ibuffer-toggle-tramp-vc 'state t))))
-    (add-hook 'ibuffer-mode-hook
-	      (lambda () (local-set-key (kbd "M-t") #'kg/ibuffer-toggle-tramp-vc))))
+	    (ibuffer-tramp-set-filter-groups-by-tramp-connection)
+	    (put 'kg/ibuffer-toggle-tramp-vc 'state t))))
+      (add-hook 'ibuffer-mode-hook
+		(lambda () (local-set-key (kbd "M-t") #'kg/ibuffer-toggle-tramp-vc))))
 #+END_SRC
+
+Custom filter for roam docs:
+- This doesn't really work right?
+#+begin_src emacs-lisp
+(setq ibuffer-saved-filter-groups
+        '(("Home"
+           ("Roam" (filename . "\\/Documents/roam"))
+	   )))
+
+#+end_src
+Human readable sizes
+#+begin_src emacs-lisp
+  ;; Use human readable Size column instead of original one
+  (define-ibuffer-column size-h
+    (:name "Size" :inline t)
+    (cond
+     ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+     ((> (buffer-size) 100000) (format "%7.0fk" (/ (buffer-size) 1000.0)))
+     ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+     (t (format "%8d" (buffer-size)))))
+
+  ;; Modify the default ibuffer-formats
+    (setq ibuffer-formats
+	  '((mark modified read-only " "
+		  (name 18 18 :left :elide)
+		  " "
+		  (size-h 9 -1 :right)
+		  "  "
+		  (mode 16 16 :left :elide)
+		  "  "
+		  filename-and-process)))
+#+end_src
+
+Get =TITLE= keyword from an org file.
+#+begin_src emacs-lisp
+  (defun ndk/get-keyword-key-value (kwd)
+     (let ((data (cadr kwd)))
+       (list (plist-get data :key)
+             (plist-get data :value))))
+
+  (defun ndk/org-current-buffer-get-title ()
+      (nth 1
+       (assoc "TITLE"
+        (org-element-map (org-element-parse-buffer 'greater-element)
+            '(keyword)
+            #'ndk/get-keyword-key-value))))
+
+  (defun ndk/org-file-get-title (file)
+    (with-current-buffer (find-file-noselect file)
+         (ndk/org-current-buffer-get-title)))
+  #+end_src
+
+
+Use =TITLE= (if defined) for the name column of org files.
+#+begin_src emacs-lisp
+  (define-ibuffer-column org-title
+    (:name "Name" :inline t)
+    (ndk/org-file-get-title filename-and-process))
+
+
+#+end_src
 
 Collapse and expand all filter groups in =ibuffer=.
 #+BEGIN_SRC emacs-lisp
@@ -235,7 +306,7 @@ Sensible defaults, courtesy of [[https://github.com/hrs/sensible-defaults.el][Ha
   (sensible-defaults/bind-commenting-and-uncommenting)
   (sensible-defaults/bind-keys-to-change-text-size)
 
-  (sensible-defaults/increase-gc-threshold)
+  ;; (sensible-defaults/increase-gc-threshold)
   (sensible-defaults/delete-trailing-whitespace)
   (sensible-defaults/treat-camelcase-as-separate-words)
   (sensible-defaults/make-scripts-executable)
@@ -317,7 +388,10 @@ Toggle window split: [[https://www.emacswiki.org/emacs/ToggleWindowSplit][EmacsW
 
 From here: [[https://github.com/joaotavora/darkroom][darkroom]].
 #+BEGIN_SRC emacs-lisp
-(use-package darkroom)
+  (use-package darkroom
+    :config
+    (global-set-key [f7] 'darkroom-mode)
+  )
 #+END_SRC
 
 ** Web
@@ -424,6 +498,7 @@ Hiding dotfiles.
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'dired
 	(setq dired-listing-switches "-lh --group-directories-first") ;; don't list all by default
+	;; (setq dired-listing-switches "-lah --group-directories-first") ;; don't list all by default
   )
 #+END_SRC
 
@@ -523,6 +598,9 @@ Just as intuitive as IDO, seems lighter weight than helm.
     :config
     (global-set-key (kbd "M-x") 'counsel-M-x)
     (global-set-key (kbd "C-c k") 'counsel-ag)
+
+    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (setq counsel-find-file-ignore-regexp ".*\~undo-tree\~")
   )
 #+end_src
 
@@ -545,6 +623,7 @@ Better buffer formatting in ~ivy-switch-buffer~.
     (ivy-rich-mode)
     )
 #+END_SRC
+
 
 ** Avy for fast jumping anywhere visible.
 
@@ -574,48 +653,82 @@ Set keys for avy movement.
       (ding)
       (call-interactively 'avy-goto-word-1))
     (key-chord-define-global "kj" 'kg/avy-goto-char-ding)
+    (global-set-key (kbd "M-i") 'kg/avy-goto-char-ding)
     (key-chord-define-global "ij" 'avy-goto-line)
     )
 #+END_SRC
 
 * Visual
 
+Load a theme here.
+#+begin_src emacs-lisp
+   (load-theme 'modus-operandi)
+#+end_src
+
 ** Moe theme
 
 Moe theme can be loaded the same way as other themes now (can be hot-swapped with ~counsel-load-theme~)
 #+BEGIN_SRC emacs-lisp
-  (use-package moe-theme
-    :after markdown-mode
-    :init
-    (setq moe-theme-resize-org-title '(1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0 1.0))
-    (setq moe-theme-resize-markdown-title '(1.4 1.3 1.2 1.1 1.0 1.0))
-    (setq moe-theme-resize-rst-title '(1.4 1.3 1.2 1.1 1.0 1.0))
-    :config
-    (moe-theme-apply-color 'red)
-    (moe-dark)
-    )
+  ;; (use-package moe-theme
+  ;;   :after markdown-mode
+  ;;   :init
+  ;;   (setq moe-theme-resize-org-title '(1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0 1.0))
+  ;;   (setq moe-theme-resize-markdown-title '(1.4 1.3 1.2 1.1 1.0 1.0))
+  ;;   (setq moe-theme-resize-rst-title '(1.4 1.3 1.2 1.1 1.0 1.0))
+  ;;   :config
+  ;;   (moe-theme-apply-color 'cyan)
+  ;;   (moe-dark)
+  ;;   )
 #+END_SRC
 
+** Line numbering
+
+Linum relative mode [[https://github.com/coldnew/linum-relative]].
+#+begin_src emacs-lisp
+  ;; (use-package linum-relative
+  ;;   :config
+  ;;   ;; Use the C backend for numbering for performance
+  ;;   (setq linum-relative-backend 'display-line-numbers-mode)
+  ;;   (add-hook 'text-mode-hook 'linum-relative-mode)
+  ;;   (add-hook 'prog-mode-hook 'linum-relative-mode)
+  ;; )
+#+end_src
 * Mode line
+
+Telephone-line:
+#+begin_src emacs-lisp
+  (use-package telephone-line
+    :config
+    (setq telephone-line-primary-left-separator 'telephone-line-gradient)
+    (setq telephone-line-primary-left-separator 'telephone-line-gradient
+	  telephone-line-secondary-left-separator 'telephone-line-nil
+	  telephone-line-primary-right-separator 'telephone-line-gradient
+	  telephone-line-secondary-right-separator 'telephone-line-nil)
+    (setq telephone-line-height 24 ;; give it some space
+	  telephone-line-evil-use-short-tag t)
+    (telephone-line-mode 1)
+    )
+#+end_src
 
 ** Display time in mode line
 
+If you want to...
 #+begin_src emacs-lisp
-  (setq display-time-day-and-date t)
-  (setq display-time-24hr-format t)
-  (setq display-time-default-load-average nil)
-  (display-time)
+  ;; (setq display-time-day-and-date nil)
+  ;; (setq display-time-24hr-format t)
+  ;; (setq display-time-default-load-average nil)
+  ;; (display-time)
 #+end_src
 
 ** Minions
 
 From [[github.com/tarsius][tarsius (github)]].
 #+BEGIN_SRC emacs-lisp
-  (use-package minions
-    :config
-    (minions-mode 1))
+  ;; (use-package minions
+  ;;   :config
+  ;;   (minions-mode 1))
 #+END_SRC
-Note the simplicity of the default modeline with minions. Very info-dense.
+Note the simplicity of the default modeline with minions. Very info-dense, and still gives quick access to minor modes too.
 
 * Org mode
 
@@ -671,7 +784,7 @@ My general preferences for all types.
     (setq org-export-initial-scope 'subtree
           org-export-in-background nil
           org-export-with-title nil
-          org-export-with-toc 1
+          org-export-with-toc 3
           org-export-with-sub-superscripts (quote {})
           org-export-with-section-numbers t))
 #+END_SRC
@@ -684,48 +797,48 @@ hacky between writing to the package alists, redefining hyperref setup
 including addition of header contents (that's the only place I could
 get it to work with importing org properties).
 #+BEGIN_SRC emacs-lisp
-    (with-eval-after-load 'ox-latex
-      ;; Set how to build the pdf
-      (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
-      ;; Unfortunately this has to be set entirely just to change hyperref
-      (setq org-latex-default-packages-alist
-            (quote
-             (("AUTO" "inputenc" t
-               ("pdflatex"))
-              ("T1" "fontenc" t
-               ("pdflatex"))
-              ("" "graphicx" t nil)
-              ("" "grffile" t nil)
-              ("" "longtable" nil nil)
-              ("" "wrapfig" nil nil)
-              ("" "rotating" nil nil)
-              ("normalem" "ulem" t nil)
-              ("" "amsmath" t nil)
-              ("" "textcomp" t nil)
-              ("" "amssymb" t nil)
-              ("" "capt-of" nil nil)
-              ("colorlinks" "hyperref" nil nil)))) ; <-- Only change from default
-      ;; Additional packages I like
-      (setq org-latex-packages-alist
-            (quote (("" "etoolbox" nil)                           ; useful for patchcmd
-                    ("margin=1in,headheight=27.2pt" "geometry" nil) ; page margins
-                    ("" "fancyhdr" nil)                           ; Move things to header
-                    ("" "listings" nil)                           ; nice code formatting
-                    ("" "parskip" nil)                            ; no indent paragraphs
-                    ("" "color" nil))))                           ; syntax highlighting
-      ;; using listings rather than verbatim code sections
-      (setq org-latex-listings t)
-      (setq org-latex-listings-options (quote (("frame" "single")
-                                               ("basicstyle" "\\ttfamily")
-                                               ("breaklines" "true"))))
-      ;; Display TOC with an hrule below it
-      (setq org-latex-toc-command
-            "\\tableofcontents\n\n\\vspace{1em}
+  (with-eval-after-load 'ox-latex
+    ;; Set how to build the pdf
+    (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+    ;; Unfortunately this has to be set entirely just to change hyperref
+    (setq org-latex-default-packages-alist
+	  (quote
+	   (("AUTO" "inputenc" t
+	     ("pdflatex"))
+	    ("T1" "fontenc" t
+	     ("pdflatex"))
+	    ("" "graphicx" t nil)
+	    ("" "grffile" t nil)
+	    ("" "longtable" nil nil)
+	    ("" "wrapfig" nil nil)
+	    ("" "rotating" nil nil)
+	    ("normalem" "ulem" t nil)
+	    ("" "amsmath" t nil)
+	    ("" "textcomp" t nil)
+	    ("" "amssymb" t nil)
+	    ("" "capt-of" nil nil)
+	    ("colorlinks" "hyperref" nil nil)))) ; <-- Only change from default
+    ;; Additional packages I like
+    (setq org-latex-packages-alist
+	  (quote (("" "etoolbox" nil)                           ; useful for patchcmd
+		  ("margin=1in,headheight=27.2pt" "geometry" nil) ; page margins
+		  ("" "fancyhdr" nil)                           ; Move things to header
+		  ("" "listings" nil)                           ; nice code formatting
+		  ("" "parskip" nil)                            ; no indent paragraphs
+		  ("" "color" nil))))                           ; syntax highlighting
+    ;; using listings rather than verbatim code sections
+    (setq org-latex-listings t)
+    (setq org-latex-listings-options (quote (("frame" "single")
+					     ("basicstyle" "\\ttfamily")
+					     ("breaklines" "true"))))
+    ;; Display TOC with an hrule below it
+    (setq org-latex-toc-command
+	  "\\tableofcontents\n\n\\vspace{1em}
     \\noindent\\rule{\\textwidth}{0.4pt}\n\n\\vspace{1em}")
-      ;; Create a latex class to easily handle my notes, set it to be the default
-      (add-to-list 'org-latex-classes
-                   '("kgnote"
-                     "\\documentclass{article}
+    ;; Create a latex class to easily handle my notes, set it to be the default
+    (add-to-list 'org-latex-classes
+		 '("kgnote"
+		   "\\documentclass{article}
       \\usepackage[scaled=0.8]{DejaVuSansMono}
       [DEFAULT-PACKAGES]
       \\def\\UrlBreaks{\\do\\/\\do-}
@@ -733,21 +846,21 @@ get it to work with importing org properties).
       % Configure things from org-latex-(default-)packages-alist here (if you want)
       \\patchcmd{\\thebibliography}{\\section*{\\refname}}{}{}{}
       [EXTRA]"
-                     ("\\section{%s}" . "\\section*{%s}")
-                     ("\\subsection{%s}" . "\\subsection*{%s}")
-                     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                     ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-      ;; Add link colours, set up headers
-      (setq org-latex-hyperref-template
-            "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
+		   ("\\section{%s}" . "\\section*{%s}")
+		   ("\\subsection{%s}" . "\\subsection*{%s}")
+		   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+		   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+		   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+    ;; Add link colours, set up headers
+    (setq org-latex-hyperref-template
+	  "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
     pdflang={%L},\n citecolor=[rgb]{0.117,0.564,1.0},\n linkcolor=[rgb]{0.117,0.564,1.0},
   urlcolor=[rgb]{0.0, 0.412, 0.243}}\n
       \\pagestyle{fancyplain}
-      \\lhead{\\bf %d -- %t}
-      \\rhead{\\href{https://github.com/kevinrichardgreen}{%a}}
+      \\lhead{\\bf %t}
+      \\rhead{%a}
       \\chead{}\n\n")
-      (setq org-latex-default-class "kgnote"))
+    (setq org-latex-default-class "kgnote"))
 #+END_SRC
 
 *** Other exports
@@ -827,7 +940,7 @@ Customizations of my agenda. Calendar view, todo list and refiling.
 	    org-agenda-start-on-weekday 1
 	    org-agenda-todo-ignore-scheduled "all"
 	    org-agenda-skip-scheduled-if-done t
-	    org-deadline-warning-days 7
+	    org-deadline-warning-days 0
 	    org-log-done nil
 	    org-agenda-window-setup 'current-window
 	    org-agenda-span 'day))
@@ -908,16 +1021,16 @@ axon cite:Hodgkin1952.
   (use-package org-ref
     :config
     (with-eval-after-load 'org
-      (setq org-ref-notes-directory "~/Documents/notes/reading"
-            org-ref-bibliography-notes "~/Documents/bib_notes.org"
-            org-ref-default-bibliography '("~/Documents/index.bib")
-            org-ref-pdf-directory '("~/Documents/pdf_books/"
-                                    "~/Documents/pdf_papers"))
-      (setq helm-bibtex-bibliography "~/Documents/index.bib"
-            helm-bibtex-library-path '("~/Documents/pdf_books/"
-                                       "~/Documents/pdf_papers")
-            helm-bibtex-notes-path "~/Documents/bib_notes.org"
-            bibtex-completion-bibliography "~/Documents/index.bib")))
+      (setq org-ref-notes-directory "~/pCloudDrive/bison/Documents/notes/reading"
+            org-ref-bibliography-notes "~/pCloudDrive/bison/Documents/bib_notes.org"
+            org-ref-default-bibliography '("~/pCloudDrive/bison/Documents/index.bib")
+            org-ref-pdf-directory '("~/pCloudDrive/bison/Documents/pdf_books/"
+                                    "~/pCloudDrive/bison/Documents/pdf_papers"))
+      (setq helm-bibtex-bibliography "~/pCloudDrive/bison/Documents/index.bib"
+            helm-bibtex-library-path '("~/pCloudDrive/bison/Documents/pdf_books/"
+                                       "~/pCloudDrive/bison/Documents/pdf_papers")
+            helm-bibtex-notes-path "~/pCloudDrive/bison/Documents/bib_notes.org"
+            bibtex-completion-bibliography "~/pCloudDrive/bison/Documents/index.bib")))
 #+END_SRC
 
 ** Time stamps
@@ -984,16 +1097,21 @@ Simple mode for displaying (presenting) org files. Sane defaults set.
 
 #+begin_src emacs-lisp
   (use-package org-roam
-    :hook
-    (after-init . org-roam-mode)
-    :custom
-    (org-roam-directory "~/Documents/roam/")
-    :bind (:map org-roam-mode-map
-		(("C-c n l" . org-roam)
-		 ("C-c n f" . org-roam-find-file)
-		 ("C-c n g" . org-roam-show-graph))
-		:map org-mode-map
-		(("C-c n i" . org-roam-insert))))
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+	   ("C-c n f" . org-roam-node-find)
+	   ("C-c n g" . org-roam-graph)
+	   ("C-c n i" . org-roam-node-insert)
+	   ("C-c n c" . org-roam-capture)
+	   ("C-c n t" . org-roam-dailies-goto-today)
+	   ;; Dailies
+	   ("C-c n j" . org-roam-dailies-capture-today))
+    :config
+    (setq org-roam-directory (file-truename "~/Documents/roam"))
+    ;; If you're using a vertical completion framework, you might want a more informative completion interface
+    (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:20}" 'face 'org-tag)))
+    (org-roam-db-autosync-mode)
+    ;; If using org-roam-protocol
+    (require 'org-roam-protocol))
 #+end_src
 * She sells sea shells
 
@@ -1015,14 +1133,14 @@ Set TRAMP connections to use persistent ssh
   (setq tramp-default-method "rsync")
 #+END_SRC
 
-*Note:* using an Ubuntu Mate distribution has resulted in a different
+*Note:* using an Ubuntu Mate distribution requires in a different
  terminal name: ~mate-terminal~
 #+BEGIN_SRC emacs-lisp
   (setq sys-terminal-name "gnome-terminal")
 #+END_SRC
 
 Open an external ~gnome-terminal~ in the remote directory of a TRAMP
-buffer. This was pieced together using  elements from:
+buffer. This was pieced together using elements from:
 - https://emacs.stackexchange.com/questions/18903/tramp-and-dired-initial-default-directory-dired-directory
 - https://stackoverflow.com/questions/23164073/run-a-shell-command-from-a-specific-directory-in-emacs
 - https://unix.stackexchange.com/questions/373186/open-gnome-terminal-window-and-execute-2-commands
@@ -1118,6 +1236,13 @@ Always /try/ to open a ~shell~ in the same window where you are.
   (push '("\\`\\*shell" display-buffer-same-window (inhibit-same-window)) display-buffer-alist)
 #+END_SRC
 
+#+begin_src emacs-lisp
+  (use-package shell-pop
+    :config
+    (global-set-key (kbd "M-m") 'shell-pop)
+  )
+#+end_src
+
 * Version control
 
 Settings for version control modes.
@@ -1136,8 +1261,8 @@ code more just so I can commit more.
 =git-gutter= shows where things have been changed right in buffers.
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter
-    :config
-    (global-git-gutter-mode +1)
+  ;;   :config
+  ;;   (global-git-gutter-mode +1)
   )
 #+END_SRC
 
@@ -1156,6 +1281,27 @@ time though.
   (use-package minimap
     :ensure t)
 #+END_SRC
+** LSP
+
+Basic language support
+#+begin_src emacs-lisp
+  ;; (use-package lsp-mode
+  ;;   :hook ((c++-mode python-mode java-mode js-mode) . lsp-deferred)
+  ;;   :commands lsp lsp-deferred)
+#+end_src
+
+And additional UI features
+#+begin_src emacs-lisp
+  ;; (use-package lsp-ui
+  ;;   :commands lsp-ui-mode
+  ;;   :config
+  ;;   (setq lsp-ui-doc-enable nil)
+  ;;   (setq lsp-ui-doc-header t)
+  ;;   (setq lsp-ui-doc-include-signature t)
+  ;;   (setq lsp-ui-doc-border (face-foreground 'default))
+  ;;   (setq lsp-ui-sideline-show-code-actions t)
+  ;;   (setq lsp-ui-sideline-delay 0.05))
+#+end_src
 
 ** CMake
 
@@ -1193,6 +1339,15 @@ Prettify code with clang-format
   (add-to-list 'auto-mode-alist '("\\.ci\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.edp\\'" . c++-mode))
 #+END_SRC
+
+*** deal.ii highlighting
+
+Major mode for deal.ii parameter file highlighting
+#+begin_src emacs-lisp
+  (require 'prm-mode)
+  (add-to-list 'auto-mode-alist '("\\.prm\\'" . prm-mode))
+#+end_src
+
 *** clang-format-file-remotely
 
 Idea: Run =clang-format= on the remote machine.
@@ -1312,11 +1467,11 @@ Ok, so this is a big one too.  AUCTeX+RefTex for LaTeX editing.
   (setq LaTeX-myChapter-label "chap")
   (setq TeX-newline-function 'reindent-then-newline-and-indent)
   (setq LaTeX-section-hook
-        '(LaTeX-section-heading
-          LaTeX-section-title
-          LaTeX-section-toc
-          LaTeX-section-section
-          LaTeX-section-label))
+	'(LaTeX-section-heading
+	  LaTeX-section-title
+	  LaTeX-section-toc
+	  LaTeX-section-section
+	  LaTeX-section-label))
   (setq TeX-parse-self t)
   (setq TeX-auto-save t)
   (setq TeX-source-correlate-mode t)
@@ -1328,24 +1483,29 @@ Ok, so this is a big one too.  AUCTeX+RefTex for LaTeX editing.
     :config
     (add-hook 'LaTeX-mode-hook 'turn-on-reftex) ; with AUCTeX LaTeX mode
     (setq reftex-plug-into-AUCTeX t)
-                                          ;      (setq reftex-toc-split-windows-horizontally t)
+					  ;      (setq reftex-toc-split-windows-horizontally t)
     (setq reftex-toc-include-labels t)
     (setq reftex-toc-include-file-boundaries t)
     (setq reftex-auto-recenter-toc t)
     (setq reftex-idle-time 0.5))
-  ;; latexmk support within auctex
-  (use-package auctex-latexmk
-    :config
-    (auctex-latexmk-setup))
   ;; Use pdf-tools to open PDF files
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-        TeX-source-correlate-start-server t)
+	TeX-source-correlate-start-server t)
   ;; Update PDF buffers after successful LaTeX runs
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
-            #'TeX-revert-document-buffer)
+	    #'TeX-revert-document-buffer)
   (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "LatexMk")))
 #+END_SRC
 
+*NOTE*: auctex-latexmk quick fix: https://github.com/tom-tan/auctex-latexmk/pull/40/files
+- change to =(require 'tex-buf nil t)= in auctex-latexmk.el
+#+begin_src emacs-lisp
+  ;; latexmk support within auctex
+  (use-package auctex-latexmk
+    :config
+    (auctex-latexmk-setup)
+    )
+#+end_src
 *** BibTeX
 
 Managing all of my BibTeX entries with =bibtex-utils=.
@@ -1362,6 +1522,7 @@ Managing all of my BibTeX entries with =bibtex-utils=.
 ** Python
 
 =elpy= has some nice features.
+*** COMMENT TODO Do they work with native-compiled lisp?
 #+BEGIN_SRC emacs-lisp
     (use-package elpy
       :config
@@ -1583,6 +1744,113 @@ than =interleave= and fits my workflow better.
     (setq pdf-view-restore-filename "~/.emacs.d/.pdf-view-restore"))
 #+end_src
 
+
+* Hydra
+
+#+begin_src emacs-lisp
+  (use-package hydra)
+#+end_src
+
+** Ibuffer hydra
+
+#+begin_src emacs-lisp
+  (defhydra hydra-ibuffer-main (:color pink :hint nil)
+    "
+  ^Mark^         ^Actions^         ^View^          ^Select^              ^Navigation^
+  _m_: mark      _D_: delete       _g_: refresh    _q_: quit             _k_:   ↑    _h_
+  _u_: unmark    _s_: save marked  _S_: sort       _TAB_: toggle         _RET_: visit
+  _*_: specific  _a_: all actions  _/_: filter     _o_: other window     _j_:   ↓    _l_
+  _t_: toggle    _._: toggle hydra _H_: help       C-o other win no-select
+  "
+    ("m" ibuffer-mark-forward)
+    ("u" ibuffer-unmark-forward)
+    ("*" hydra-ibuffer-mark/body :color blue)
+    ("t" ibuffer-toggle-marks)
+
+    ("D" ibuffer-do-delete)
+    ("s" ibuffer-do-save)
+    ("a" hydra-ibuffer-action/body :color blue)
+
+    ("g" ibuffer-update)
+    ("S" hydra-ibuffer-sort/body :color blue)
+    ("/" hydra-ibuffer-filter/body :color blue)
+    ("H" describe-mode :color blue)
+
+    ("h" ibuffer-backward-filter-group)
+    ("k" ibuffer-backward-line)
+    ("l" ibuffer-forward-filter-group)
+    ("j" ibuffer-forward-line)
+    ("RET" ibuffer-visit-buffer :color blue)
+
+    ("TAB" ibuffer-toggle-filter-group)
+
+    ("o" ibuffer-visit-buffer-other-window :color blue)
+    ("q" quit-window :color blue)
+    ("." nil :color blue))
+
+  (defhydra hydra-ibuffer-mark (:color teal :columns 5
+				       :after-exit (hydra-ibuffer-main/body))
+    "Mark"
+    ("*" ibuffer-unmark-all "unmark all")
+    ("M" ibuffer-mark-by-mode "mode")
+    ("m" ibuffer-mark-modified-buffers "modified")
+    ("u" ibuffer-mark-unsaved-buffers "unsaved")
+    ("s" ibuffer-mark-special-buffers "special")
+    ("r" ibuffer-mark-read-only-buffers "read-only")
+    ("/" ibuffer-mark-dired-buffers "dired")
+    ("e" ibuffer-mark-dissociated-buffers "dissociated")
+    ("h" ibuffer-mark-help-buffers "help")
+    ("z" ibuffer-mark-compressed-file-buffers "compressed")
+    ("b" hydra-ibuffer-main/body "back" :color blue))
+
+  (defhydra hydra-ibuffer-action (:color teal :columns 4
+					 :after-exit
+					 (if (eq major-mode 'ibuffer-mode)
+					     (hydra-ibuffer-main/body)))
+    "Action"
+    ("A" ibuffer-do-view "view")
+    ("E" ibuffer-do-eval "eval")
+    ("F" ibuffer-do-shell-command-file "shell-command-file")
+    ("I" ibuffer-do-query-replace-regexp "query-replace-regexp")
+    ("H" ibuffer-do-view-other-frame "view-other-frame")
+    ("N" ibuffer-do-shell-command-pipe-replace "shell-cmd-pipe-replace")
+    ("M" ibuffer-do-toggle-modified "toggle-modified")
+    ("O" ibuffer-do-occur "occur")
+    ("P" ibuffer-do-print "print")
+    ("Q" ibuffer-do-query-replace "query-replace")
+    ("R" ibuffer-do-rename-uniquely "rename-uniquely")
+    ("T" ibuffer-do-toggle-read-only "toggle-read-only")
+    ("U" ibuffer-do-replace-regexp "replace-regexp")
+    ("V" ibuffer-do-revert "revert")
+    ("W" ibuffer-do-view-and-eval "view-and-eval")
+    ("X" ibuffer-do-shell-command-pipe "shell-command-pipe")
+    ("b" nil "back"))
+
+  (defhydra hydra-ibuffer-sort (:color amaranth :columns 3)
+    "Sort"
+    ("i" ibuffer-invert-sorting "invert")
+    ("a" ibuffer-do-sort-by-alphabetic "alphabetic")
+    ("v" ibuffer-do-sort-by-recency "recently used")
+    ("s" ibuffer-do-sort-by-size "size")
+    ("f" ibuffer-do-sort-by-filename/process "filename")
+    ("m" ibuffer-do-sort-by-major-mode "mode")
+    ("b" hydra-ibuffer-main/body "back" :color blue))
+
+  (defhydra hydra-ibuffer-filter (:color amaranth :columns 4)
+    "Filter"
+    ("m" ibuffer-filter-by-used-mode "mode")
+    ("M" ibuffer-filter-by-derived-mode "derived mode")
+    ("n" ibuffer-filter-by-name "name")
+    ("c" ibuffer-filter-by-content "content")
+    ("e" ibuffer-filter-by-predicate "predicate")
+    ("f" ibuffer-filter-by-filename "filename")
+    (">" ibuffer-filter-by-size-gt "size")
+    ("<" ibuffer-filter-by-size-lt "size")
+    ("/" ibuffer-filter-disable "disable")
+    ("b" hydra-ibuffer-main/body "back" :color blue))
+
+  (define-key ibuffer-mode-map "." 'hydra-ibuffer-main/body)
+#+end_src
 * References
 
 Generally linked in place, otherwise here:
