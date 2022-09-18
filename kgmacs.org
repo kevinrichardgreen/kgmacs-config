@@ -662,23 +662,22 @@ Set keys for avy movement.
 
 Load a theme here.
 #+begin_src emacs-lisp
-   (load-theme 'modus-operandi)
+  ;; (load-theme 'moe-dark)
 #+end_src
 
 ** Moe theme
 
 Moe theme can be loaded the same way as other themes now (can be hot-swapped with ~counsel-load-theme~)
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package moe-theme
-  ;;   :after markdown-mode
-  ;;   :init
-  ;;   (setq moe-theme-resize-org-title '(1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0 1.0))
-  ;;   (setq moe-theme-resize-markdown-title '(1.4 1.3 1.2 1.1 1.0 1.0))
-  ;;   (setq moe-theme-resize-rst-title '(1.4 1.3 1.2 1.1 1.0 1.0))
-  ;;   :config
-  ;;   (moe-theme-apply-color 'cyan)
-  ;;   (moe-dark)
-  ;;   )
+  (use-package moe-theme
+    :after markdown-mode
+    :init
+    (setq moe-theme-resize-org-title '(1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0 1.0))
+    (setq moe-theme-resize-markdown-title '(1.4 1.3 1.2 1.1 1.0 1.0))
+    (setq moe-theme-resize-rst-title '(1.4 1.3 1.2 1.1 1.0 1.0))
+    :config
+    (moe-theme-apply-color 'cyan)
+    (moe-dark))
 #+END_SRC
 
 ** Line numbering
@@ -1363,8 +1362,7 @@ Idea: Run =clang-format= on the remote machine.
     eshell 2. clang-format must be installed on the remote machine
     3. outputs to the original buffer (useful for undo/redo) 4.
     eshell prompts to quite due to process still running, WAIT
-    UNTIL IT FINISHES BEFORE HITTING \"y\"
-  "
+    UNTIL IT FINISHES BEFORE HITTING \"y\" "
   (interactive)
   (let* (
 	 (remote-file (file-name-nondirectory buffer-file-name))
