@@ -1021,15 +1021,14 @@ axon cite:Hodgkin1952.
     :config
     (with-eval-after-load 'org
       (setq org-ref-notes-directory "~/pCloudDrive/bison/Documents/notes/reading"
-            org-ref-bibliography-notes "~/pCloudDrive/bison/Documents/bib_notes.org"
-            org-ref-default-bibliography '("~/pCloudDrive/bison/Documents/index.bib")
-            org-ref-pdf-directory '("~/pCloudDrive/bison/Documents/pdf_books/"
-                                    "~/pCloudDrive/bison/Documents/pdf_papers"))
-      (setq helm-bibtex-bibliography "~/pCloudDrive/bison/Documents/index.bib"
-            helm-bibtex-library-path '("~/pCloudDrive/bison/Documents/pdf_books/"
-                                       "~/pCloudDrive/bison/Documents/pdf_papers")
-            helm-bibtex-notes-path "~/pCloudDrive/bison/Documents/bib_notes.org"
-            bibtex-completion-bibliography "~/pCloudDrive/bison/Documents/index.bib")))
+	    org-ref-bibliography-notes "~/pCloudDrive/bison/Documents/bib_notes.org"
+	    org-ref-default-bibliography '("~/pCloudDrive/bison/Documents/index.bib")
+	    org-ref-pdf-directory '("~/pCloudDrive/bison/Documents/pdf_books/"
+				    "~/pCloudDrive/bison/Documents/pdf_papers"))
+      (setq bibtex-completion-notes-path "~/pCloudDrive/bison/Documents/bib_notes.org"
+	    bibtex-completion-bibliography "~/pCloudDrive/bison/Documents/index.bib"
+	    bibtex-completion-library-path '("~/pCloudDrive/bison/Documents/pdf_books/"
+				       "~/pCloudDrive/bison/Documents/pdf_papers"))))
 #+END_SRC
 
 ** Time stamps
@@ -1105,7 +1104,7 @@ Simple mode for displaying (presenting) org files. Sane defaults set.
 	   ;; Dailies
 	   ("C-c n j" . org-roam-dailies-capture-today))
     :config
-    (setq org-roam-directory (file-truename "~/Documents/roam"))
+    (setq org-roam-directory (file-truename "~/pCloudDrive/logan/Documents/roam"))
     ;; If you're using a vertical completion framework, you might want a more informative completion interface
     (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:20}" 'face 'org-tag)))
     (org-roam-db-autosync-mode)
